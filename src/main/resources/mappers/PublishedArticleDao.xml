@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.evan.blog.repository.PublishedArticleDao">
+    <resultMap id="publishedArticleMap" type="publishedArticle">
+        <id property="id" column="id" />
+        <result property="pubId" column="pub_id"/>
+        <result property="pubTime" column="pub_time" />
+        <result property="type" column="type"/>
+        <association property="article" column="article_id" select="com.evan.blog.repository.ArticleDao.selectArticleById" />
+        <association property="category" column="category_id" select="com.evan.blog.repository.CategoryDao.selectCategoryById"/>
+    </resultMap>
+    <select id="selectPublishedArticleByPubId" parameterType="int" resultMap="publishedArticleMap">
+        select * from published_articles where pub_id=#{pubId};
+    </select>
+    <select id="selectPublishedArticlesCount" resultType="int">
+        select count(*) from published_articles;
+    </select>
+    <insert id="insertPublishedArticle" parameterType="publishedArticle">
+        insert into published_articles(pub_id, type, article_id, category_id)
+        values (#{pubId}, #{type}, #{article.id}, #{category.id});
+    </insert>
+    <delete id="deletePublishedArticle" parameterType="int">
+        delete from published_articles where pub_id=#{pubId};
+    </delete>
+</mapper>

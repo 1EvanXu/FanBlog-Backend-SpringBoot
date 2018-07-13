@@ -12,6 +12,15 @@ public class PublishedArticle {
     private Article article;
     private Category category;
 
+    public PublishedArticle() {}
+
+    public PublishedArticle(Integer pubId, PublishedArticleType type, Article article, Category category) {
+        this.pubId = pubId;
+        this.type = type;
+        this.article = article;
+        this.category = category;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -1,4 +1,4 @@
-package com.evan.blog.web;
+package com.evan.blog.web.site;
 
 import com.evan.blog.domain.Article;
 import com.evan.blog.service.interfaces.ArticleService;

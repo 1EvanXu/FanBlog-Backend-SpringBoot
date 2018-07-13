@@ -1,9 +1,9 @@
-package com.evan.blog.respository;
+package com.evan.blog.repository;
 
 import com.evan.blog.domain.Category;
 
 public interface CategoryDao {
-    void addCategory(Category category);
-    Category getCategoryById(int id);
-    void deleteCategoryById(int id);
+    void insertCategory(Category category);
+    Category selectCategoryById(int id);
+    void deleteCategory(int id);
 }

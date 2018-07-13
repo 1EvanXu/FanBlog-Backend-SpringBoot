@@ -1,15 +1,23 @@
 package com.evan.blog.domain;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class Commentary {
     private Integer id;
     private User Commentator;
     private String content;
-    private Date commentTime;
+    private Timestamp commentTime;
     private Commentary parent;
     private Commentary replyTo;
     private PublishedArticle belongedPublishedArticle;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public User getCommentator() {
         return Commentator;
@@ -27,11 +35,11 @@ public class Commentary {
         this.content = content;
     }
 
-    public Date getCommentTime() {
+    public Timestamp getCommentTime() {
         return commentTime;
     }
 
-    public void setCommentTime(Date commentTime) {
+    public void setCommentTime(Timestamp commentTime) {
         this.commentTime = commentTime;
     }
 

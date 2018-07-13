@@ -7,8 +7,8 @@ public class Article {
     private Integer id;
     private String title;
     private Timestamp createdTime;
-    private Timestamp latestModifiedTime;
-    private ArticleStatus status;
+    private Timestamp latestEditedTime;
+    private ArticleStatus status = ArticleStatus.Editing;
     private String htmlContent;
     private String markdownContent;
 
@@ -49,12 +49,12 @@ public class Article {
         this.createdTime = createdTime;
     }
 
-    public Timestamp getLatestModifiedTime() {
-        return latestModifiedTime;
+    public Timestamp getLatestEditedTime() {
+        return latestEditedTime;
     }
 
-    public void setLatestModifiedTime(Timestamp latestModifiedTime) {
-        this.latestModifiedTime = latestModifiedTime;
+    public void setLatestEditedTime(Timestamp latestEditedTime) {
+        this.latestEditedTime = latestEditedTime;
     }
 
     public ArticleStatus getStatus() {
@@ -87,10 +87,10 @@ public class Article {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", createdTime=" + createdTime +
-                ", latestModifiedTime=" + latestModifiedTime +
+                ", latestEditedTime=" + latestEditedTime +
                 ", status=" + status +
-                ", HtmlContent='" + htmlContent + '\'' +
-                ", MarkdownContent='" + markdownContent + '\'' +
+                ", htmlContent='" + htmlContent + '\'' +
+                ", markdownContent='" + markdownContent + '\'' +
                 '}';
     }
 }

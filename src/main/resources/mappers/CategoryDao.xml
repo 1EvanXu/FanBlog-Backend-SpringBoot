@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.evan.blog.repository.CategoryDao">
+    <resultMap id="categoryMap" type="category">
+        <id column="id" property="id"/>
+        <result column="category_name" property="name"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+    <select id="selectCategoryById" resultMap="categoryMap" parameterType="int">
+        select * from categories where id=#{id};
+    </select>
+    <insert id="insertCategory" parameterType="category">
+        insert into categories(category_name) values(#{name});
+    </insert>
+    <delete id="deleteCategory" parameterType="int">
+        delete from categories where id=#{id}
+    </delete>
+</mapper>

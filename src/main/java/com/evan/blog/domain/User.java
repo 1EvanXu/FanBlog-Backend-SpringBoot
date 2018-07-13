@@ -9,17 +9,9 @@ public class User {
     private String avatarImagePath;
     private String password;
     private String email;
-    private UserLevel level;
+    private UserLevel level = UserLevel.Common;
 
     public User() { }
-
-    public User(String name, String avatarImagePath, String password, String email, UserLevel level) {
-        this.name = name;
-        this.avatarImagePath = avatarImagePath;
-        this.password = password;
-        this.email = email;
-        this.level = level;
-    }
 
     public Integer getId() {
         return id;

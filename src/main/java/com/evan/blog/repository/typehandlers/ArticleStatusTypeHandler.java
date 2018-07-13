@@ -5,7 +5,10 @@ import com.evan.blog.domain.states.ArticleStatus;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class ArticleStatusTypeHandler implements TypeHandler<ArticleStatus> {
     public void setParameter(PreparedStatement preparedStatement, int i, ArticleStatus articleStatus, JdbcType jdbcType) throws SQLException {
