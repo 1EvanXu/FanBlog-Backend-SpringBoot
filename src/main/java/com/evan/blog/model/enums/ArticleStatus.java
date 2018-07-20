@@ -1,4 +1,4 @@
-package com.evan.blog.domain.states;
+package com.evan.blog.model.enums;
 
 public enum ArticleStatus {
     Deleted("Deleted", -1), Editing("Editing", 0), Published("Published", 1);

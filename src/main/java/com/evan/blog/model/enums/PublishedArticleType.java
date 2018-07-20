@@ -1,4 +1,4 @@
-package com.evan.blog.domain.states;
+package com.evan.blog.model.enums;
 
 public enum PublishedArticleType {
     Original, Reproduced, Translation

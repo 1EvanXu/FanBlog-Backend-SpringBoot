@@ -7,7 +7,16 @@
         <id column="id" property="id"/>
         <result column="category_name" property="name"/>
         <result column="created_time" property="createdTime"/>
+        <association column="id" property="numberOfIncludedPubArticles"
+                     select="com.evan.blog.repository.PublishedArticleDao.selectCountOfPubArticlesByCategory"/>
     </resultMap>
+    <select id="selectCategoriesByName" resultMap="categoryMap">
+        select * from categories
+        <where>
+            <if test="categoryName != null and categoryName != ''">category_name like CONCAT('%', #{categoryName}, '%')</if>
+        </where>
+        order by created_time DESC;
+    </select>
     <select id="selectCategoryById" resultMap="categoryMap" parameterType="int">
         select * from categories where id=#{id};
     </select>

@@ -1,6 +1,6 @@
-package com.evan.blog.domain;
+package com.evan.blog.model;
 
-import com.evan.blog.domain.states.ArticleStatus;
+import com.evan.blog.model.enums.ArticleStatus;
 import java.sql.Timestamp;
 
 public class Article {

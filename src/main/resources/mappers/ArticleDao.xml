@@ -17,17 +17,17 @@
         select id, title, created_time, latest_edited_time, status from articles
     </sql>
 
-    <select id="getAllArticlesByCreatedTime" parameterType="boolean" resultMap="articleMap">
-        <include refid="articleAbstract"/>  on created_time order by
-        <choose>
-            <when test="order">
-                DESC
-            </when>
-            <otherwise>
-                ASC
-            </otherwise>
-        </choose>
-        ;
+    <select id="selectAllArticles" parameterType="queryFilter" resultMap="articleMap">
+        <include refid="articleAbstract"/>
+        <where>
+            <if test="articleStatus != null">status=#{articleStatus}</if>
+        </where>
+        <if test="orderField != null and orderField != ''">order by #{orderField}
+          <choose>
+              <when test="order.name() == 'Asc'">ASC</when>
+              <otherwise>DESC</otherwise>
+          </choose>
+        </if>
     </select>
 
     <select id="selectArticleById" parameterType="int" resultMap="articleMap">

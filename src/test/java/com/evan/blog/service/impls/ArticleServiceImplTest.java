@@ -1,6 +1,6 @@
 package com.evan.blog.service.impls;
 
-import com.evan.blog.domain.Article;
+import com.evan.blog.model.Article;
 import com.evan.blog.service.interfaces.ArticleService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,9 +1,9 @@
 package com.evan.blog.repository;
 
-import com.evan.blog.domain.Article;
-import com.evan.blog.domain.Category;
-import com.evan.blog.domain.PublishedArticle;
-import com.evan.blog.domain.states.PublishedArticleType;
+import com.evan.blog.model.Article;
+import com.evan.blog.model.Category;
+import com.evan.blog.model.PublishedArticle;
+import com.evan.blog.model.enums.PublishedArticleType;
 import com.evan.blog.util.PubIdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,9 +24,11 @@ public class PublishedArticleDaoTest {
     @Autowired
     CategoryDao categoryDao;
 
+
     @Test
     public void selectPublishedArticleByPubId() {
         PublishedArticle publishedArticle = publishedArticleDao.selectPublishedArticleByPubId(180711661);
+        System.out.println(publishedArticle);
         assertEquals("test updated article title 4", publishedArticle.getArticle().getTitle());
         assertEquals("Java", publishedArticle.getCategory().getName());
     }
@@ -34,8 +36,8 @@ public class PublishedArticleDaoTest {
     @Test
     public void insertPublishedArticle() {
         int pubId = PubIdGenerator.generatePubId();
-        Article article = articleDao.selectArticleById(3);
-        Category category = categoryDao.selectCategoryById(4);
+        Article article = articleDao.selectArticleById(1);
+        Category category = categoryDao.selectCategoryById(2);
         PublishedArticle publishedArticle = new PublishedArticle(
                 pubId,
                 PublishedArticleType.Original,
@@ -50,5 +52,11 @@ public class PublishedArticleDaoTest {
         publishedArticleDao.deletePublishedArticle(180711508);
         PublishedArticle publishedArticle = publishedArticleDao.selectPublishedArticleByPubId(180711508);
         assertNull(publishedArticle);
+    }
+
+    @Test
+    public void selectCountOfPubArticlesByCategory() {
+        Integer count = publishedArticleDao.selectCountOfPubArticlesByCategory(2);
+        assertEquals(1, count.intValue());
     }
 }

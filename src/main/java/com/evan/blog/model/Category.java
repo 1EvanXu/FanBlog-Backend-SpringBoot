@@ -1,4 +1,4 @@
-package com.evan.blog.domain;
+package com.evan.blog.model;
 
 import java.sql.Timestamp;
 
@@ -6,6 +6,7 @@ public class Category {
     private Integer id;
     private String name;
     private Timestamp createdTime;
+    private Integer numberOfIncludedPubArticles;
 
     public Category() {}
 
@@ -37,12 +38,21 @@ public class Category {
         this.createdTime = createdTime;
     }
 
+    public Integer getNumberOfIncludedPubArticles() {
+        return numberOfIncludedPubArticles;
+    }
+
+    public void setNumberOfIncludedPubArticles(Integer numberOfIncludedPubArticles) {
+        this.numberOfIncludedPubArticles = numberOfIncludedPubArticles;
+    }
+
     @Override
     public String toString() {
         return "Category{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", createdTime=" + createdTime +
+                ", numberOfIncludedPubArticles=" + numberOfIncludedPubArticles +
                 '}';
     }
 }

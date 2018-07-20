@@ -1,7 +1,7 @@
 package com.evan.blog.repository;
 
-import com.evan.blog.domain.User;
-import com.evan.blog.domain.states.UserLevel;
+import com.evan.blog.model.User;
+import com.evan.blog.model.enums.UserLevel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +20,18 @@ public class UserDaoTest {
     @Test
     public void selectUserByEmail() {
         User user = userDao.selectUserByEmail("yifan_xu6@163.com");
+        System.out.println(user);
         assertNotNull(user);
     }
 
     @Test
     public void insertUser() {
         User user = new User();
-        user.setName("yifanxu");
-        user.setAvatarImagePath("/blog/image/avatar/1.png");
-        user.setEmail("yifan_xu6@163.com");
+        user.setName("eleven");
+        user.setAvatarImagePath("/blog/image/avatar/3.png");
+        user.setEmail("evan.xu1@foxmail.com");
         user.setPassword("xuyifan1993fan0601.");
-        user.setLevel(UserLevel.Host);
+        user.setLevel(UserLevel.VIP);
         userDao.insertUser(user);
     }
 
@@ -39,5 +40,12 @@ public class UserDaoTest {
         User user = userDao.selectUserByEmail("yifan_xu6@163.com");
         user.setAvatarImagePath("/blog/image/avatar/yifanxu.png");
         userDao.updateUser(user);
+    }
+
+    @Test
+    public void selectUserById() {
+        User user = userDao.selectUserById(1);
+        System.out.println(user);
+        assertNotNull(user);
     }
 }

@@ -12,12 +12,16 @@
         <result column="user_level" property="level" />
     </resultMap>
 
+    <select id="selectUserById" resultMap="userMap" parameterType="int">
+        select * from users where id=#{id};
+    </select>
+
     <select id="selectUserByEmail" resultMap="userMap" parameterType="string">
         select * from users where email=#{email};
     </select>
 
     <insert id="insertUser" parameterType="user">
-        insert into users(use_name, avatar_image_path, password, email, user_level)
+        insert into users(user_name, avatar_image_path, password, email, user_level)
         values (#{name}, #{avatarImagePath}, #{password}, #{email}, #{level});
     </insert>
 

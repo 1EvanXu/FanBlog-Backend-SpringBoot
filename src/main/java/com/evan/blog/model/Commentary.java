@@ -1,15 +1,19 @@
-package com.evan.blog.domain;
+package com.evan.blog.model;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Commentary {
     private Integer id;
-    private User Commentator;
+    private User commentator;
+    private Integer commentatorId;
     private String content;
     private Timestamp commentTime;
     private Commentary parent;
+    private Integer parentId;
     private Commentary replyTo;
-    private PublishedArticle belongedPublishedArticle;
+    private Integer replyToId;
+    private Integer belongedPublishedArticle;
 
     public Integer getId() {
         return id;
@@ -20,11 +24,19 @@ public class Commentary {
     }
 
     public User getCommentator() {
-        return Commentator;
+        return commentator;
     }
 
     public void setCommentator(User commentator) {
-        Commentator = commentator;
+        this.commentator = commentator;
+    }
+
+    public Integer getCommentatorId() {
+        return commentatorId;
+    }
+
+    public void setCommentatorId(Integer commentatorId) {
+        this.commentatorId = commentatorId;
     }
 
     public String getContent() {
@@ -59,24 +71,42 @@ public class Commentary {
         this.replyTo = replyTo;
     }
 
-    public PublishedArticle getBelongedPublishedArticle() {
+    public Integer getBelongedPublishedArticle() {
         return belongedPublishedArticle;
     }
 
-    public void setBelongedPublishedArticle(PublishedArticle belongedPublishedArticle) {
+    public void setBelongedPublishedArticle(Integer belongedPublishedArticle) {
         this.belongedPublishedArticle = belongedPublishedArticle;
     }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
+    public Integer getReplyToId() {
+        return replyToId;
+    }
+
+    public void setReplyToId(Integer replyToId) {
+        this.replyToId = replyToId;
+    }
+
 
     @Override
     public String toString() {
         return "Commentary{" +
                 "id=" + id +
-                ", Commentator=" + Commentator.getId() +
+                ", commentator=" + commentator +
+                ", commentatorId=" + commentatorId +
                 ", content='" + content + '\'' +
                 ", commentTime=" + commentTime +
-                ", parent=" + parent +
-                ", replyTo=" + replyTo +
-                ", belongedPublishedArticle=" + belongedPublishedArticle.getId() +
+                ", parentId=" + parentId +
+                ", replyToId=" + replyToId +
+                ", belongedPublishedArticle=" + belongedPublishedArticle +
                 '}';
     }
 }

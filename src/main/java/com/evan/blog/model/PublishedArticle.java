@@ -1,6 +1,6 @@
-package com.evan.blog.domain;
+package com.evan.blog.model;
 
-import com.evan.blog.domain.states.PublishedArticleType;
+import com.evan.blog.model.enums.PublishedArticleType;
 
 import java.sql.Timestamp;
 

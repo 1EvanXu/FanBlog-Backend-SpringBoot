@@ -1,7 +1,7 @@
 package com.evan.blog.repository.typehandlers;
 
 
-import com.evan.blog.domain.states.ArticleStatus;
+import com.evan.blog.model.enums.ArticleStatus;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 

@@ -11,11 +11,16 @@
         <association property="article" column="article_id" select="com.evan.blog.repository.ArticleDao.selectArticleById" />
         <association property="category" column="category_id" select="com.evan.blog.repository.CategoryDao.selectCategoryById"/>
     </resultMap>
+    
+    <select id="selectPublishedArticles" resultMap="publishedArticleMap">
+        select * from published_articles
+    </select>
+
     <select id="selectPublishedArticleByPubId" parameterType="int" resultMap="publishedArticleMap">
         select * from published_articles where pub_id=#{pubId};
     </select>
-    <select id="selectPublishedArticlesCount" resultType="int">
-        select count(*) from published_articles;
+    <select id="selectCountOfPubArticlesByCategory" parameterType="int" resultType="int">
+        select count(*) from published_articles where category_id=#{categoryId};
     </select>
     <insert id="insertPublishedArticle" parameterType="publishedArticle">
         insert into published_articles(pub_id, type, article_id, category_id)

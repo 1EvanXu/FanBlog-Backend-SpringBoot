@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.evan.blog.repository.CommentaryDao">
+    <resultMap id="commentaryMap" type="commentary">
+        <id column="id" property="id"/>
+        <result column="commentator" property="commentatorId"/>
+        <result column="content" property="content" />
+        <result column="comment_time" property="commentTime"/>
+        <result column="belonged_pub_article" property="belongedPublishedArticle"/>
+        <result column="parent" property="parentId"/>
+        <result column="reply_to" property="replyToId"/>
+        <association property="commentator" column="commentator"
+                     select="com.evan.blog.repository.UserDao.selectUserById" />
+        <association property="parent" column="parent"
+                     select="com.evan.blog.repository.CommentaryDao.selectCommentaryById"/>
+        <association property="replyTo" column="reply_to"
+                     select="com.evan.blog.repository.CommentaryDao.selectCommentaryById"/>
+    </resultMap>
+
+    <insert id="insertCommentary" parameterType="commentary">
+        insert into commentaries (commentator, content, parent, reply_to, belonged_pub_article)
+        values (#{commentator.id}, #{content},
+        <choose>
+            <when test="parent == null">#{parentId},</when>
+            <otherwise>#{parent.id},</otherwise>
+        </choose>
+        <choose>
+            <when test="replyTo == null">#{replyToId},</when>
+            <otherwise>#{replyTo.id},</otherwise>
+        </choose>
+        #{belongedPublishedArticle}
+        )
+    </insert>
+
+    <select id="selectCommentaryById" resultMap="commentaryMap" parameterType="int">
+        select * from commentaries where id=#{id}
+    </select>
+    
+    <select id="selectCommentariesByPubId" resultMap="commentaryMap" parameterType="int">
+        select * from commentaries where belonged_pub_article=#{pubId};
+    </select>
+    <select id="selectCommentariesByParentId" resultMap="commentaryMap" parameterType="int">
+        select * from commentaries where parent=#{parentId};
+    </select>
+
+</mapper>

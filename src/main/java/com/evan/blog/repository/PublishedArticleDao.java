@@ -1,10 +1,13 @@
 package com.evan.blog.repository;
 
-import com.evan.blog.domain.PublishedArticle;
+import com.evan.blog.model.PublishedArticle;
+
+import java.util.List;
 
 public interface PublishedArticleDao {
+    List<PublishedArticle> selectPublishedArticles();
     PublishedArticle selectPublishedArticleByPubId(int pubId);
-    int selectPublishedArticlesCount();
     void insertPublishedArticle(PublishedArticle publishedArticle);
     void deletePublishedArticle(int pubId);
+    Integer selectCountOfPubArticlesByCategory(int categoryId);
 }

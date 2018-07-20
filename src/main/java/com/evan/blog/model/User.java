@@ -1,7 +1,7 @@
-package com.evan.blog.domain;
+package com.evan.blog.model;
 
 
-import com.evan.blog.domain.states.UserLevel;
+import com.evan.blog.model.enums.UserLevel;
 
 public class User {
     private Integer id;

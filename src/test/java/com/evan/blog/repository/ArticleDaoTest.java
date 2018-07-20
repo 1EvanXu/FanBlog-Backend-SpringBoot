@@ -1,12 +1,18 @@
 package com.evan.blog.repository;
 
-import com.evan.blog.domain.Article;
-import com.evan.blog.domain.states.ArticleStatus;
+import com.evan.blog.model.Article;
+import com.evan.blog.model.QueryFilter;
+import com.evan.blog.model.enums.ArticleStatus;
+import com.evan.blog.model.enums.Order;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -19,6 +25,14 @@ public class ArticleDaoTest {
 
     @Test
     public void getAllArticlesByCreatedTime() {
+        QueryFilter queryFilter = new QueryFilter("created_time", Order.Asc, ArticleStatus.Editing);
+        PageHelper.startPage(0, 1);
+        List<Article> articles = articleDao.selectAllArticles(queryFilter);
+        PageInfo<Article> pageInfo = new PageInfo<>(articles);
+        for (Article article : articles) {
+            System.out.println(article);
+        }
+        assertEquals(2, pageInfo.getTotal());
     }
 
     @Test

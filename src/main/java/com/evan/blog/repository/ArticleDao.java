@@ -1,13 +1,14 @@
 package com.evan.blog.repository;
 
-import com.evan.blog.domain.Article;
-import com.evan.blog.domain.states.ArticleStatus;
+import com.evan.blog.model.Article;
+import com.evan.blog.model.QueryFilter;
+import com.evan.blog.model.enums.ArticleStatus;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface ArticleDao {
-    List<Article> getAllArticlesByCreatedTime(@Param("order") boolean oderByDesc);
+    List<Article> selectAllArticles(QueryFilter queryFilter);
 
     Article selectArticleById(int id);
     void insertArticle(Article article);

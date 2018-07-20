@@ -1,11 +1,13 @@
 package com.evan.blog.repository;
 
-import com.evan.blog.domain.Category;
+import com.evan.blog.model.Category;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -25,7 +27,14 @@ public class CategoryDaoTest {
     @Test
     public void selectCategoryById() {
         Category category = categoryDao.selectCategoryById(2);
+        System.out.println(category);
         assertEquals("Java", category.getName());
+    }
+
+    @Test
+    public void selectCategoriesByName() {
+        List<Category> categories = categoryDao.selectCategoriesByName("Type");
+        System.out.println(categories);
     }
 
     @Test
