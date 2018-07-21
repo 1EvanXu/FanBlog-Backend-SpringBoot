@@ -8,7 +8,8 @@ import java.util.List;
 public interface CategoryDao {
     List<Category> selectCategories();
     List<Category> selectCategoriesByName(@Param("categoryName") String categoryName);
+    Category selectCategoryById(Integer id);
+    String selectCategoryNameById(Integer id);
     void insertCategory(Category category);
-    Category selectCategoryById(int id);
-    void deleteCategory(int id);
+    void deleteCategory(Integer id);
 }

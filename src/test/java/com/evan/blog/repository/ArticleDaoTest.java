@@ -54,6 +54,7 @@ public class ArticleDaoTest {
         articleDao.insertArticle(article);
         assertEquals(i + 1, article.getId().intValue());
     }
+    
 
     @Test
     public void updateArticleStatus() {

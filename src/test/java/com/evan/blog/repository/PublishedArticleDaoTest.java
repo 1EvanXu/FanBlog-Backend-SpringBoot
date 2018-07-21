@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
@@ -54,8 +55,8 @@ public class PublishedArticleDaoTest {
     @Test
     public void insertPublishedArticle() {
         int pubId = PubIdGenerator.generatePubId();
-        Article article = articleDao.selectArticleById(1);
-        Category category = categoryDao.selectCategoryById(2);
+        Article article = articleDao.selectArticleById(11);
+        Category category = categoryDao.selectCategoryById(7);
         PublishedArticle publishedArticle = new PublishedArticle(
                 pubId,
                 PublishedArticleType.Original,
@@ -64,6 +65,7 @@ public class PublishedArticleDaoTest {
         );
         publishedArticleDao.insertPublishedArticle(publishedArticle);
     }
+
 
     @Test
     public void deletePublishedArticle() {

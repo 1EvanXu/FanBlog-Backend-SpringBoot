@@ -32,8 +32,20 @@ public class CategoryDaoTest {
     }
 
     @Test
+    public void selectCategoryNameById() {
+        String categoryName = categoryDao.selectCategoryNameById(2);
+        assertEquals("Java", categoryName);
+    }
+
+    @Test
     public void selectCategoriesByName() {
         List<Category> categories = categoryDao.selectCategoriesByName("Type");
+        System.out.println(categories);
+    }
+
+    @Test
+    public void selectCategories() {
+        List<Category> categories = categoryDao.selectCategories();
         System.out.println(categories);
     }
 

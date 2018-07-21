@@ -13,7 +13,7 @@ import java.util.List;
 @Service(value = "publishedArticleService")
 public class PublishedArticleServiceImp implements PublishedArticleService {
 
-    private int pageSize = 2;
+    private int pageSize = 6;
 
     @Autowired
     PublishedArticleDao publishedArticleDao;
