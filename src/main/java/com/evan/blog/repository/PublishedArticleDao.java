@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface PublishedArticleDao {
     List<PublishedArticle> selectPublishedArticles();
+    List<PublishedArticle> selectPublishedArticlesByCategoryId(Integer categoryId);
     PublishedArticle selectPublishedArticleByPubId(int pubId);
     void insertPublishedArticle(PublishedArticle publishedArticle);
     void deletePublishedArticle(int pubId);

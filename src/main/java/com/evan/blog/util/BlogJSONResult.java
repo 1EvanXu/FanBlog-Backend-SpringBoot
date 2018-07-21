@@ -73,9 +73,6 @@ public class BlogJSONResult {
 
     }
 
-//    public static LeeJSONResult build(Integer status, String msg) {
-//        return new LeeJSONResult(status, msg, null);
-//    }
 
     public BlogJSONResult(Integer status, String msg, Object data) {
         this.status = status;

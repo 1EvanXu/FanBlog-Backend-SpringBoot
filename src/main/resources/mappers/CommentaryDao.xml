@@ -41,6 +41,9 @@
     <select id="selectCommentariesByPubId" resultMap="commentaryMap" parameterType="int">
         select * from commentaries where belonged_pub_article=#{pubId};
     </select>
+    <select id="selectCommentariesCountByPubId" resultType="int" parameterType="int">
+        select count(*) from commentaries where belonged_pub_article=#{pubId};
+    </select>
     <select id="selectCommentariesByParentId" resultMap="commentaryMap" parameterType="int">
         select * from commentaries where parent=#{parentId};
     </select>

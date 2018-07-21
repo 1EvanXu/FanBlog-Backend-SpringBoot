@@ -42,6 +42,12 @@ public class CommentaryDaoTest {
     }
 
     @Test
+    public void selectCommentariesCountByPubId() {
+        Integer count = commentaryDao.selectCommentariesCountByPubId(180711661);
+        System.out.println(count);
+    }
+
+    @Test
     public void selectCommentariesByParentId() {
         List<Commentary> commentaries = commentaryDao.selectCommentariesByParentId(1);
     }

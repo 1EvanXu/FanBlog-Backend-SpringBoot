@@ -22,6 +22,14 @@ public class PublishedArticleServiceImp implements PublishedArticleService {
     public PageInfo<PublishedArticle> getAllPublishedArticles(int pageIndex) {
         PageHelper.startPage(pageIndex, pageSize);
         List<PublishedArticle> publishedArticles = publishedArticleDao.selectPublishedArticles();
+
+        return new PageInfo<>(publishedArticles);
+    }
+
+    @Override
+    public PageInfo<PublishedArticle> getPublishedArticlesByCategoryId(Integer categoryId, Integer pageIndex) {
+        PageHelper.startPage(pageIndex, pageSize);
+        List<PublishedArticle> publishedArticles = publishedArticleDao.selectPublishedArticlesByCategoryId(categoryId);
         return new PageInfo<>(publishedArticles);
     }
 }

@@ -1,16 +1,19 @@
 package com.evan.blog.model;
 
 import com.evan.blog.model.enums.PublishedArticleType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.sql.Timestamp;
 
 public class PublishedArticle {
     private Integer id;
     private Integer pubId;
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
     private Timestamp pubTime;
     private PublishedArticleType type;
     private Article article;
     private Category category;
+    private Integer commentariesCount = 0;
 
     public PublishedArticle() {}
 
@@ -69,6 +72,14 @@ public class PublishedArticle {
         this.category = category;
     }
 
+    public Integer getCommentariesCount() {
+        return commentariesCount;
+    }
+
+    public void setCommentariesCount(Integer commentariesCount) {
+        this.commentariesCount = commentariesCount;
+    }
+
     @Override
     public String toString() {
         return "PublishedArticle{" +
@@ -79,5 +90,9 @@ public class PublishedArticle {
                 ", article=" + article +
                 ", category=" + category +
                 '}';
+    }
+
+    public PublishedArticleItem toInitialItem() {
+        return new PublishedArticleItem(this);
     }
 }

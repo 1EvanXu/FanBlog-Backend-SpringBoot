@@ -8,12 +8,19 @@
         <result property="pubId" column="pub_id"/>
         <result property="pubTime" column="pub_time" />
         <result property="type" column="type"/>
-        <association property="article" column="article_id" select="com.evan.blog.repository.ArticleDao.selectArticleById" />
-        <association property="category" column="category_id" select="com.evan.blog.repository.CategoryDao.selectCategoryById"/>
+        <association property="article" column="article_id"
+                     select="com.evan.blog.repository.ArticleDao.selectArticleById" />
+        <association property="category" column="category_id"
+                     select="com.evan.blog.repository.CategoryDao.selectCategoryById"/>
+        <association property="commentariesCount" column="pub_id"
+                     select="com.evan.blog.repository.CommentaryDao.selectCommentariesCountByPubId"/>
     </resultMap>
     
     <select id="selectPublishedArticles" resultMap="publishedArticleMap">
         select * from published_articles
+    </select>
+    <select id="selectPublishedArticlesByCategoryId" resultMap="publishedArticleMap" parameterType="int">
+        select * from published_articles where category_id=#{categoryId}
     </select>
 
     <select id="selectPublishedArticleByPubId" parameterType="int" resultMap="publishedArticleMap">
