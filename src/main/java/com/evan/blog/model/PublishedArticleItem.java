@@ -14,8 +14,9 @@ public class PublishedArticleItem {
     private Timestamp pubTime;
     private PublishedArticleType type;
     private String category;
-    private Integer commentariesCount;
-    private Integer voteCount;
+    private Integer visitorCount = 0;
+    private Integer voteCount = 0;
+    private Integer commentaryCount;
 
     public PublishedArticleItem() {}
 
@@ -26,7 +27,7 @@ public class PublishedArticleItem {
         this.pubTime = publishedArticle.getPubTime();
         this.type = publishedArticle.getType();
         this.category = publishedArticle.getCategory().getName();
-        this.commentariesCount = publishedArticle.getCommentariesCount();
+        this.commentaryCount = publishedArticle.getCommentariesCount();
     }
 
     public Integer getPubId() {
@@ -80,11 +81,11 @@ public class PublishedArticleItem {
     }
 
     public Integer getCommentaryCount() {
-        return commentariesCount;
+        return commentaryCount;
     }
 
     public void setCommentaryCount(Integer commentaryCount) {
-        this.commentariesCount = commentaryCount;
+        this.commentaryCount = commentaryCount;
     }
 
     public Integer getVoteCount() {
@@ -93,6 +94,14 @@ public class PublishedArticleItem {
 
     public void setVoteCount(Integer voteCount) {
         this.voteCount = voteCount;
+    }
+
+    public Integer getVisitorCount() {
+        return visitorCount;
+    }
+
+    public void setVisitorCount(Integer visitorCount) {
+        this.visitorCount = visitorCount;
     }
 
     @Override
@@ -104,8 +113,9 @@ public class PublishedArticleItem {
                 ", pubTime=" + pubTime +
                 ", type=" + type +
                 ", category='" + category + '\'' +
-                ", commentaryCount=" + commentariesCount +
+                ", visitorCount=" + visitorCount +
                 ", voteCount=" + voteCount +
+                ", commentaryCount=" + commentaryCount +
                 '}';
     }
 }
