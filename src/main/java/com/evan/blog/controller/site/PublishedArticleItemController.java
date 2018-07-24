@@ -2,7 +2,7 @@ package com.evan.blog.controller.site;
 
 import com.evan.blog.model.PublishedArticle;
 import com.evan.blog.model.PublishedArticleItem;
-import com.evan.blog.service.interfaces.PublishedArticleService;
+import com.evan.blog.service.PublishedArticleService;
 import com.evan.blog.util.BlogJSONResult;
 import com.evan.blog.util.ItemListData;
 import com.github.pagehelper.PageInfo;

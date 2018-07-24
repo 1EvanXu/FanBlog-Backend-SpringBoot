@@ -1,4 +1,4 @@
-package com.evan.blog.service.interfaces;
+package com.evan.blog.service;
 
 import com.evan.blog.model.PublishedArticle;
 import com.github.pagehelper.PageInfo;

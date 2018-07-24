@@ -1,7 +1,6 @@
 package com.evan.blog.controller.site;
 
-import com.evan.blog.model.PublishedArticle;
-import com.evan.blog.service.interfaces.PublishedArticleService;
+import com.evan.blog.service.PublishedArticleService;
 import com.evan.blog.util.BlogJSONResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
