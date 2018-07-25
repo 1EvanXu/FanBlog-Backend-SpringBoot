@@ -63,7 +63,7 @@ public class VisitorRecord {
         this.visitTime = visitTime;
     }
 
-    private  enum VisitorType {
+    public enum VisitorType {
         PASSAGER, USER
     }
 

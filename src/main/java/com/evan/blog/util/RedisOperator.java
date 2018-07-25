@@ -189,4 +189,8 @@ public class RedisOperator {
         return redisTemplate.opsForList().rightPush(key, value);
     }
 
+    public boolean zadd(String key, String field, Double score) {
+        return redisTemplate.opsForZSet().add(key, field, score);
+    }
+
 }
