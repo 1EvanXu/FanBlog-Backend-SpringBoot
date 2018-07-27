@@ -1,10 +1,9 @@
 package com.evan.blog.model;
 
 import java.sql.Timestamp;
-import java.util.List;
 
-public class Commentary {
-    private Integer id;
+public class Commentary extends BlogEntity {
+
     private User commentator;
     private Integer commentatorId;
     private String content;
@@ -14,14 +13,6 @@ public class Commentary {
     private Commentary replyTo;
     private Integer replyToId;
     private Integer belongedPublishedArticle;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public User getCommentator() {
         return commentator;

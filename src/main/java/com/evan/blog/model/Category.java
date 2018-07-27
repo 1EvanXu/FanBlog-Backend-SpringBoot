@@ -2,8 +2,8 @@ package com.evan.blog.model;
 
 import java.sql.Timestamp;
 
-public class Category {
-    private Integer id;
+public class Category extends BlogEntity{
+
     private String name;
     private Timestamp createdTime;
     private Integer numberOfIncludedPubArticles;
@@ -12,14 +12,6 @@ public class Category {
 
     public Category(String name) {
         this.name = name;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getName() {

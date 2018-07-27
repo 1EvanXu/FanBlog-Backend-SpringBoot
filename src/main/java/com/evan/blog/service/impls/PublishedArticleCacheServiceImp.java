@@ -4,6 +4,8 @@ import com.evan.blog.service.PublishedArticleCacheService;
 import com.evan.blog.util.RedisOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
 
 @Service(value = "publishedArticleCacheService")
@@ -34,6 +36,16 @@ public class PublishedArticleCacheServiceImp implements PublishedArticleCacheSer
 
     @Override
     public Map<String, String> getAriclesRankBoard() {
+        return null;
+    }
+
+    @Override
+    public boolean updateLatestPublishedArticle(Integer pubId) {
+        return false;
+    }
+
+    @Override
+    public Map<String, String> getLatestPubArticleList() {
         return null;
     }
 }

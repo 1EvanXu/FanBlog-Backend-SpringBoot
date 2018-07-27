@@ -3,8 +3,8 @@ package com.evan.blog.model;
 
 import com.evan.blog.model.enums.UserLevel;
 
-public class User {
-    private Integer id;
+public class User extends BlogEntity {
+
     private String name;
     private String avatarImagePath;
     private String password;
@@ -12,14 +12,6 @@ public class User {
     private UserLevel level = UserLevel.Common;
 
     public User() { }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

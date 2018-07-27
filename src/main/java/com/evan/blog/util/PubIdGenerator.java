@@ -13,7 +13,7 @@ public class PubIdGenerator {
 
     private static final int MAX_NUMBER_OF_PUB_EACH_DAY = 1000;
 
-    private static int oldPubIdPrefix = 0;
+    private static volatile int oldPubIdPrefix;
 
     private static AtomicInteger numberOfPub = new AtomicInteger(0);
 

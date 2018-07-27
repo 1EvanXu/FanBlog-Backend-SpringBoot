@@ -3,8 +3,8 @@ package com.evan.blog.model;
 import com.evan.blog.model.enums.ArticleStatus;
 import java.sql.Timestamp;
 
-public class Article {
-    private Integer id;
+public class Article extends BlogEntity{
+
     private String title;
     private Timestamp createdTime;
     private Timestamp latestEditedTime;
@@ -23,14 +23,6 @@ public class Article {
         this.status = status;
         this.htmlContent = htmlContent;
         this.markdownContent = markdownContent;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getTitle() {

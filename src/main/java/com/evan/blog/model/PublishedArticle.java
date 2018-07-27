@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.sql.Timestamp;
 
-public class PublishedArticle {
-    private Integer id;
+public class PublishedArticle extends BlogEntity {
+
     private Integer pubId;
     @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
     private Timestamp pubTime;
@@ -22,14 +22,6 @@ public class PublishedArticle {
         this.type = type;
         this.article = article;
         this.category = category;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Integer getPubId() {

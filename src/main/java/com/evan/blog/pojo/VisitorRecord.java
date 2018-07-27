@@ -3,7 +3,9 @@ package com.evan.blog.pojo;
 import java.util.Date;
 
 public class VisitorRecord {
-    private VisitorType visitorType;
+    public final static Integer PASSAGER = 0;
+    public final static Integer USER     = 1;
+    private Integer visitorType;
 
     private String name;
 
@@ -15,11 +17,11 @@ public class VisitorRecord {
 
     private Date visitTime;
 
-    public VisitorType getVisitorType() {
+    public Integer getVisitorType() {
         return visitorType;
     }
 
-    public void setVisitorType(VisitorType visitorType) {
+    public void setVisitorType(Integer visitorType) {
         this.visitorType = visitorType;
     }
 
@@ -61,10 +63,6 @@ public class VisitorRecord {
 
     public void setVisitTime(Date visitTime) {
         this.visitTime = visitTime;
-    }
-
-    public enum VisitorType {
-        PASSAGER, USER
     }
 
     @Override

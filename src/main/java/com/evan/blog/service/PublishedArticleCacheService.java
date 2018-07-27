@@ -1,7 +1,5 @@
 package com.evan.blog.service;
 
-import com.evan.blog.pojo.VisitorRecord;
-
 import java.util.Map;
 
 public interface PublishedArticleCacheService {
@@ -9,4 +7,6 @@ public interface PublishedArticleCacheService {
     Integer getVoteCount(Integer pubId);
     void updateArticlesRank(Integer pubId);
     Map<String, String> getAriclesRankBoard();
+    boolean updateLatestPublishedArticle(Integer pubId);
+    Map<String, String> getLatestPubArticleList();
 }

@@ -15,9 +15,9 @@ public class BlogVisitorInterceptor implements HandlerInterceptor {
         String username = request.getSession().getAttribute("username").toString();
         VisitorRecord record = new VisitorRecord();
         if (username == null) {
-            record.setVisitorType(VisitorRecord.VisitorType.PASSAGER);
+            record.setVisitorType(VisitorRecord.PASSAGER);
         } else {
-            record.setVisitorType(VisitorRecord.VisitorType.USER);
+            record.setVisitorType(VisitorRecord.USER);
         }
         return false;
     }
