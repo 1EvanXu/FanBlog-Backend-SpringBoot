@@ -1,10 +1,10 @@
 package com.evan.blog.controller.site;
 
 import com.evan.blog.model.PublishedArticle;
-import com.evan.blog.model.PublishedArticleItem;
+import com.evan.blog.pojo.PublishedArticleItem;
 import com.evan.blog.service.PublishedArticleService;
-import com.evan.blog.util.BlogJSONResult;
-import com.evan.blog.util.ItemListData;
+import com.evan.blog.pojo.BlogJSONResult;
+import com.evan.blog.pojo.ItemListData;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +32,7 @@ public class PublishedArticleItemController {
         List<PublishedArticle> articles = publishedArticlePageInfo.getList();
         List<PublishedArticleItem> publishedArticleItems = new ArrayList<>();
         for (PublishedArticle p: articles) {
-            publishedArticleItems.add(p.toInitialItem());
+            publishedArticleItems.add(new PublishedArticleItem(p));
         }
         return BlogJSONResult.ok(new ItemListData((int)publishedArticlePageInfo.getTotal(), publishedArticleItems));
 
@@ -48,7 +48,7 @@ public class PublishedArticleItemController {
         List<PublishedArticle> articles = publishedArticlePageInfo.getList();
         List<PublishedArticleItem> publishedArticleItems = new ArrayList<>();
         for (PublishedArticle p: articles) {
-            publishedArticleItems.add(p.toInitialItem());
+            publishedArticleItems.add(new PublishedArticleItem(p));
         }
         return BlogJSONResult.ok(new ItemListData((int)publishedArticlePageInfo.getTotal(), publishedArticleItems));
     }

@@ -1,6 +1,7 @@
 package com.evan.blog.service.impls;
 
 import com.evan.blog.model.PublishedArticle;
+import com.evan.blog.pojo.PublishedArticleItem;
 import com.evan.blog.service.PublishedArticleService;
 import com.github.pagehelper.PageInfo;
 import org.junit.Test;

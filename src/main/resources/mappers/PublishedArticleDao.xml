@@ -17,7 +17,7 @@
     </resultMap>
     
     <select id="selectPublishedArticles" resultMap="publishedArticleMap">
-        select * from published_articles
+        select * from published_articles order by pub_time desc
     </select>
     <select id="selectPublishedArticlesByCategoryId" resultMap="publishedArticleMap" parameterType="int">
         select * from published_articles where category_id=#{categoryId}

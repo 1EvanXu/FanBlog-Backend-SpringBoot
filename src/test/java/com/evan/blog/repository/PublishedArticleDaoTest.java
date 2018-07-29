@@ -3,7 +3,6 @@ package com.evan.blog.repository;
 import com.evan.blog.model.Article;
 import com.evan.blog.model.Category;
 import com.evan.blog.model.PublishedArticle;
-import com.evan.blog.model.PublishedArticleItem;
 import com.evan.blog.model.enums.PublishedArticleType;
 import com.evan.blog.util.PubIdGenerator;
 import org.junit.Test;
@@ -13,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
-import java.util.Random;
 
 import static org.junit.Assert.*;
 
@@ -32,7 +30,7 @@ public class PublishedArticleDaoTest {
     public void selectAllPublishedArticles() {
         List<PublishedArticle> publishedArticles = publishedArticleDao.selectPublishedArticles();
         for (PublishedArticle publishedArticle: publishedArticles) {
-            System.out.println(publishedArticle.toInitialItem().toString());
+            System.out.println(publishedArticle.toString());
         }
     }
 
@@ -40,7 +38,7 @@ public class PublishedArticleDaoTest {
     public void selectPublishedArticlesByCategory() {
         List<PublishedArticle> publishedArticles = publishedArticleDao.selectPublishedArticlesByCategoryId(2);
         for (PublishedArticle publishedArticle: publishedArticles) {
-            System.out.println(publishedArticle.toInitialItem().toString());
+            System.out.println(publishedArticle.toString());
         }
     }
 

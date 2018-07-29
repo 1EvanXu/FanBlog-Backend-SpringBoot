@@ -19,7 +19,7 @@ public class PublishedArticleServiceImp implements PublishedArticleService {
     PublishedArticleDao publishedArticleDao;
 
     @Override
-    public PageInfo<PublishedArticle> getAllPublishedArticles(int pageIndex) {
+    public PageInfo<PublishedArticle> getAllPublishedArticles(Integer pageIndex) {
         PageHelper.startPage(pageIndex, pageSize);
         List<PublishedArticle> publishedArticles = publishedArticleDao.selectPublishedArticles();
 
@@ -31,5 +31,10 @@ public class PublishedArticleServiceImp implements PublishedArticleService {
         PageHelper.startPage(pageIndex, pageSize);
         List<PublishedArticle> publishedArticles = publishedArticleDao.selectPublishedArticlesByCategoryId(categoryId);
         return new PageInfo<>(publishedArticles);
+    }
+
+    @Override
+    public PublishedArticle getPublishedArticle(Integer pubId) {
+        return publishedArticleDao.selectPublishedArticleByPubId(pubId);
     }
 }

@@ -50,6 +50,12 @@ public class CategoryDaoTest {
     }
 
     @Test
+    public void selectCategoriesOrderByIncludedArticles() {
+        List<Category> categories = categoryDao.selectCategoriesOrderByIncludedArticles();
+        System.out.println(categories);
+    }
+
+    @Test
     public void deleteCategory() {
         categoryDao.deleteCategory(5);
         Category category = categoryDao.selectCategoryById(5);

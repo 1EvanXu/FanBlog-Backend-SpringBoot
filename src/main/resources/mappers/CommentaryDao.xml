@@ -3,20 +3,26 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.evan.blog.repository.CommentaryDao">
-    <resultMap id="commentaryMap" type="commentary">
+    <resultMap id="childCommentaryMap" type="commentary">
         <id column="id" property="id"/>
-        <result column="commentator" property="commentatorId"/>
         <result column="content" property="content" />
         <result column="comment_time" property="commentTime"/>
         <result column="belonged_pub_article" property="belongedPublishedArticle"/>
         <result column="parent" property="parentId"/>
-        <result column="reply_to" property="replyToId"/>
         <association property="commentator" column="commentator"
                      select="com.evan.blog.repository.UserDao.selectUserById" />
-        <association property="parent" column="parent"
-                     select="com.evan.blog.repository.CommentaryDao.selectCommentaryById"/>
         <association property="replyTo" column="reply_to"
                      select="com.evan.blog.repository.CommentaryDao.selectCommentaryById"/>
+    </resultMap>
+    <resultMap id="commentaryMap" type="commentary">
+        <id column="id" property="id"/>
+        <result column="content" property="content" />
+        <result column="comment_time" property="commentTime"/>
+        <result column="belonged_pub_article" property="belongedPublishedArticle"/>
+        <association property="commentator" column="commentator"
+                     select="com.evan.blog.repository.UserDao.selectUserById" />
+        <collection property="childCommentaries" column="id"
+                    select="selectCommentariesByParentId" fetchType="eager"/>
     </resultMap>
 
     <insert id="insertCommentary" parameterType="commentary">
@@ -39,13 +45,13 @@
     </select>
     
     <select id="selectCommentariesByPubId" resultMap="commentaryMap" parameterType="int">
-        select * from commentaries where belonged_pub_article=#{pubId};
+        select * from commentaries where belonged_pub_article=#{pubId} and parent=0 order by comment_time desc
     </select>
     <select id="selectCommentariesCountByPubId" resultType="int" parameterType="int">
-        select count(*) from commentaries where belonged_pub_article=#{pubId};
+        select count(*) from commentaries where belonged_pub_article=#{pubId}
     </select>
-    <select id="selectCommentariesByParentId" resultMap="commentaryMap" parameterType="int">
-        select * from commentaries where parent=#{parentId};
+    <select id="selectCommentariesByParentId" resultMap="childCommentaryMap" parameterType="int">
+        select * from commentaries where parent=#{parentId}
     </select>
 
 </mapper>

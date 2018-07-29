@@ -1,7 +1,8 @@
-package com.evan.blog.util;
+package com.evan.blog.pojo;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -38,7 +39,8 @@ public class BlogJSONResult {
 
     // 响应中的数据
     private Object data;
-    
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String ok;	// 不使用
 
     public static BlogJSONResult build(Integer status, String msg, Object data) {

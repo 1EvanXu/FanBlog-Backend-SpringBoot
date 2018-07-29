@@ -8,6 +8,7 @@ import java.util.List;
 public interface CategoryDao {
     List<Category> selectCategories();
     List<Category> selectCategoriesByName(@Param("categoryName") String categoryName);
+    List<Category> selectCategoriesOrderByIncludedArticles();
     Category selectCategoryById(Integer id);
     String selectCategoryNameById(Integer id);
     void insertCategory(Category category);

@@ -1,4 +1,4 @@
-package com.evan.blog.util;
+package com.evan.blog.pojo;
 
 import java.util.List;
 

@@ -10,9 +10,11 @@
         <association column="id" property="numberOfIncludedPubArticles"
                      select="com.evan.blog.repository.PublishedArticleDao.selectCountOfPubArticlesByCategory"/>
     </resultMap>
+
     <select id="selectCategories" resultMap="categoryMap">
         select * from categories
     </select>
+
     <select id="selectCategoriesByName" resultMap="categoryMap">
         select * from categories
         <where>
@@ -20,11 +22,17 @@
         </where>
         order by created_time DESC;
     </select>
+
     <select id="selectCategoryById" resultMap="categoryMap" parameterType="int">
         select * from categories where id=#{id};
     </select>
+
     <select id="selectCategoryNameById" resultType="string" parameterType="int">
         select category_name from categories where id=#{id};
+    </select>
+    <select id="selectCategoriesOrderByIncludedArticles" resultMap="categoryMap">
+        select * from categories as c order by
+        (select count(*) from published_articles where category_id=c.id) desc
     </select>
     <insert id="insertCategory" parameterType="category">
         insert into categories(category_name) values(#{name});

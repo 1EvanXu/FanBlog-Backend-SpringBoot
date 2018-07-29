@@ -1,18 +1,35 @@
 package com.evan.blog.model;
 
+import com.fasterxml.jackson.annotation.*;
+
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Commentary extends BlogEntity {
 
-    private User commentator;
-    private Integer commentatorId;
-    private String content;
-    private Timestamp commentTime;
-    private Commentary parent;
-    private Integer parentId;
+    protected User commentator;
+
+    @JsonProperty("commentaryContent")
+    protected String content;
+
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+    protected Timestamp commentTime;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("parentCommentary")
+    protected Integer parentId;
+
+    @JsonIgnore
     private Commentary replyTo;
-    private Integer replyToId;
-    private Integer belongedPublishedArticle;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("replyTo")
+    private User referenced;
+
+    protected Integer belongedPublishedArticle;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    protected List<Commentary> childCommentaries;
 
     public User getCommentator() {
         return commentator;
@@ -20,14 +37,6 @@ public class Commentary extends BlogEntity {
 
     public void setCommentator(User commentator) {
         this.commentator = commentator;
-    }
-
-    public Integer getCommentatorId() {
-        return commentatorId;
-    }
-
-    public void setCommentatorId(Integer commentatorId) {
-        this.commentatorId = commentatorId;
     }
 
     public String getContent() {
@@ -44,14 +53,6 @@ public class Commentary extends BlogEntity {
 
     public void setCommentTime(Timestamp commentTime) {
         this.commentTime = commentTime;
-    }
-
-    public Commentary getParent() {
-        return parent;
-    }
-
-    public void setParent(Commentary parent) {
-        this.parent = parent;
     }
 
     public Commentary getReplyTo() {
@@ -78,26 +79,33 @@ public class Commentary extends BlogEntity {
         this.parentId = parentId;
     }
 
-    public Integer getReplyToId() {
-        return replyToId;
+
+    public List<Commentary> getChildCommentaries() {
+        return childCommentaries;
     }
 
-    public void setReplyToId(Integer replyToId) {
-        this.replyToId = replyToId;
+    public void setChildCommentaries(List<Commentary> childCommentaries) {
+        this.childCommentaries = childCommentaries;
     }
 
+    public User getReferenced() {
+        if (replyTo != null) {
+            referenced = replyTo.getCommentator();
+        }
+        return referenced;
+    }
 
     @Override
     public String toString() {
-        return "Commentary{" +
-                "id=" + id +
-                ", commentator=" + commentator +
-                ", commentatorId=" + commentatorId +
-                ", content='" + content + '\'' +
-                ", commentTime=" + commentTime +
-                ", parentId=" + parentId +
-                ", replyToId=" + replyToId +
-                ", belongedPublishedArticle=" + belongedPublishedArticle +
-                '}';
+        return "Commentary {" + '\n' +
+                '\t' + "id=" + id + '\n' +
+                '\t' + "commentator=" + commentator + '\n' +
+                '\t' + "content='" + content + '\n' +
+                '\t' + "commentTime=" + commentTime + '\n' +
+                '\t' + "parentId=" + parentId + '\n' +
+                '\t' + "referenced=" + this.getReferenced() + '\n' +
+                '\t' + "belongedPublishedArticle=" + belongedPublishedArticle + '\n' +
+                '\t' + "childCommentaries=" + childCommentaries + '\n' +
+                '}' + '\n';
     }
 }

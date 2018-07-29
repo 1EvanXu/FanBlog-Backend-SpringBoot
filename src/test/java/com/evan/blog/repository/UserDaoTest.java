@@ -48,4 +48,10 @@ public class UserDaoTest {
         System.out.println(user);
         assertNotNull(user);
     }
+
+    @Test
+    public void selectUserPassword() {
+        String userPassword = userDao.selectUserPassword("yifan_xu6@163.com");
+        assertEquals("xuyifan1993fan0601.", userPassword);
+    }
 }

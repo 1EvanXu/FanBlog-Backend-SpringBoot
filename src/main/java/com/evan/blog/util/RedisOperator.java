@@ -2,7 +2,10 @@ package com.evan.blog.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -10,12 +13,12 @@ import java.util.concurrent.TimeUnit;
 /**
  *
  * @Title: RedisOperator.java
- * @Package com.itzixi.web.component
+ * @Package com.evan.blog.util
  * @Description: 使用redisTemplate的操作实现类 Copyright: Copyright (c) 2016
  *               Company:FURUIBOKE.SCIENCE.AND.TECHNOLOGY
  *
- * @author leechenxiang
- * @date 2017年9月29日 下午2:25:03
+ * @author Evan Xu
+ * @date 2018年7月28日
  * @version V1.0
  */
 @Component
@@ -180,7 +183,6 @@ public class RedisOperator {
 
     /**
      * 实现命令：RPUSH key value，将一个值 value插入到列表 key的表尾(最右边)。
-     *
      * @param key
      * @param value
      * @return 执行 LPUSH命令后，列表的长度。
@@ -189,8 +191,24 @@ public class RedisOperator {
         return redisTemplate.opsForList().rightPush(key, value);
     }
 
+    /**
+     * 实现命令：LRANGE key start stop，返回列表key中指定区间内的元素，区间以偏移量start和stop指定。
+     *
+     * @param key 列表的key值
+     * @Param start 列表区间的起始值
+     * @Param end 列表区间的终止值
+     * @return 执行 LRANGE命令后，返回列表所有元素。
+     */
+    public List<String> lrange (String key, long start, long end) {
+        return redisTemplate.opsForList().range(key, start, end);
+    }
+
+
     public boolean zadd(String key, String field, Double score) {
         return redisTemplate.opsForZSet().add(key, field, score);
     }
 
+    public Set<ZSetOperations.TypedTuple<String>> zrevrank (String key, long start, long end) {
+        return redisTemplate.opsForZSet().reverseRangeWithScores(key, start, end);
+    }
 }

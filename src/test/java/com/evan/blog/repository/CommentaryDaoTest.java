@@ -2,6 +2,8 @@ package com.evan.blog.repository;
 
 import com.evan.blog.model.Commentary;
 import com.evan.blog.model.User;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +30,15 @@ public class CommentaryDaoTest {
         commentary.setCommentator(user);
         commentary.setContent("reply commentary 2 content");
         commentary.setParentId(1);
-        commentary.setReplyToId(2);
         commentary.setBelongedPublishedArticle(180711661);
         commentaryDao.insertCommentary(commentary);
     }
 
     @Test
     public void selectCommentariesByPubId() {
+        PageHelper.startPage(1, 6);
         List<Commentary> commentaries = commentaryDao.selectCommentariesByPubId(180711661);
+        PageInfo<Commentary> commentaryPageInfo = new PageInfo<>(commentaries);
         for (Commentary commentary: commentaries) {
             System.out.println(commentary);
         }
@@ -49,7 +52,10 @@ public class CommentaryDaoTest {
 
     @Test
     public void selectCommentariesByParentId() {
-        List<Commentary> commentaries = commentaryDao.selectCommentariesByParentId(1);
+        List<Commentary> commentaries = commentaryDao.selectCommentariesByParentId(7);
+        for (Commentary commentary: commentaries) {
+            System.out.println(commentary);
+        }
     }
 
     @Test

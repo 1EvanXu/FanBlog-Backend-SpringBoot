@@ -2,11 +2,13 @@ package com.evan.blog.model;
 
 
 import com.evan.blog.model.enums.UserLevel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class User extends BlogEntity {
 
     private String name;
     private String avatarImagePath;
+    @JsonIgnore
     private String password;
     private String email;
     private UserLevel level = UserLevel.Common;

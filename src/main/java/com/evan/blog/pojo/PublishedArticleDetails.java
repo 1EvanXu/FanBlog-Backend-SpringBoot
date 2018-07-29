@@ -1,29 +1,34 @@
-package com.evan.blog.model;
+package com.evan.blog.pojo;
 
+
+import com.evan.blog.model.PublishedArticle;
 import com.evan.blog.model.enums.PublishedArticleType;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
-public class PublishedArticleItem {
-    private Integer pubId;
-    private String title;
-    private String articleAbstract;
+@JsonIgnoreProperties({"commentaryCount"})
+public class PublishedArticleDetails {
+
+    Integer pubId;
+    String title;
     @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
-    private Timestamp pubTime;
-    private PublishedArticleType type;
-    private String category;
-    private Integer visitorCount = 0;
-    private Integer voteCount = 0;
-    private Integer commentaryCount;
+    Timestamp pubTime;
+    PublishedArticleType type;
+    String category;
+    String content;
+    Integer visitorCount = 0;
+    Integer voteCount = 0;
+    Integer commentaryCount = 0;
 
-    public PublishedArticleItem() {}
+    public PublishedArticleDetails() {
+    }
 
-    public PublishedArticleItem(PublishedArticle publishedArticle) {
+    public PublishedArticleDetails(PublishedArticle publishedArticle) {
         this.pubId = publishedArticle.getPubId();
         this.title = publishedArticle.getArticle().getTitle();
-        this.setArticleAbstract(publishedArticle.getArticle().getMarkdownContent());
+        this.content = publishedArticle.getArticle().getHtmlContent();
         this.pubTime = publishedArticle.getPubTime();
         this.type = publishedArticle.getType();
         this.category = publishedArticle.getCategory().getName();
@@ -44,16 +49,6 @@ public class PublishedArticleItem {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getArticleAbstract() {
-        return articleAbstract;
-    }
-
-    public void setArticleAbstract(String articleAbstract) {
-        if (articleAbstract != null) {
-            this.articleAbstract = articleAbstract.length() < 100 ? articleAbstract : articleAbstract.substring(0, 100);
-        }
     }
 
     public Timestamp getPubTime() {
@@ -80,20 +75,12 @@ public class PublishedArticleItem {
         this.category = category;
     }
 
-    public Integer getCommentaryCount() {
-        return commentaryCount;
+    public String getContent() {
+        return content;
     }
 
-    public void setCommentaryCount(Integer commentaryCount) {
-        this.commentaryCount = commentaryCount;
-    }
-
-    public Integer getVoteCount() {
-        return voteCount;
-    }
-
-    public void setVoteCount(Integer voteCount) {
-        this.voteCount = voteCount;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Integer getVisitorCount() {
@@ -104,15 +91,31 @@ public class PublishedArticleItem {
         this.visitorCount = visitorCount;
     }
 
+    public Integer getVoteCount() {
+        return voteCount;
+    }
+
+    public void setVoteCount(Integer voteCount) {
+        this.voteCount = voteCount;
+    }
+
+    public Integer getCommentaryCount() {
+        return commentaryCount;
+    }
+
+    public void setCommentaryCount(Integer commentaryCount) {
+        this.commentaryCount = commentaryCount;
+    }
+
     @Override
     public String toString() {
-        return "PublishedArticleItem{" +
+        return "PublishedArticleDetails{" +
                 "pubId=" + pubId +
                 ", title='" + title + '\'' +
-                ", articleAbstract='" + articleAbstract + '\'' +
                 ", pubTime=" + pubTime +
                 ", type=" + type +
                 ", category='" + category + '\'' +
+                ", content='" + content + '\'' +
                 ", visitorCount=" + visitorCount +
                 ", voteCount=" + voteCount +
                 ", commentaryCount=" + commentaryCount +

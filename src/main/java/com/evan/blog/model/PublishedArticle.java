@@ -1,6 +1,7 @@
 package com.evan.blog.model;
 
 import com.evan.blog.model.enums.PublishedArticleType;
+import com.evan.blog.pojo.PublishedArticleItem;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.sql.Timestamp;
@@ -82,9 +83,5 @@ public class PublishedArticle extends BlogEntity {
                 ", article=" + article +
                 ", category=" + category +
                 '}';
-    }
-
-    public PublishedArticleItem toInitialItem() {
-        return new PublishedArticleItem(this);
     }
 }
