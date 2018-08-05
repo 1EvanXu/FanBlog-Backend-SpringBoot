@@ -1,5 +1,6 @@
 package com.evan.blog.service.impls;
 
+import com.evan.blog.model.Comment;
 import com.evan.blog.model.Commentary;
 import com.evan.blog.repository.CommentaryDao;
 import com.evan.blog.service.CommentaryService;
@@ -22,5 +23,10 @@ public class CommentaryServiceImpl implements CommentaryService {
         PageHelper.startPage(pageIndex, pageSize);
         List<Commentary> commentaries = commentaryDao.selectCommentariesByPubId(pubId);
         return new PageInfo<>(commentaries);
+    }
+
+    @Override
+    public void postComment(Comment comment) {
+        commentaryDao.insertCommentary(comment);
     }
 }

@@ -25,18 +25,18 @@
                     select="selectCommentariesByParentId" fetchType="eager"/>
     </resultMap>
 
-    <insert id="insertCommentary" parameterType="commentary">
+    <insert id="insertCommentary" parameterType="comment">
         insert into commentaries (commentator, content, parent, reply_to, belonged_pub_article)
-        values (#{commentator.id}, #{content},
+        values (#{commentator}, #{content},
         <choose>
-            <when test="parent == null">#{parentId},</when>
-            <otherwise>#{parent.id},</otherwise>
+          <when test="parent != null">#{parent},</when>
+          <otherwise>0,</otherwise>
         </choose>
         <choose>
-            <when test="replyTo == null">#{replyToId},</when>
-            <otherwise>#{replyTo.id},</otherwise>
+          <when test="replyTo != null">#{replyTo},</when>
+          <otherwise>0,</otherwise>
         </choose>
-        #{belongedPublishedArticle}
+        #{pubId}
         )
     </insert>
 

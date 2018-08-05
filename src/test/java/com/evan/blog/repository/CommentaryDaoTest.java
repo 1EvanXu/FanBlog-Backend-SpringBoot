@@ -1,5 +1,6 @@
 package com.evan.blog.repository;
 
+import com.evan.blog.model.Comment;
 import com.evan.blog.model.Commentary;
 import com.evan.blog.model.User;
 import com.github.pagehelper.PageHelper;
@@ -25,13 +26,14 @@ public class CommentaryDaoTest {
 
     @Test
     public void insertCommentary() {
-        User user = userDao.selectUserById(3);
-        Commentary commentary = new Commentary();
-        commentary.setCommentator(user);
-        commentary.setContent("reply commentary 2 content");
-        commentary.setParentId(1);
-        commentary.setBelongedPublishedArticle(180711661);
-        commentaryDao.insertCommentary(commentary);
+        Comment comment = new Comment(
+                11,
+                null,
+                2,
+                "something wrong",
+                180721499
+        );
+        commentaryDao.insertCommentary(comment);
     }
 
     @Test

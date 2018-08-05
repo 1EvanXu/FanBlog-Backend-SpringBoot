@@ -1,5 +1,6 @@
 package com.evan.blog.controller.site;
 
+import com.evan.blog.model.Comment;
 import com.evan.blog.model.Commentary;
 import com.evan.blog.model.PublishedArticle;
 import com.evan.blog.pojo.ItemListData;
@@ -37,7 +38,11 @@ public class PublishedArticleContentController {
     }
 
     @PostMapping(path = "/{pubId}/commentary")
-    public BlogJSONResult addCommentaryInPublishedArticle(@PathVariable("pubId") Integer pubId) {
-        return BlogJSONResult.ok("Load commentaries success");
+    public BlogJSONResult addCommentaryInPublishedArticle(
+            @PathVariable("pubId") Integer pubId,
+            @RequestBody Comment comment) {
+        comment.setPubId(pubId);
+        commentaryService.postComment(comment);
+        return BlogJSONResult.ok("Comment succeed!");
     }
 }
