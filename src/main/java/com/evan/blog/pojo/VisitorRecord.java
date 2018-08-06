@@ -1,7 +1,5 @@
 package com.evan.blog.pojo;
 
-import java.util.Date;
-
 public class VisitorRecord {
     public final static Integer PASSAGER = 0;
     public final static Integer USER     = 1;
@@ -11,11 +9,9 @@ public class VisitorRecord {
 
     private String ipAddress;
 
-    private String region;
+    private IPLocation ipLocation;
 
-    private String city;
-
-    private Date visitTime;
+    private long visitTime;
 
     public Integer getVisitorType() {
         return visitorType;
@@ -41,35 +37,27 @@ public class VisitorRecord {
         this.ipAddress = ipAddress;
     }
 
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public Date getVisitTime() {
+    public long getVisitTime() {
         return visitTime;
     }
 
-    public void setVisitTime(Date visitTime) {
+    public void setVisitTime(long visitTime) {
         this.visitTime = visitTime;
     }
 
-    @Override
-    public String toString() {
-        return visitorType + ":"
-                + name + ":"
-                + region + ":"
-                + city + ":";
+    public IPLocation getIpLocation() {
+        return ipLocation;
+    }
+
+    public void setIpLocation(IPLocation ipLocation) {
+        this.ipLocation = ipLocation;
+    }
+
+    public String getRecord () {
+        return getVisitorType() + ":" + name + ":" + ipAddress + ":" + ipLocation.toString();
+    }
+
+    public String getArticleVisitRecord () {
+        return getVisitorType() + ":" + name + ":" + ipAddress;
     }
 }

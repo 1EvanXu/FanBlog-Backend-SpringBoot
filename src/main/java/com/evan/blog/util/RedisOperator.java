@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class RedisOperator {
 
 //	@Autowired
-//    private RedisTemplate<String, Object> redisTemplate;
+////    private RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -192,6 +192,16 @@ public class RedisOperator {
     }
 
     /**
+     * 实现命令：RPOP key，移除并返回列表 key的尾元素。
+     *
+     * @param key
+     * @return 列表key的尾元素。
+     */
+    public String rpop(String key) {
+        return (String)redisTemplate.opsForList().rightPop(key);
+    }
+
+    /**
      * 实现命令：LRANGE key start stop，返回列表key中指定区间内的元素，区间以偏移量start和stop指定。
      *
      * @param key 列表的key值
@@ -210,5 +220,13 @@ public class RedisOperator {
 
     public Set<ZSetOperations.TypedTuple<String>> zrevrank (String key, long start, long end) {
         return redisTemplate.opsForZSet().reverseRangeWithScores(key, start, end);
+    }
+
+    public Set<ZSetOperations.TypedTuple<String>> zrevrangebyscore (String key, double min, double max, long offset, long count) {
+        return redisTemplate.opsForZSet().reverseRangeByScoreWithScores(key, min, max, offset, count);
+    }
+
+    public long zcard (String key) {
+        return redisTemplate.opsForZSet().zCard(key);
     }
 }

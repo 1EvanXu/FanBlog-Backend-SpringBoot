@@ -1,8 +1,8 @@
 package com.evan.blog.service;
 
+import com.evan.blog.pojo.IPLocation;
+
+
 public interface IPQueryService {
-    String[] query(String ip);
-    int ipToScore(String ip, boolean isIPv6);
-    boolean IPv4FormatCheck(String ipv4);
-    boolean IPv6FormatCheck(String ipv6);
+    IPLocation query(String ip);
 }

@@ -1,14 +1,16 @@
 package com.evan.blog.service;
 
 import com.evan.blog.pojo.VisitorRecord;
+import org.springframework.data.redis.core.ZSetOperations;
 
 import java.util.Map;
+import java.util.Set;
 
 public interface VisitorRecordCacheService {
     void recordVisitor(VisitorRecord record);
-    Integer getVisitorRecordCount();
+    Long getVisitorRecordCount();
     void updateRegionDistributions(String city);
-    Map<String, Integer> getRegionDistributions();
+    Set<ZSetOperations.TypedTuple<String>> getRegionDistributions();
     void addVisitorsRecord(Integer pubId, VisitorRecord record);
-    Integer getVisitorsCount(Integer pubId);
+    Long getVisitorsCount(Integer pubId);
 }
