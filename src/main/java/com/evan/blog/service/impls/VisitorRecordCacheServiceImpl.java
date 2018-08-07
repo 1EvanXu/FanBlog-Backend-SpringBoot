@@ -48,7 +48,7 @@ public class VisitorRecordCacheServiceImpl implements VisitorRecordCacheService 
     @Override
     public void addVisitorsRecord(Integer pubId, VisitorRecord record) {
         double score = new Long(record.getVisitTime()).doubleValue();
-        redisOperator.zadd(avr, record.getArticleVisitRecord(), score);
+        redisOperator.zadd(avr + pubId.toString(), record.getArticleVisitRecord(), score);
     }
 
     @Override

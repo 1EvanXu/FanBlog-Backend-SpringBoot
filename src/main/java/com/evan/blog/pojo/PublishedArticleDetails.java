@@ -22,10 +22,9 @@ public class PublishedArticleDetails {
     Integer voteCount = 0;
     Integer commentaryCount = 0;
 
-    public PublishedArticleDetails() {
-    }
+    public PublishedArticleDetails () { }
 
-    public PublishedArticleDetails(PublishedArticle publishedArticle) {
+    public PublishedArticleDetails (PublishedArticle publishedArticle) {
         this.pubId = publishedArticle.getPubId();
         this.title = publishedArticle.getArticle().getTitle();
         this.content = publishedArticle.getArticle().getHtmlContent();

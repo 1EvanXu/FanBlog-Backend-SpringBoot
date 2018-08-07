@@ -1,6 +1,5 @@
 package com.evan.blog.controller.site;
 
-import com.evan.blog.model.PublishedArticle;
 import com.evan.blog.pojo.PublishedArticleItem;
 import com.evan.blog.service.PublishedArticleService;
 import com.evan.blog.pojo.BlogJSONResult;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,12 +25,9 @@ public class PublishedArticleItemController {
     public BlogJSONResult getAllPublishedArticleItems(
             @PathVariable int pageIndex
     ) {
-        PageInfo<PublishedArticle> publishedArticlePageInfo = publishedArticleService.getAllPublishedArticles(pageIndex);
-        List<PublishedArticle> articles = publishedArticlePageInfo.getList();
-        List<PublishedArticleItem> publishedArticleItems = new ArrayList<>();
-        for (PublishedArticle p: articles) {
-            publishedArticleItems.add(new PublishedArticleItem(p));
-        }
+        PageInfo<PublishedArticleItem> publishedArticlePageInfo = publishedArticleService.getAllPublishedArticleItems(pageIndex);
+        List<PublishedArticleItem> publishedArticleItems = publishedArticlePageInfo.getList();
+
         return BlogJSONResult.ok(new ItemListData((int)publishedArticlePageInfo.getTotal(), publishedArticleItems));
 
     }
@@ -43,13 +37,10 @@ public class PublishedArticleItemController {
             @PathVariable("categoryId") Integer category,
             @PathVariable("pageIndex") Integer pageIndex
     ) {
-        PageInfo<PublishedArticle> publishedArticlePageInfo =
-                publishedArticleService.getPublishedArticlesByCategoryId(category, pageIndex);
-        List<PublishedArticle> articles = publishedArticlePageInfo.getList();
-        List<PublishedArticleItem> publishedArticleItems = new ArrayList<>();
-        for (PublishedArticle p: articles) {
-            publishedArticleItems.add(new PublishedArticleItem(p));
-        }
+        PageInfo<PublishedArticleItem> publishedArticlePageInfo =
+                publishedArticleService.getPublishedArticleItemsByCategoryId(category, pageIndex);
+        List<PublishedArticleItem> publishedArticleItems = publishedArticlePageInfo.getList();
+
         return BlogJSONResult.ok(new ItemListData((int)publishedArticlePageInfo.getTotal(), publishedArticleItems));
     }
 }

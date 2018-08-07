@@ -1,10 +1,11 @@
 package com.evan.blog.service;
 
-import com.evan.blog.model.PublishedArticle;
+import com.evan.blog.pojo.PublishedArticleDetails;
+import com.evan.blog.pojo.PublishedArticleItem;
 import com.github.pagehelper.PageInfo;
 
 public interface PublishedArticleService {
-    PageInfo<PublishedArticle> getAllPublishedArticles(Integer pageIndex);
-    PageInfo<PublishedArticle> getPublishedArticlesByCategoryId(Integer categoryId, Integer pageIndex);
-    PublishedArticle getPublishedArticle(Integer pubId);
+    PageInfo<PublishedArticleItem> getAllPublishedArticleItems(Integer pageIndex);
+    PageInfo<PublishedArticleItem> getPublishedArticleItemsByCategoryId(Integer categoryId, Integer pageIndex);
+    PublishedArticleDetails getPublishedArticle(Integer pubId);
 }

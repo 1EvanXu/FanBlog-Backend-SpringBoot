@@ -1,13 +1,10 @@
 package com.evan.blog.service.impls;
 
-import com.evan.blog.pojo.VisitorRecord;
 import com.evan.blog.service.PublishedArticleCacheService;
 import com.evan.blog.util.RedisOperator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.RedisSystemException;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Map;
 
 @Service(value = "publishedArticleCacheService")
 public class PublishedArticleCacheServiceImp implements PublishedArticleCacheService {
@@ -17,6 +14,9 @@ public class PublishedArticleCacheServiceImp implements PublishedArticleCacheSer
     private final String rankBoard = "pub_articles_rank:";
 
     private final String latest = "latest_pub_articles:";
+
+    private final String avrPrefix = "article_visitors_record:";
+
     @Autowired
     RedisOperator redisOperator;
 
@@ -29,7 +29,36 @@ public class PublishedArticleCacheServiceImp implements PublishedArticleCacheSer
     @Override
     public Long getVoteCount(Integer pubId) {
         String key = votedPrefix + pubId;
-        return redisOperator.zcard(key);
+        Long voteCount = 0L;
+        try {
+            voteCount = redisOperator.zcard(key);
+        } catch (RedisSystemException e) {
+            throw e;
+        } finally {
+            return voteCount;
+        }
+    }
+
+    @Override
+    public Long[] bulkGetVoteCount(Integer[] pubIds) {
+        String[] keys = new String[pubIds.length];
+        for (int i = 0; i < keys.length; i++) {
+            keys[i] = votedPrefix + pubIds[i];
+        }
+        return redisOperator.pipezcard(keys);
+    }
+
+    @Override
+    public Long getArticleVisitorCount(Integer pubId) {
+        String key = avrPrefix + pubId;
+        Long articleVisitorCount = 0L;
+        try {
+            articleVisitorCount = redisOperator.zcard(key);
+        } catch (RedisSystemException e) {
+            throw e;
+        } finally {
+            return articleVisitorCount;
+        }
     }
 
     @Override
@@ -38,20 +67,13 @@ public class PublishedArticleCacheServiceImp implements PublishedArticleCacheSer
     }
 
     @Override
-    public Map<String, String> getArticlesRankBoard() {
-        return null;
-    }
-
-    @Override
     public boolean updateLatestPublishedArticle(Integer pubId) {
-        //pipe
-        redisOperator.lpush(latest, pubId.toString());
-        redisOperator.rpop(latest);
+        try {
+            redisOperator.lpushrpop(latest, pubId.toString(), 8L);
+        } catch (RedisSystemException e) {
+            return false;
+        }
         return true;
     }
 
-    @Override
-    public Map<String, String> getLatestPubArticleList() {
-        return null;
-    }
 }

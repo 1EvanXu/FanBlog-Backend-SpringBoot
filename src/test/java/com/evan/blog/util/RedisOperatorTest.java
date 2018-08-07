@@ -36,4 +36,23 @@ public class RedisOperatorTest {
                 redisOperator.zrevrangebyscore("ip2cityid:", 0, 1779350079, 0, 1);
         assertEquals(1, set.size());
     }
+
+    @Test
+    public void zcard() {
+        long l = redisOperator.zcard("voted:180721499");
+        System.out.println(l);
+    }
+
+    @Test
+    public void pipezcard () {
+        String votedPrefix = "voted:";
+        Integer[] pubIds = new Integer[]{180721499, 180721490, 180721484, 180721478, 180721471, 180721454};
+        String[] keys = new String[pubIds.length];
+        for (int i = 0; i < keys.length; i++) {
+            keys[i] = votedPrefix + pubIds[i];
+            System.out.println(keys[i]);
+        }
+        Long[] pipezcard = redisOperator.pipezcard(keys);
+        assertEquals(keys.length, pipezcard.length);
+    }
 }

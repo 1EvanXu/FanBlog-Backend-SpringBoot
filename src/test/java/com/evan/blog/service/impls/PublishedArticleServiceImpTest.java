@@ -19,9 +19,13 @@ public class PublishedArticleServiceImpTest {
 
     @Test
     public void getAllPublishedArticles() {
-        PageInfo<PublishedArticle> allPublishedArticles = publishedArticleService.getAllPublishedArticles(1);
-        for (PublishedArticle p: allPublishedArticles.getList()) {
+        PageInfo<PublishedArticleItem> allPublishedArticles = publishedArticleService.getAllPublishedArticleItems(1);
+        for (PublishedArticleItem p: allPublishedArticles.getList()) {
             System.out.println(p);
         }
+    }
+    @Test
+    public void getPublishedArticleByPubId() {
+        System.out.println(publishedArticleService.getPublishedArticle(180711661));
     }
 }

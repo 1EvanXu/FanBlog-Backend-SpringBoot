@@ -1,6 +1,10 @@
 package com.evan.blog.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
@@ -23,9 +27,6 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class RedisOperator {
-
-//	@Autowired
-////    private RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -214,6 +215,26 @@ public class RedisOperator {
     }
 
 
+    /** 当列表大小大于给定容量时，弹出元素直至列表中元素个数在给定容量之下
+     * @param key 列表的key值
+     * @param value 存入列表key的value值
+     */
+    public void lpushrpop(String key, String value, Long listCapacity) {
+        ListOperations<String, String> listOperations = redisTemplate.opsForList();
+        listOperations.leftPush(key, value);
+
+//        redisTemplate.watch(key);
+//        redisTemplate.multi();
+        Long remainCapacity = listOperations.size(key) - listCapacity;
+        if (remainCapacity > 0) {
+            for (int i = 0; i < remainCapacity.intValue(); i++) {
+                listOperations.rightPop(key);
+            }
+        }
+//        redisTemplate.exec();
+    }
+
+    // Zset 有序集合
     public boolean zadd(String key, String field, Double score) {
         return redisTemplate.opsForZSet().add(key, field, score);
     }
@@ -229,4 +250,27 @@ public class RedisOperator {
     public long zcard (String key) {
         return redisTemplate.opsForZSet().zCard(key);
     }
+
+    public Long[] pipezcard (String[] keys) {
+
+        RedisCallback<List<Object>> redisCallback = new RedisCallback<List<Object>>() {
+            @Override
+            public List<Object> doInRedis(RedisConnection connection) throws DataAccessException {
+                connection.openPipeline();
+                for (String key: keys) {
+                    connection.zCard(key.getBytes());
+                }
+                return connection.closePipeline();
+            }
+        };
+
+        List<Object> execResults = redisTemplate.execute(redisCallback);
+        Long[] results = new Long[execResults.size()];
+        for (int i = 0; i < results.length; i++) {
+            results[i] = (Long) execResults.get(i);
+        }
+
+        return results;
+    }
 }
+

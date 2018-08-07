@@ -64,11 +64,11 @@ public class Comment {
     @Override
     public String toString() {
         return "Comment {" + '\n' +
-                '\t' + "parent=" + parent + '\n' +
-                '\t' + ", replyTo=" + replyTo + '\n' +
-                '\t' + ", commentator=" + commentator + '\n' +
-                '\t' + ", content='" + content + '\n' +
-                '\t' + ", pubId=" + pubId + '\n' +
+                '\t' + "parent: " + parent + '\n' +
+                '\t' + "replyTo: " + replyTo + '\n' +
+                '\t' + "commentator: " + commentator + '\n' +
+                '\t' + "content: " + content + '\n' +
+                '\t' + "pubId: " + pubId + '\n' +
                 '}' + '\n';
     }
 }
