@@ -2,6 +2,7 @@ package com.evan.blog.service.impls;
 
 import com.evan.blog.pojo.IPLocation;
 import com.evan.blog.service.IPQueryService;
+import com.evan.blog.util.IPGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,9 @@ public class IPQueryServiceImplTest {
 
     @Test
     public void query() {
-        IPLocation location = ipQueryService.query("61.57.155.236");
+        String randomIp = IPGenerator.getRandomIp();
+        System.out.println(randomIp);
+        IPLocation location = ipQueryService.query(randomIp);
         assertNotNull(location);
         System.out.println(location.toString());
     }
