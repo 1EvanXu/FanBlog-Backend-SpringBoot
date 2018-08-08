@@ -22,6 +22,9 @@
     <select id="selectPublishedArticlesByCategoryId" resultMap="publishedArticleMap" parameterType="int">
         select * from published_articles where category_id=#{categoryId}
     </select>
+    <select id="selectPublishedArticleTitleByPubId" resultType="string" parameterType="int">
+        select a.title from published_articles as p inner join articles as a on p.article_id=a.id where p.pub_id=#{pubId}
+    </select>
 
     <select id="selectPublishedArticleByPubId" parameterType="int" resultMap="publishedArticleMap">
         select * from published_articles where pub_id=#{pubId};

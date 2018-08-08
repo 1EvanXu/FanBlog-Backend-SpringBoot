@@ -44,6 +44,12 @@ public class RedisOperatorTest {
     }
 
     @Test
+    public void zrank() {
+        Long rank = redisOperator.zrank("voted:180721499", "192.168.1.101");
+        assertNull(rank);
+    }
+
+    @Test
     public void pipezcard () {
         String votedPrefix = "voted:";
         Integer[] pubIds = new Integer[]{180721499, 180721490, 180721484, 180721478, 180721471, 180721454};

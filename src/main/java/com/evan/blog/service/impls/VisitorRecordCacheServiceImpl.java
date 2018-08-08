@@ -42,7 +42,7 @@ public class VisitorRecordCacheServiceImpl implements VisitorRecordCacheService 
 
     @Override
     public Set<ZSetOperations.TypedTuple<String>> getRegionDistributions() {
-        return redisOperator.zrevrank(rd, 0, 8);
+        return redisOperator.zrevrange(rd, 0, 8);
     }
 
     @Override

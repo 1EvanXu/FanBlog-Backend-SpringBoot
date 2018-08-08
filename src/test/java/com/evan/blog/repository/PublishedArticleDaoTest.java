@@ -51,6 +51,13 @@ public class PublishedArticleDaoTest {
     }
 
     @Test
+    public void selectPublishedArticleTitleByPubId() {
+        String title = publishedArticleDao.selectPublishedArticleTitleByPubId(180721534);
+        assertEquals("test article title 5", title);
+
+    }
+
+    @Test
     public void insertPublishedArticle() {
         int pubId = PubIdGenerator.generatePubId();
         Article article = articleDao.selectArticleById(11);

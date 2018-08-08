@@ -41,7 +41,7 @@ public class SideInfoServiceImp implements SideInfoService {
         final String key = "pub_articles_rank:";
         List<SideInfoItem> sideInfoItems = new ArrayList<>();
 
-        Set<ZSetOperations.TypedTuple<String>> tuples = redisOperator.zrevrank(key, 0, 8);
+        Set<ZSetOperations.TypedTuple<String>> tuples = redisOperator.zrevrange(key, 0, 8);
 
         tuples.forEach(stringTypedTuple -> {
             if (stringTypedTuple.getScore() > 0) {

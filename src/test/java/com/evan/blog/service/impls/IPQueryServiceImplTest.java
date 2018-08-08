@@ -2,16 +2,13 @@ package com.evan.blog.service.impls;
 
 import com.evan.blog.pojo.IPLocation;
 import com.evan.blog.service.IPQueryService;
-import com.evan.blog.util.IPGenerator;
+import com.evan.blog.util.IPUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -25,8 +22,8 @@ public class IPQueryServiceImplTest {
 
     @Test
     public void query() {
-        String randomIp = IPGenerator.getRandomIp();
-        System.out.println(randomIp);
+        String randomIp = IPUtil.getRandomIp();
+        System.out.println("\n-------\n" + randomIp);
         IPLocation location = ipQueryService.query(randomIp);
         assertNotNull(location);
         System.out.println(location.toString());

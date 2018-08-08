@@ -13,6 +13,9 @@ public class VisitorRecord {
 
     private long visitTime;
 
+    public VisitorRecord() {
+    }
+
     public Integer getVisitorType() {
         return visitorType;
     }

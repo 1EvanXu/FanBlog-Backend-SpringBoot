@@ -6,19 +6,17 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.*;
-
-public class IPTransferUtilTest {
+public class IPUtilTest {
 
     @Test
     public void IPv4ToLong() {
-        long iPv4ToLong = IPTransferUtil.IPv4ToLong("106.14.186.63");
-        System.out.println(iPv4ToLong);
+        long iPv4ToLong = IPUtil.IPv4ToLong(IPUtil.getRandomIp());
+        System.out.println(iPv4ToLong + "\u5c71\u897f");
     }
 
     @Test()
     public void IPv4ToString() {
-        System.out.println(IPTransferUtil.IPv4ToString(1779350079L));
+        System.out.println(IPUtil.IPv4ToString(1779350079L));
     }
 
     @Test
@@ -33,5 +31,10 @@ public class IPTransferUtilTest {
         }
         AtomicLong atomicLong = new AtomicLong(0);
         System.out.println(atomicLong.getAndSet(1));
+    }
+
+    @Test
+    public void getRandomIp () {
+        System.out.println(IPUtil.getRandomIp());
     }
 }

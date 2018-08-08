@@ -85,4 +85,9 @@ public class PublishedArticleServiceImp implements PublishedArticleService {
 
         return publishedArticleDetails;
     }
+
+    @Override
+    public String getTitleByPubId(Integer pubId) {
+        return publishedArticleDao.selectPublishedArticleTitleByPubId(pubId);
+    }
 }

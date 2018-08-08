@@ -239,12 +239,16 @@ public class RedisOperator {
         return redisTemplate.opsForZSet().add(key, field, score);
     }
 
-    public Set<ZSetOperations.TypedTuple<String>> zrevrank (String key, long start, long end) {
+    public Set<ZSetOperations.TypedTuple<String>> zrevrange (String key, long start, long end) {
         return redisTemplate.opsForZSet().reverseRangeWithScores(key, start, end);
     }
 
     public Set<ZSetOperations.TypedTuple<String>> zrevrangebyscore (String key, double min, double max, long offset, long count) {
         return redisTemplate.opsForZSet().reverseRangeByScoreWithScores(key, min, max, offset, count);
+    }
+
+    public Long zrank(String key, Object value) {
+        return redisTemplate.opsForZSet().rank(key, value);
     }
 
     public long zcard (String key) {
@@ -271,6 +275,14 @@ public class RedisOperator {
         }
 
         return results;
+    }
+
+    public Object pipline(RedisCallback<Object> redisCallback) {
+        return redisTemplate.execute(redisCallback);
+    }
+
+    public void zincr(String key, String value, double score) {
+        redisTemplate.opsForZSet().incrementScore(key, value, score);
     }
 }
 

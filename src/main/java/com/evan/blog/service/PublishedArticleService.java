@@ -8,4 +8,5 @@ public interface PublishedArticleService {
     PageInfo<PublishedArticleItem> getAllPublishedArticleItems(Integer pageIndex);
     PageInfo<PublishedArticleItem> getPublishedArticleItemsByCategoryId(Integer categoryId, Integer pageIndex);
     PublishedArticleDetails getPublishedArticle(Integer pubId);
+    String getTitleByPubId(Integer pubId);
 }

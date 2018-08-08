@@ -1,6 +1,6 @@
 package com.evan.blog.service.impls;
-
 import com.evan.blog.service.PublishedArticleCacheService;
+import com.evan.blog.service.PublishedArticleService;
 import com.evan.blog.util.RedisOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.RedisSystemException;
@@ -19,11 +19,20 @@ public class PublishedArticleCacheServiceImp implements PublishedArticleCacheSer
 
     @Autowired
     RedisOperator redisOperator;
+    @Autowired
+    PublishedArticleService publishedArticleService;
 
     @Override
     public boolean vote(Integer pubId, String ip) {
         String key = votedPrefix + pubId;
+        updateArticlesRank(pubId);
         return redisOperator.zadd(key, ip, (double)System.currentTimeMillis());
+    }
+
+    @Override
+    public boolean hasVoted(Integer pubId, String ip) {
+        String key = votedPrefix + pubId;
+        return null != redisOperator.zrank(key, ip);
     }
 
     @Override
@@ -63,7 +72,12 @@ public class PublishedArticleCacheServiceImp implements PublishedArticleCacheSer
 
     @Override
     public void updateArticlesRank(Integer pubId) {
-        redisOperator.zadd(rankBoard, pubId.toString(), 1.0);
+
+        String title = publishedArticleService.getTitleByPubId(pubId);
+
+        String key = pubId.toString() + ":" + title;
+
+        redisOperator.zincr(rankBoard, key, 1.0);
     }
 
     @Override

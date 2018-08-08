@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.concurrent.atomic.AtomicInteger;
 /*
     还需要改进的地方：服务器停机重启之后，numberOfPub的值会丢失，等redis搭建好了之后可以将numberOfPub放入redis
+    改为一个Component
  */
 
 public class PubIdGenerator {

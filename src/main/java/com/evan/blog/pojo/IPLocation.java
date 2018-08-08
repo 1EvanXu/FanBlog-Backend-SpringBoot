@@ -1,33 +1,33 @@
 package com.evan.blog.pojo;
 
 public class IPLocation {
-    private String continent;
-    private String region;
+    private String country;
+    private String province;
     private String city;
 
     public IPLocation() {
     }
 
-    public IPLocation(String continent, String region, String city) {
-        this.continent = continent;
-        this.region = region;
+    public IPLocation(String country, String province, String city) {
+        this.country = country;
+        this.province = province;
         this.city = city;
     }
 
-    public String getContinent() {
-        return continent != null && !continent.equals("") ? continent : "其他";
+    public String getCountry() {
+        return country != null && !country.equals("") ? country : "其他";
     }
 
-    public void setContinent(String continent) {
-        this.continent = continent;
+    public void getCountry(String country) {
+        this.country = country;
     }
 
-    public String getRegion() {
-        return region != null && !region.equals("") ? region : "其他";
+    public String getProvince() {
+        return province != null && !province.equals("") ? province : "其他";
     }
 
-    public void setRegion(String region) {
-        this.region = region;
+    public void setProvince(String province) {
+        this.province = province;
     }
 
     public String getCity() {
@@ -40,6 +40,6 @@ public class IPLocation {
 
     @Override
     public String toString() {
-        return getCity() + ":" +  getCity() + ":" + getContinent();
+        return getCity() + ":" +  getProvince() + ":" + getCountry();
     }
 }

@@ -4,14 +4,13 @@ import com.evan.blog.pojo.IPLocation;
 import com.evan.blog.pojo.VisitorRecord;
 import com.evan.blog.service.IPQueryService;
 import com.evan.blog.service.VisitorRecordCacheService;
+import com.evan.blog.util.IPUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.servlet.HandlerInterceptor;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,10 +26,20 @@ public class BlogVisitorInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String ip = request.getRemoteAddr();
-        String username = request.getSession().getAttribute("username").toString();
+
+        String ip = IPUtil.getRealIP(request);
+
+        String username;
+        try {
+
+            username = request.getSession().getAttribute("username").toString();
+        } catch (NullPointerException e) {
+            username = null;
+        }
+
         VisitorRecord record = new VisitorRecord();
         if (username == null) {
+            username = "visitor";
             record.setVisitorType(VisitorRecord.PASSAGER);
         } else {
             record.setVisitorType(VisitorRecord.USER);
@@ -41,8 +50,9 @@ public class BlogVisitorInterceptor implements HandlerInterceptor {
         record.setIpAddress(ip);
         record.setName(username);
         record.setVisitTime(new Date().getTime());
-
+        // Catch spec Exception
         visitorRecordService.recordVisitor(record);
+
         String url = request.getRequestURL().toString();
 
         //if visiting an article, record this visitor
@@ -52,7 +62,6 @@ public class BlogVisitorInterceptor implements HandlerInterceptor {
             visitorRecordService.addVisitorsRecord(pubId, record);
         }
 
-
-        return false;
+        return true;
     }
 }
