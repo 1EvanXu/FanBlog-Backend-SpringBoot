@@ -30,6 +30,9 @@ public class PublishedArticleServiceImp implements PublishedArticleService {
         PageHelper.startPage(pageIndex, pageSize);
 
         List<PublishedArticle> publishedArticles = publishedArticleDao.selectPublishedArticles();
+        PageInfo<PublishedArticle> publishedArticlePageInfo = new PageInfo<>(publishedArticles);
+
+        long total = publishedArticlePageInfo.getTotal();
 
         List<PublishedArticleItem> publishedArticleItems = new ArrayList<>();
 
@@ -45,14 +48,21 @@ public class PublishedArticleServiceImp implements PublishedArticleService {
             publishedArticleItem.setVoteCount(voteCounts[j].intValue());
             publishedArticleItems.add(publishedArticleItem);
         }
-        return new PageInfo<>(publishedArticleItems);
+
+        //dumpy code
+
+        PageInfo<PublishedArticleItem> publishedArticleItemPageInfo = new PageInfo<>(publishedArticleItems);
+        publishedArticleItemPageInfo.setTotal(total);
+        return publishedArticleItemPageInfo;
     }
 
     @Override
     public PageInfo<PublishedArticleItem> getPublishedArticleItemsByCategoryId(Integer categoryId, Integer pageIndex) {
         PageHelper.startPage(pageIndex, pageSize);
         List<PublishedArticle> publishedArticles = publishedArticleDao.selectPublishedArticlesByCategoryId(categoryId);
+        PageInfo<PublishedArticle> publishedArticlePageInfo = new PageInfo<>(publishedArticles);
 
+        long total = publishedArticlePageInfo.getTotal();
         List<PublishedArticleItem> publishedArticleItems = new ArrayList<>();
 
         Integer[] pubIds = new Integer[publishedArticles.size()];
@@ -67,7 +77,12 @@ public class PublishedArticleServiceImp implements PublishedArticleService {
             publishedArticleItem.setVoteCount(voteCounts[j].intValue());
             publishedArticleItems.add(publishedArticleItem);
         }
-        return new PageInfo<>(publishedArticleItems);
+
+        //dumpy code
+
+        PageInfo<PublishedArticleItem> publishedArticleItemPageInfo = new PageInfo<>(publishedArticleItems);
+        publishedArticleItemPageInfo.setTotal(total);
+        return publishedArticleItemPageInfo;
     }
 
     @Override

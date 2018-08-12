@@ -1,9 +1,11 @@
 package com.evan.blog.model;
 
-public abstract class BlogEntity {
+import java.io.Serializable;
+
+public abstract class BlogEntity implements Serializable {
     protected Integer id;
 
-    protected BlogEntity() {
+    BlogEntity() {
     }
 
     protected BlogEntity(Integer id) {

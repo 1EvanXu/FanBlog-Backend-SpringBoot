@@ -29,6 +29,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         /**
          * 拦截器按照顺序执行
          */
-        registry.addInterceptor(blogVisitorInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(blogVisitorInterceptor()).addPathPatterns("/blog/**");
     }
 }

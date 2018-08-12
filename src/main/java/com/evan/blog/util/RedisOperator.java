@@ -94,6 +94,16 @@ public class RedisOperator {
     }
 
     /**
+     * 当key不存在时，设置key为value并返回true，若key存在则不作设值操作，并返回false。
+     * @param key
+     * @param value
+     * @return
+     */
+    public boolean setIfAbsent(String key, String value) {
+        return redisTemplate.opsForValue().setIfAbsent(key, value);
+    }
+
+    /**
      * 实现命令：SET key value EX seconds，设置key-value和超时时间（秒）
      *
      * @param key

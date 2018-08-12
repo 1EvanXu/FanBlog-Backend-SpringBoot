@@ -28,7 +28,7 @@ public class SideInfoServiceImp implements SideInfoService {
     public List<SideInfoItem> getLatestPublishedArticle() {
         final String key = "latest_pub_articles:";
         List<SideInfoItem> sideInfoItems = new ArrayList<>();
-        List<String> latestPubArticles = redisOperator.lrange(key, 0, -1);
+        List<String> latestPubArticles = redisOperator.lrange(key, 0, 9);
         latestPubArticles.forEach((s) -> {
             String[] strings = s.split(":");
             sideInfoItems.add(new SideInfoItem(Integer.parseInt(strings[0]), strings[1], null));
@@ -41,7 +41,7 @@ public class SideInfoServiceImp implements SideInfoService {
         final String key = "pub_articles_rank:";
         List<SideInfoItem> sideInfoItems = new ArrayList<>();
 
-        Set<ZSetOperations.TypedTuple<String>> tuples = redisOperator.zrevrange(key, 0, 8);
+        Set<ZSetOperations.TypedTuple<String>> tuples = redisOperator.zrevrange(key, 0, 9);
 
         tuples.forEach(stringTypedTuple -> {
             if (stringTypedTuple.getScore() > 0) {
