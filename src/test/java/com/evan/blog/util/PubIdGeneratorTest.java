@@ -1,6 +1,10 @@
 package com.evan.blog.util;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +13,16 @@ import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.*;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class PubIdGeneratorTest {
+
+    @Autowired
+    PubIdGenerator pubIdGenerator;
 
     @Test
     public void generatePubId() {
-        System.out.println("pubId: " + PubIdGenerator.generatePubId());
+        System.out.println("pubId: " + pubIdGenerator.generatePubId1());
     }
 
     //线程安全测试
@@ -27,7 +36,7 @@ public class PubIdGeneratorTest {
             threads.add(new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    resultMap.put(PubIdGenerator.generatePubId(), Thread.currentThread().getName());
+                    resultMap.put(pubIdGenerator.generatePubId1(), Thread.currentThread().getName());
                     countDownLatch.countDown();
                 }
             }));

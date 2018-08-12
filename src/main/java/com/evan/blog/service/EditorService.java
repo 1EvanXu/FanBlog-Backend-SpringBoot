@@ -1,7 +1,10 @@
 package com.evan.blog.service;
 
 import com.evan.blog.model.Article;
+import com.evan.blog.model.Category;
 import com.evan.blog.pojo.Draft;
+
+import java.util.List;
 
 public interface EditorService {
     long generateTempArticleId();
@@ -10,5 +13,7 @@ public interface EditorService {
 
     Draft getArticleContent(Integer articleId);
 
-    long saveArticle(Article article);
+    Integer saveArticle(Article article);
+
+    List<Category> searchCategoryByName(String keyword);
 }

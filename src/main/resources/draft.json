@@ -1,0 +1,10 @@
+{
+  "id": null,
+  "title": "some title",
+  "createdTime": null,
+  "latestEditedTime": null,
+  "tempArticleId": 100,
+  "markdownContent": "# head count 1",
+  "htmlContent": "<h1>head count 1</h1>",
+  "status": "Editing"
+}

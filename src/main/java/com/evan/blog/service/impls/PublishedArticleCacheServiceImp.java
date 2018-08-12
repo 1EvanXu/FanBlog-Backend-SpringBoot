@@ -81,9 +81,10 @@ public class PublishedArticleCacheServiceImp implements PublishedArticleCacheSer
     }
 
     @Override
-    public boolean updateLatestPublishedArticle(Integer pubId) {
+    public boolean updateLatestPublishedArticle(Integer pubId, String title) {
+        String value = pubId + ":" + title;
         try {
-            redisOperator.lpushrpop(latest, pubId.toString(), 8L);
+            redisOperator.lpushrpop(latest, value, 8L);
         } catch (RedisSystemException e) {
             return false;
         }

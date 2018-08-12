@@ -32,10 +32,17 @@
     <select id="selectCountOfPubArticlesByCategory" parameterType="int" resultType="int">
         select count(*) from published_articles where category_id=#{categoryId};
     </select>
+
     <insert id="insertPublishedArticle" parameterType="publishedArticle">
         insert into published_articles(pub_id, type, article_id, category_id)
         values (#{pubId}, #{type}, #{article.id}, #{category.id});
     </insert>
+
+    <insert id="insertPublishingArticle" parameterType="publishingArticle">
+        insert into blog_dev.published_articles (pub_id, type, article_id, category_id)
+        values (#{pubId}, #{type}, #{articleId}, #{category});
+    </insert>
+
     <delete id="deletePublishedArticle" parameterType="int">
         delete from published_articles where pub_id=#{pubId};
     </delete>

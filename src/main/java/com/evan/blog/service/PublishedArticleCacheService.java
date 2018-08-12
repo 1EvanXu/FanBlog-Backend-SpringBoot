@@ -8,5 +8,5 @@ public interface PublishedArticleCacheService {
     Long[] bulkGetVoteCount(Integer[] pubIds);
     Long getArticleVisitorCount(Integer pubId);
     void updateArticlesRank(Integer pubId);
-    boolean updateLatestPublishedArticle(Integer pubId);
+    boolean updateLatestPublishedArticle(Integer pubId, String title);
 }

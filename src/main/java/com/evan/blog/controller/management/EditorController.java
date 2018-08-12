@@ -1,11 +1,16 @@
 package com.evan.blog.controller.management;
 
 import com.evan.blog.model.Article;
+import com.evan.blog.model.Category;
+import com.evan.blog.model.PublishingArticle;
 import com.evan.blog.pojo.BlogJSONResult;
 import com.evan.blog.pojo.Draft;
 import com.evan.blog.service.EditorService;
+import com.evan.blog.service.PublishedArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -14,6 +19,9 @@ public class EditorController {
 
     @Autowired
     EditorService editorService;
+    @Autowired
+    PublishedArticleService publishedArticleService;
+
 
     @GetMapping(path = "/article/new")
     public BlogJSONResult newArticle() {
@@ -27,21 +35,32 @@ public class EditorController {
     }
 
     @PutMapping(path = "/cache")
-    public BlogJSONResult saveDraftInCache(Draft draft) {
+    public BlogJSONResult saveDraftInCache(@RequestBody Draft draft) {
         long l = editorService.saveDraftInCache(draft);
-        return BlogJSONResult.ok(l);
+        BlogJSONResult result = BlogJSONResult.ok(l);
+        result.setMsg("SAVED");
+        return result;
     }
 
     @PostMapping(path = "/article")
-    public BlogJSONResult saveArticle(Article article) {
-        long l = editorService.saveArticle(article);
-        return BlogJSONResult.ok(l);
+    public BlogJSONResult saveArticle(@RequestBody Article article) {
+        Integer articleId = editorService.saveArticle(article);
+        System.out.println(article);
+        return BlogJSONResult.ok(articleId);
     }
 
     @PostMapping(path = "/publish")
-    public BlogJSONResult publishArticle() {
-        return BlogJSONResult.ok();
+    public BlogJSONResult publishArticle(@RequestBody PublishingArticle publishingArticle) {
+        publishedArticleService.addPublishedArticle(publishingArticle);
+        BlogJSONResult result = BlogJSONResult.ok();
+        result.setMsg("Publish succeed!");
+        return result;
     }
 
+    @GetMapping(path = "/category")
+    public BlogJSONResult searchCategory(@RequestParam(value = "keyword") String keyword) {
+        List<Category> categories = editorService.searchCategoryByName(keyword);
+        return BlogJSONResult.ok(categories);
+    }
 
 }

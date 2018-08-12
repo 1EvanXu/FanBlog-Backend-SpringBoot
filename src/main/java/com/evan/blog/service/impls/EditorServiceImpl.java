@@ -1,7 +1,10 @@
 package com.evan.blog.service.impls;
 
 import com.evan.blog.model.Article;
+import com.evan.blog.model.Category;
+import com.evan.blog.model.enums.ArticleStatus;
 import com.evan.blog.pojo.Draft;
+import com.evan.blog.repository.CategoryDao;
 import com.evan.blog.service.ArticleService;
 import com.evan.blog.service.EditorService;
 import com.evan.blog.util.JsonUtil;
@@ -9,6 +12,7 @@ import com.evan.blog.util.RedisOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
@@ -26,6 +30,9 @@ public class EditorServiceImpl implements EditorService {
 
     @Autowired
     ArticleService articleService;
+
+    @Autowired
+    CategoryDao categoryDao;
 
     @Override
     public long generateTempArticleId() {
@@ -67,7 +74,11 @@ public class EditorServiceImpl implements EditorService {
             // 加锁防止缓存穿透
             try {
                 semaphore.acquire();
-                draft = (Draft) articleService.queryArticleById(articleId);
+                Article article = articleService.queryArticleById(articleId);
+//                if (article.getStatus() != ArticleStatus.Editing) {
+//                    throw new IllegalAccessException("");
+//                }
+                draft = new Draft(article);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e.getMessage());
             } finally {
@@ -80,9 +91,19 @@ public class EditorServiceImpl implements EditorService {
     }
 
     @Override
-    public long saveArticle(Article article) {
+    public Integer saveArticle(Article article) {
+        if (article.getId() == null) {
+            articleService.addArticle(article);
+            return article.getId();
+        }
+
         articleService.updateArticle(article);
-        return System.currentTimeMillis();
+        return article.getId();
+    }
+
+    @Override
+    public List<Category> searchCategoryByName(String keyword) {
+        return categoryDao.selectCategoriesByName(keyword);
     }
 
     //防止缓存雪崩

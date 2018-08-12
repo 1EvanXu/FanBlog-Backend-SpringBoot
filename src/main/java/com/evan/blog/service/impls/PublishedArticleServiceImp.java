@@ -1,15 +1,21 @@
 package com.evan.blog.service.impls;
 
+import com.evan.blog.model.Article;
 import com.evan.blog.model.PublishedArticle;
+import com.evan.blog.model.PublishingArticle;
 import com.evan.blog.pojo.PublishedArticleDetails;
 import com.evan.blog.pojo.PublishedArticleItem;
+import com.evan.blog.repository.ArticleDao;
 import com.evan.blog.repository.PublishedArticleDao;
 import com.evan.blog.service.PublishedArticleCacheService;
 import com.evan.blog.service.PublishedArticleService;
+import com.evan.blog.util.PubIdGenerator;
+import com.evan.blog.util.RedisOperator;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +28,9 @@ public class PublishedArticleServiceImp implements PublishedArticleService {
     @Autowired
     PublishedArticleDao publishedArticleDao;
     @Autowired
+    ArticleDao articleDao;
+    @Autowired
     PublishedArticleCacheService publishedArticleCacheService;
-
 
     @Override
     public PageInfo<PublishedArticleItem> getAllPublishedArticleItems(Integer pageIndex) {
@@ -104,5 +111,27 @@ public class PublishedArticleServiceImp implements PublishedArticleService {
     @Override
     public String getTitleByPubId(Integer pubId) {
         return publishedArticleDao.selectPublishedArticleTitleByPubId(pubId);
+    }
+
+
+    @Override
+    @Transactional
+    public void addPublishedArticle(PublishingArticle publishingArticle) {
+        Integer pubId = PubIdGenerator.generatePubId();
+        publishingArticle.setPubId(pubId);
+
+        String title = publishingArticle.getTitle();
+
+        Article article = new Article();
+
+        article.setId(publishingArticle.getArticleId());
+
+        article.setTitle(title);
+
+        articleDao.updateArticle(article);
+
+        publishedArticleDao.insertPublishingArticle(publishingArticle);
+
+        publishedArticleCacheService.updateLatestPublishedArticle(pubId, title);
     }
 }
