@@ -31,6 +31,8 @@ public class PublishedArticleServiceImp implements PublishedArticleService {
     ArticleDao articleDao;
     @Autowired
     PublishedArticleCacheService publishedArticleCacheService;
+    @Autowired
+    PubIdGenerator pubIdGenerator;
 
     @Override
     public PageInfo<PublishedArticleItem> getAllPublishedArticleItems(Integer pageIndex) {
@@ -117,7 +119,7 @@ public class PublishedArticleServiceImp implements PublishedArticleService {
     @Override
     @Transactional
     public void addPublishedArticle(PublishingArticle publishingArticle) {
-        Integer pubId = PubIdGenerator.generatePubId();
+        Integer pubId = pubIdGenerator.generatePubId();
         publishingArticle.setPubId(pubId);
 
         String title = publishingArticle.getTitle();
@@ -129,6 +131,8 @@ public class PublishedArticleServiceImp implements PublishedArticleService {
         article.setTitle(title);
 
         articleDao.updateArticle(article);
+
+//        if (publishingArticle.getCategory() == null)
 
         publishedArticleDao.insertPublishingArticle(publishingArticle);
 

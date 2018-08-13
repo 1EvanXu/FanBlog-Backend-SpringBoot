@@ -34,9 +34,11 @@
         select * from categories as c order by
         (select count(*) from published_articles where category_id=c.id) desc
     </select>
-    <insert id="insertCategory" parameterType="category">
+
+    <insert id="insertCategory" parameterType="category" useGeneratedKeys="true" keyProperty="id">
         insert into categories(category_name) values(#{name});
     </insert>
+
     <delete id="deleteCategory" parameterType="int">
         delete from categories where id=#{id}
     </delete>

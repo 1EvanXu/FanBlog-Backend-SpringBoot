@@ -22,7 +22,7 @@ public class PubIdGeneratorTest {
 
     @Test
     public void generatePubId() {
-        System.out.println("pubId: " + pubIdGenerator.generatePubId1());
+        System.out.println("pubId: " + pubIdGenerator.generatePubId());
     }
 
     //线程安全测试
@@ -36,7 +36,7 @@ public class PubIdGeneratorTest {
             threads.add(new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    resultMap.put(pubIdGenerator.generatePubId1(), Thread.currentThread().getName());
+                    resultMap.put(pubIdGenerator.generatePubId(), Thread.currentThread().getName());
                     countDownLatch.countDown();
                 }
             }));

@@ -2,10 +2,10 @@ package com.evan.blog.service.impls;
 
 import com.evan.blog.model.Article;
 import com.evan.blog.model.Category;
-import com.evan.blog.model.enums.ArticleStatus;
 import com.evan.blog.pojo.Draft;
 import com.evan.blog.repository.CategoryDao;
 import com.evan.blog.service.ArticleService;
+import com.evan.blog.service.CategoryService;
 import com.evan.blog.service.EditorService;
 import com.evan.blog.util.JsonUtil;
 import com.evan.blog.util.RedisOperator;
@@ -32,7 +32,7 @@ public class EditorServiceImpl implements EditorService {
     ArticleService articleService;
 
     @Autowired
-    CategoryDao categoryDao;
+    CategoryService categoryService;
 
     @Override
     public long generateTempArticleId() {
@@ -103,7 +103,7 @@ public class EditorServiceImpl implements EditorService {
 
     @Override
     public List<Category> searchCategoryByName(String keyword) {
-        return categoryDao.selectCategoriesByName(keyword);
+        return categoryService.findCategoriesByName(keyword);
     }
 
     //防止缓存雪崩

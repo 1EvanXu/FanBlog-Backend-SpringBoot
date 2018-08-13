@@ -23,37 +23,20 @@ public class PubIdGenerator {
 
     private static volatile int oldPubIdPrefix;
 
-    private static AtomicInteger numberOfPub = new AtomicInteger(0);
+//    private static AtomicInteger numberOfPub = new AtomicInteger(0);
 
-    private final String key = "pub_no:";
+    private final String key = "pub_number:";
 
-    public static int generatePubId() {
+    public int generatePubId() {
         int pubIdPrefix = Integer.parseInt(LocalDateTime.now().format(DATE_TIME_FORMATTER));
         int pubId = pubIdPrefix * MAX_NUMBER_OF_PUB_EACH_DAY;
+
 
         if (pubIdPrefix != oldPubIdPrefix) {
             oldPubIdPrefix = pubIdPrefix;
-            numberOfPub.set(0);
+            redisOperator.set(key, "0");
         }
-
-        pubId += numberOfPub.getAndIncrement();
-        return pubId;
-    }
-
-    public int generatePubId1() {
-        int pubIdPrefix = Integer.parseInt(LocalDateTime.now().format(DATE_TIME_FORMATTER));
-        int pubId = pubIdPrefix * MAX_NUMBER_OF_PUB_EACH_DAY;
-        try {
-            if (pubIdPrefix != oldPubIdPrefix) {
-                oldPubIdPrefix = pubIdPrefix;
-                numberOfPub.set(0);
-                redisOperator.set(key, "0");
-            }
-            numberOfPub.set((int) redisOperator.incr(key, 1L));
-            pubId += numberOfPub.get();
-        } catch (RedisSystemException e) {
-            pubId += numberOfPub.getAndIncrement();
-        }
+        pubId += (int) redisOperator.incr(key, 1L);
         return pubId;
     }
 }

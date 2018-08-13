@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -25,6 +26,8 @@ public class PublishedArticleDaoTest {
     ArticleDao articleDao;
     @Autowired
     CategoryDao categoryDao;
+    @Resource(name = "pubIdGenerator")
+    PubIdGenerator pubIdGenerator;
 
     @Test
     public void selectAllPublishedArticles() {
@@ -59,12 +62,12 @@ public class PublishedArticleDaoTest {
 
     @Test
     public void insertPublishedArticle() {
-        int pubId = PubIdGenerator.generatePubId();
-        Article article = articleDao.selectArticleById(11);
-        Category category = categoryDao.selectCategoryById(7);
+        int pubId = pubIdGenerator.generatePubId();
+        Article article = articleDao.selectArticleById(23);
+        Category category = categoryDao.selectCategoryById(2);
         PublishedArticle publishedArticle = new PublishedArticle(
                 pubId,
-                PublishedArticleType.Original,
+                PublishedArticleType.Reproduced,
                 article,
                 category
         );
