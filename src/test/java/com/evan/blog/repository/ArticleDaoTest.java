@@ -1,6 +1,7 @@
 package com.evan.blog.repository;
 
 import com.evan.blog.model.Article;
+import com.evan.blog.model.ArticleQueryFilter;
 import com.evan.blog.model.QueryFilter;
 import com.evan.blog.model.enums.ArticleStatus;
 import com.evan.blog.model.enums.Order;
@@ -25,14 +26,14 @@ public class ArticleDaoTest {
 
     @Test
     public void getAllArticlesByCreatedTime() {
-        QueryFilter queryFilter = new QueryFilter("created_time", Order.Asc, ArticleStatus.Editing);
-        PageHelper.startPage(0, 1);
+        ArticleQueryFilter queryFilter = new ArticleQueryFilter("created_time", Order.Asc, ArticleStatus.Editing);
+        PageHelper.startPage(0, 4);
         List<Article> articles = articleDao.selectAllArticles(queryFilter);
         PageInfo<Article> pageInfo = new PageInfo<>(articles);
         for (Article article : articles) {
             System.out.println(article);
         }
-        assertEquals(2, pageInfo.getTotal());
+        assertEquals(8, pageInfo.getTotal());
     }
 
     @Test

@@ -1,12 +1,16 @@
 package com.evan.blog.model;
 
 import com.evan.blog.model.enums.ArticleStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Timestamp;
 
 public class Article extends BlogEntity{
 
     private String title;
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
     private Timestamp createdTime;
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
     private Timestamp latestEditedTime;
     private ArticleStatus status = ArticleStatus.Editing;
     private String htmlContent;

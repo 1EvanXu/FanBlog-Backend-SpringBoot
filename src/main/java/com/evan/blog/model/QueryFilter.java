@@ -1,19 +1,16 @@
 package com.evan.blog.model;
 
-import com.evan.blog.model.enums.ArticleStatus;
 import com.evan.blog.model.enums.Order;
 
 public class QueryFilter {
     private String orderField;
     private Order order = Order.Desc;
-    private ArticleStatus articleStatus;
 
     public QueryFilter() {}
 
-    public QueryFilter(String orderField, Order order, ArticleStatus articleStatus) {
+    public QueryFilter(String orderField, Order order) {
         this.orderField = orderField;
         this.order = order;
-        this.articleStatus = articleStatus;
     }
 
     public String getOrderField() {
@@ -32,13 +29,6 @@ public class QueryFilter {
         this.order = order;
     }
 
-    public Integer getArticleStatus() {
-        return articleStatus.getStatusCode();
-    }
-
-    public void setArticleStatus(ArticleStatus articleStatus) {
-        this.articleStatus = articleStatus;
-    }
 }
 
 

@@ -17,7 +17,7 @@
         select id, title, created_time, latest_edited_time, status from articles
     </sql>
 
-    <select id="selectAllArticles" parameterType="queryFilter" resultMap="articleMap">
+    <select id="selectAllArticles" parameterType="articleQueryFilter" resultMap="articleMap">
         <include refid="articleAbstract"/>
         <where>
             <if test="articleStatus != null">status=#{articleStatus}</if>

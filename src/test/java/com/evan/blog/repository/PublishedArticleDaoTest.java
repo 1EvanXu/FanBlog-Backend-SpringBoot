@@ -1,8 +1,7 @@
 package com.evan.blog.repository;
 
-import com.evan.blog.model.Article;
-import com.evan.blog.model.Category;
-import com.evan.blog.model.PublishedArticle;
+import com.evan.blog.model.*;
+import com.evan.blog.model.enums.Order;
 import com.evan.blog.model.enums.PublishedArticleType;
 import com.evan.blog.util.PubIdGenerator;
 import org.junit.Test;
@@ -31,7 +30,8 @@ public class PublishedArticleDaoTest {
 
     @Test
     public void selectAllPublishedArticles() {
-        List<PublishedArticle> publishedArticles = publishedArticleDao.selectPublishedArticles();
+        QueryFilter filter = new PublishedArticleQueryFilter("pub_time", Order.Asc, PublishedArticleType.Original);
+        List<PublishedArticle> publishedArticles = publishedArticleDao.selectPublishedArticles(filter);
         for (PublishedArticle publishedArticle: publishedArticles) {
             System.out.println(publishedArticle.toString());
         }

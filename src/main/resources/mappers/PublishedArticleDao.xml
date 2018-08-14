@@ -17,7 +17,20 @@
     </resultMap>
     
     <select id="selectPublishedArticles" resultMap="publishedArticleMap">
-        select * from published_articles order by pub_time desc
+        select * from published_articles
+        <where>
+            <if test="type != null">type=#{type}</if>
+        </where>
+        <choose>
+            <when test="orderField != null and orderField != ''">
+                order by #{orderField}
+                <choose>
+                    <when test="order.name() == 'Asc'">ASC</when>
+                    <otherwise>DESC</otherwise>
+                </choose>
+            </when>
+            <otherwise>order by pub_time DESC </otherwise>
+        </choose>
     </select>
     <select id="selectPublishedArticlesByCategoryId" resultMap="publishedArticleMap" parameterType="int">
         select * from published_articles where category_id=#{categoryId}

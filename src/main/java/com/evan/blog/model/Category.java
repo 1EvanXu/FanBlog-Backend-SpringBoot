@@ -1,10 +1,13 @@
 package com.evan.blog.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Timestamp;
 
 public class Category extends BlogEntity{
 
     private String name;
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
     private Timestamp createdTime;
     private Integer numberOfIncludedPubArticles;
 

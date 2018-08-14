@@ -3,6 +3,7 @@ package com.evan.blog.service.impls;
 import com.evan.blog.model.Article;
 import com.evan.blog.model.PublishedArticle;
 import com.evan.blog.model.PublishingArticle;
+import com.evan.blog.model.QueryFilter;
 import com.evan.blog.pojo.PublishedArticleDetails;
 import com.evan.blog.pojo.PublishedArticleItem;
 import com.evan.blog.repository.ArticleDao;
@@ -38,7 +39,7 @@ public class PublishedArticleServiceImp implements PublishedArticleService {
     public PageInfo<PublishedArticleItem> getAllPublishedArticleItems(Integer pageIndex) {
         PageHelper.startPage(pageIndex, pageSize);
 
-        List<PublishedArticle> publishedArticles = publishedArticleDao.selectPublishedArticles();
+        List<PublishedArticle> publishedArticles = publishedArticleDao.selectPublishedArticles(null);
         PageInfo<PublishedArticle> publishedArticlePageInfo = new PageInfo<>(publishedArticles);
 
         long total = publishedArticlePageInfo.getTotal();
@@ -137,5 +138,12 @@ public class PublishedArticleServiceImp implements PublishedArticleService {
         publishedArticleDao.insertPublishingArticle(publishingArticle);
 
         publishedArticleCacheService.updateLatestPublishedArticle(pubId, title);
+    }
+
+    @Override
+    public PageInfo<PublishedArticle> getPublishedArticlesByFilter(Integer pageIndex, QueryFilter filter) {
+        PageHelper.startPage(pageIndex, pageSize);
+        List<PublishedArticle> publishedArticles = publishedArticleDao.selectPublishedArticles(filter);
+        return new PageInfo<>(publishedArticles);
     }
 }
