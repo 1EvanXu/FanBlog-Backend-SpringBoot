@@ -11,8 +11,14 @@
                      select="com.evan.blog.repository.PublishedArticleDao.selectCountOfPubArticlesByCategory"/>
     </resultMap>
 
-    <select id="selectCategories" resultMap="categoryMap">
+    <select id="selectCategories" resultMap="categoryMap" parameterType="queryFilter">
         select * from categories
+        <if test="orderField != null and orderField != ''">order by created_time
+            <choose>
+                <when test="order.name() == 'Asc'">ASC</when>
+                <otherwise>DESC</otherwise>
+            </choose>
+        </if>
     </select>
 
     <select id="selectCategoriesByName" resultMap="categoryMap">

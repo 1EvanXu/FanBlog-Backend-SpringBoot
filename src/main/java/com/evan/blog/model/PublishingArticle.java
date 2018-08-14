@@ -6,7 +6,7 @@ public class PublishingArticle extends BlogEntity {
     private Integer pubId;
     private String title;
     private PublishedArticleType type;
-    private Integer category;
+    private Category category;
     private Integer articleId;
 
 
@@ -29,11 +29,11 @@ public class PublishingArticle extends BlogEntity {
         this.type = type;
     }
 
-    public Integer getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(Integer category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 

@@ -3,8 +3,13 @@ import com.evan.blog.service.PublishedArticleCacheService;
 import com.evan.blog.service.PublishedArticleService;
 import com.evan.blog.util.RedisOperator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.RedisSystemException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service(value = "publishedArticleCacheService")
 public class PublishedArticleCacheServiceImp implements PublishedArticleCacheService {
@@ -91,4 +96,27 @@ public class PublishedArticleCacheServiceImp implements PublishedArticleCacheSer
         return true;
     }
 
+    @Override
+    public boolean removePublishedArticleFromCache(String key) {
+        RedisCallback<List<Object>> redisCallback = new RedisCallback<List<Object>>() {
+            @Override
+            public List<Object> doInRedis(RedisConnection connection) throws DataAccessException {
+                String[] strings = key.split(":");
+                Integer pubId = Integer.parseInt(strings[0]);
+                connection.openPipeline();
+                connection.zRem(rankBoard.getBytes(), key.getBytes());
+                connection.lRem(latest.getBytes(), 0L, key.getBytes());
+                connection.del((votedPrefix+pubId.toString()).getBytes());
+                connection.del((avrPrefix+pubId.toString()).getBytes());
+                return connection.closePipeline();
+            }
+        };
+        try {
+
+            redisOperator.pipeline(redisCallback);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

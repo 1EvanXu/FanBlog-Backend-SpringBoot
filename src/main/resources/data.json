@@ -1,5 +1,5 @@
 {
-  "tempArticleId": 20,
-  "title": "some title",
+  "articleIds": [8,10,15],
+  "status": "Deleted"
 
 }

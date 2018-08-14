@@ -1,8 +1,11 @@
 package com.evan.blog.service.impls;
 
 import com.evan.blog.model.Category;
+import com.evan.blog.model.QueryFilter;
 import com.evan.blog.repository.CategoryDao;
 import com.evan.blog.service.CategoryService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.session.SqlSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +20,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     CategoryDao categoryDao;
 
+    private int pageSize = 6;
+
     @Override
-    public List<Category> getCategories() {
-        return categoryDao.selectCategories();
+    public PageInfo<Category> getCategories(Integer pageIndex, QueryFilter queryFilter) {
+        PageHelper.startPage(pageIndex, pageSize);
+        List<Category> categories = categoryDao.selectCategories(queryFilter);
+        return new PageInfo<>(categories);
     }
 
     @Override

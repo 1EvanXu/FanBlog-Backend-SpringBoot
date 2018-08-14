@@ -44,13 +44,17 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void updateArticleStatus(ArticleStatus status, int id) {
+    @Transactional
+    public void updateArticleStatus(ArticleStatus status, List<Integer> ids) {
+        for (Integer id: ids) {
+            articleDao.updateArticleStatus(status, id);
+        }
 
     }
 
     @Override
     @Transactional
-    public void removeArticles(Integer[] articleIds) {
+    public void removeArticles(List<Integer> articleIds) {
         for (Integer id: articleIds) {
             articleDao.deleteArticle(id);
         }

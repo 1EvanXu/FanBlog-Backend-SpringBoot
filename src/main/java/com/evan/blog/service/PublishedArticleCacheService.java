@@ -9,4 +9,5 @@ public interface PublishedArticleCacheService {
     Long getArticleVisitorCount(Integer pubId);
     void updateArticlesRank(Integer pubId);
     boolean updateLatestPublishedArticle(Integer pubId, String title);
+    boolean removePublishedArticleFromCache(String key);
 }

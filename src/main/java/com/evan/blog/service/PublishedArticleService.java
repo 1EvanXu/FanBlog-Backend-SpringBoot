@@ -7,6 +7,8 @@ import com.evan.blog.pojo.PublishedArticleDetails;
 import com.evan.blog.pojo.PublishedArticleItem;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 public interface PublishedArticleService {
 
     PageInfo<PublishedArticleItem> getAllPublishedArticleItems(Integer pageIndex);
@@ -20,5 +22,7 @@ public interface PublishedArticleService {
     String getTitleByPubId(Integer pubId);
 
     void addPublishedArticle(PublishingArticle publishingArticle);
+
+    void deletePublishedArticles(List<Integer> pubIds) throws Exception;
 
 }

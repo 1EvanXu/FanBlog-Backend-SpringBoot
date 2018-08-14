@@ -5,21 +5,21 @@ import com.evan.blog.model.enums.Order;
 
 public class ArticleQueryFilter extends QueryFilter{
 
-    private ArticleStatus articleStatus;
+    private ArticleStatus status;
 
     public ArticleQueryFilter() {}
 
-    public ArticleQueryFilter(String orderField, Order order, ArticleStatus articleStatus) {
+    public ArticleQueryFilter(String orderField, Order order, ArticleStatus status) {
         super(orderField, order);
-        this.articleStatus = articleStatus;
+        this.status = status;
     }
 
-    public Integer getArticleStatus() {
-        return articleStatus.getStatusCode();
+    public Integer getStatus() {
+        return status.getStatusCode();
     }
 
-    public void setArticleStatus(ArticleStatus articleStatus) {
-        this.articleStatus = articleStatus;
+    public void setStatus(ArticleStatus status) {
+        this.status = status;
     }
 }
 

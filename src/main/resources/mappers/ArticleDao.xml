@@ -20,14 +20,22 @@
     <select id="selectAllArticles" parameterType="articleQueryFilter" resultMap="articleMap">
         <include refid="articleAbstract"/>
         <where>
-            <if test="articleStatus != null">status=#{articleStatus}</if>
+            <if test="status != null">status=#{status}</if>
         </where>
-        <if test="orderField != null and orderField != ''">order by #{orderField}
-          <choose>
-              <when test="order.name() == 'Asc'">ASC</when>
-              <otherwise>DESC</otherwise>
-          </choose>
-        </if>
+
+        <choose>
+            <when test="orderField == 'latest_edited_time'">
+                order by latest_edited_time
+            </when>
+            <otherwise>
+                order by created_time
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="order.name() == 'Asc'">ASC</when>
+            <otherwise>DESC</otherwise>
+        </choose>
+
     </select>
 
     <select id="selectArticleById" parameterType="int" resultMap="articleMap">

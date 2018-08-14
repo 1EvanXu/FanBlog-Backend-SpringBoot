@@ -287,12 +287,13 @@ public class RedisOperator {
         return results;
     }
 
-    public Object pipline(RedisCallback<Object> redisCallback) {
-        return redisTemplate.execute(redisCallback);
-    }
-
     public void zincr(String key, String value, double score) {
         redisTemplate.opsForZSet().incrementScore(key, value, score);
     }
+
+    public List<Object> pipeline(RedisCallback<List<Object>> redisCallback) {
+        return redisTemplate.execute(redisCallback);
+    }
+
 }
 

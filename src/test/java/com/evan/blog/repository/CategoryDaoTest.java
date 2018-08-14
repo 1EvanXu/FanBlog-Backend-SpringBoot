@@ -1,6 +1,8 @@
 package com.evan.blog.repository;
 
 import com.evan.blog.model.Category;
+import com.evan.blog.model.QueryFilter;
+import com.evan.blog.model.enums.Order;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +47,8 @@ public class CategoryDaoTest {
 
     @Test
     public void selectCategories() {
-        List<Category> categories = categoryDao.selectCategories();
-        System.out.println(categories);
+        List<Category> categories = categoryDao.selectCategories(new QueryFilter("created_time", Order.Desc));
+        categories.forEach(item -> System.out.println(item));
     }
 
     @Test

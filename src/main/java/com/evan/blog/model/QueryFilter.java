@@ -29,6 +29,13 @@ public class QueryFilter {
         this.order = order;
     }
 
+    @Override
+    public String toString() {
+        return "QueryFilter{" +
+                "orderField='" + orderField + '\'' +
+                ", order=" + order +
+                '}';
+    }
 }
 
 

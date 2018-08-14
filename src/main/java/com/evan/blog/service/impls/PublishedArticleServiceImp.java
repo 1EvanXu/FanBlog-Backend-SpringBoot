@@ -1,13 +1,14 @@
 package com.evan.blog.service.impls;
 
-import com.evan.blog.model.Article;
-import com.evan.blog.model.PublishedArticle;
-import com.evan.blog.model.PublishingArticle;
-import com.evan.blog.model.QueryFilter;
+import com.evan.blog.model.*;
+import com.evan.blog.model.enums.ArticleStatus;
 import com.evan.blog.pojo.PublishedArticleDetails;
 import com.evan.blog.pojo.PublishedArticleItem;
 import com.evan.blog.repository.ArticleDao;
+import com.evan.blog.repository.CategoryDao;
+import com.evan.blog.repository.CommentaryDao;
 import com.evan.blog.repository.PublishedArticleDao;
+import com.evan.blog.service.CategoryService;
 import com.evan.blog.service.PublishedArticleCacheService;
 import com.evan.blog.service.PublishedArticleService;
 import com.evan.blog.util.PubIdGenerator;
@@ -32,6 +33,11 @@ public class PublishedArticleServiceImp implements PublishedArticleService {
     ArticleDao articleDao;
     @Autowired
     PublishedArticleCacheService publishedArticleCacheService;
+    @Autowired
+    CategoryDao categoryDao;
+
+    @Autowired
+    CommentaryDao commentaryDao;
     @Autowired
     PubIdGenerator pubIdGenerator;
 
@@ -132,8 +138,12 @@ public class PublishedArticleServiceImp implements PublishedArticleService {
         article.setTitle(title);
 
         articleDao.updateArticle(article);
+        Category category = publishingArticle.getCategory();
 
-//        if (publishingArticle.getCategory() == null)
+        if (category.getId() == null) {
+            categoryDao.insertCategory(category);
+            publishingArticle.setCategory(category);
+        }
 
         publishedArticleDao.insertPublishingArticle(publishingArticle);
 
@@ -145,5 +155,21 @@ public class PublishedArticleServiceImp implements PublishedArticleService {
         PageHelper.startPage(pageIndex, pageSize);
         List<PublishedArticle> publishedArticles = publishedArticleDao.selectPublishedArticles(filter);
         return new PageInfo<>(publishedArticles);
+    }
+
+    @Override
+    @Transactional
+    public void deletePublishedArticles(List<Integer> pubIds) throws Exception {
+        for (Integer pubId: pubIds) {
+            Article article = publishedArticleDao.selectPublishedArticleByPubId(pubId).getArticle();
+            String key = article.getId() + ":" + article.getTitle();
+            if (publishedArticleCacheService.removePublishedArticleFromCache(key)) {
+                articleDao.updateArticleStatus(ArticleStatus.Deleted, article.getId());
+                commentaryDao.deleteCommentariesByPubId(pubId);
+                publishedArticleDao.deletePublishedArticle(pubId);
+            } else {
+                throw new Exception("Delete PublishedArticles Failed");
+            }
+        }
     }
 }

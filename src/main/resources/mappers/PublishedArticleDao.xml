@@ -16,7 +16,7 @@
                      select="com.evan.blog.repository.CommentaryDao.selectCommentariesCountByPubId"/>
     </resultMap>
     
-    <select id="selectPublishedArticles" resultMap="publishedArticleMap">
+    <select id="selectPublishedArticles" resultMap="publishedArticleMap" resultType="publishedArticleQueryFilter">
         select * from published_articles
         <where>
             <if test="type != null">type=#{type}</if>
@@ -53,7 +53,7 @@
 
     <insert id="insertPublishingArticle" parameterType="publishingArticle">
         insert into blog_dev.published_articles (pub_id, type, article_id, category_id)
-        values (#{pubId}, #{type}, #{articleId}, #{category});
+        values (#{pubId}, #{type}, #{articleId}, #{category.id});
     </insert>
 
     <delete id="deletePublishedArticle" parameterType="int">

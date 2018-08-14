@@ -53,5 +53,9 @@
     <select id="selectCommentariesByParentId" resultMap="childCommentaryMap" parameterType="int">
         select * from commentaries where parent=#{parentId}
     </select>
+    
+    <delete id="deleteCommentariesByPubId" parameterType="int">
+        delete from commentaries where belonged_pub_article=#{pubId}
+    </delete>
 
 </mapper>

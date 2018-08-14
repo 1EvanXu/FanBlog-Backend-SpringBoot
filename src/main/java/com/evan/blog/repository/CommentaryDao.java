@@ -11,4 +11,5 @@ public interface CommentaryDao {
     Integer selectCommentariesCountByPubId(Integer pubId);
     List<Commentary> selectCommentariesByParentId(Integer parentId);
     Commentary selectCommentaryById(Integer id);
+    void deleteCommentariesByPubId(Integer pubId);
 }
