@@ -19,6 +19,8 @@ public interface PublishedArticleService {
 
     PublishedArticleDetails getPublishedArticle(Integer pubId);
 
+    List<PublishedArticle> getLatestPublishedArticles(Integer limit);
+
     String getTitleByPubId(Integer pubId);
 
     void addPublishedArticle(PublishingArticle publishingArticle);

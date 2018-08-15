@@ -24,6 +24,15 @@ public enum ArticleStatus {
         }
     }
 
+    public static ArticleStatus getArticleStatus(String s) {
+        switch (s) {
+            case "Deleted"   : return Deleted;
+            case "Editing"   : return Editing;
+            case "Published" : return Published;
+            default: return null;
+        }
+    }
+
     @Override
     public String toString() {
         return name;

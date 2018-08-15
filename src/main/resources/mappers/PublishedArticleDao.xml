@@ -21,15 +21,14 @@
         <where>
             <if test="type != null">type=#{type}</if>
         </where>
+        order by pub_time
         <choose>
-            <when test="orderField != null and orderField != ''">
-                order by #{orderField}
-                <choose>
-                    <when test="order.name() == 'Asc'">ASC</when>
-                    <otherwise>DESC</otherwise>
-                </choose>
+            <when test="order != null and order.name() =='Asc'">
+                ASC
             </when>
-            <otherwise>order by pub_time DESC </otherwise>
+            <otherwise>
+                DESC
+            </otherwise>
         </choose>
     </select>
     <select id="selectPublishedArticlesByCategoryId" resultMap="publishedArticleMap" parameterType="int">
@@ -44,6 +43,10 @@
     </select>
     <select id="selectCountOfPubArticlesByCategory" parameterType="int" resultType="int">
         select count(*) from published_articles where category_id=#{categoryId};
+    </select>
+    
+    <select id="selectLatestPublishedArticles" parameterType="int" resultMap="publishedArticleMap">
+        select * from published_articles order by pub_time desc limit #{limit}
     </select>
 
     <insert id="insertPublishedArticle" parameterType="publishedArticle">

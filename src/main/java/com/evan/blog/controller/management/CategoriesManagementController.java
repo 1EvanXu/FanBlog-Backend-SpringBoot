@@ -2,6 +2,7 @@ package com.evan.blog.controller.management;
 
 import com.evan.blog.model.Category;
 import com.evan.blog.model.QueryFilter;
+import com.evan.blog.model.enums.Order;
 import com.evan.blog.pojo.BlogJSONResult;
 import com.evan.blog.pojo.ItemListData;
 import com.evan.blog.pojo.management.CategoriesManagementListItem;
@@ -22,9 +23,10 @@ public class CategoriesManagementController {
     @GetMapping(value = "/categories/p/{pageIndex}")
     public BlogJSONResult getCategoriesManagementList(
             @PathVariable("pageIndex") Integer pageIndex,
-            @RequestParam("filter") String filter) {
-        QueryFilter queryFilter = JsonUtil.jsonToPojo(filter, QueryFilter.class);
-        System.out.println(queryFilter.getOrder());
+            @RequestParam("orderField") String orderField,
+            @RequestParam("order") String order) {
+        QueryFilter queryFilter = new QueryFilter(orderField, Order.getOrder(order));
+
         PageInfo<Category> categoryPageInfo = categoryService.getCategories(pageIndex, queryFilter);
         List<CategoriesManagementListItem> items = new ArrayList<>();
 

@@ -9,6 +9,7 @@ import java.util.List;
 public interface PublishedArticleDao {
     List<PublishedArticle> selectPublishedArticles(QueryFilter filter);
     List<PublishedArticle> selectPublishedArticlesByCategoryId(Integer categoryId);
+    List<PublishedArticle> selectLatestPublishedArticles(Integer limit);
     PublishedArticle selectPublishedArticleByPubId(int pubId);
     String selectPublishedArticleTitleByPubId(int pubId);
     void insertPublishedArticle(PublishedArticle publishedArticle);

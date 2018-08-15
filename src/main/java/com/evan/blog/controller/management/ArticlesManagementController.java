@@ -3,6 +3,7 @@ package com.evan.blog.controller.management;
 import com.evan.blog.model.*;
 import com.evan.blog.model.enums.ArticleStatus;
 import com.evan.blog.model.enums.Order;
+import com.evan.blog.model.enums.PublishedArticleType;
 import com.evan.blog.pojo.BlogJSONResult;
 import com.evan.blog.pojo.ItemListData;
 import com.evan.blog.pojo.management.ArticlesStatusUpdate;
@@ -32,14 +33,12 @@ public class ArticlesManagementController {
     @GetMapping(path = "/publishedArticles/p/{pageIndex}")
     public BlogJSONResult getPublishedArticlesManagementList(
             @PathVariable("pageIndex") Integer pageIndex,
-            @RequestParam("filter") String filter) {
-        QueryFilter queryFilter;
-        try {
+            @RequestParam("orderField") String orderField,
+            @RequestParam("order") String order,
+            @RequestParam("type") String type
+    ) {
+        QueryFilter queryFilter = new PublishedArticleQueryFilter(orderField, Order.getOrder(order), PublishedArticleType.getType(type));
 
-            queryFilter = JsonUtil.jsonToPojo(filter, PublishedArticleQueryFilter.class);
-        } catch (NullPointerException e) {
-            queryFilter = null;
-        }
         PageInfo<PublishedArticle> publishedArticlePageInfo = publishedArticleService.getPublishedArticlesByFilter(pageIndex, queryFilter);
 
         List<PublishedArticlesManagementListItem> items = new ArrayList<>();
@@ -54,14 +53,10 @@ public class ArticlesManagementController {
     @GetMapping(path = "/drafts/p/{pageIndex}")
     public BlogJSONResult getDraftsManagementList(
             @PathVariable("pageIndex") Integer pageIndex,
-            @RequestParam("filter") String filter) {
-        ArticleQueryFilter queryFilter;
-        try {
-
-            queryFilter = JsonUtil.jsonToPojo(filter, ArticleQueryFilter.class);
-        } catch (NullPointerException e) {
-            queryFilter = new ArticleQueryFilter("created_time", Order.Desc, ArticleStatus.Editing);
-        }
+            @RequestParam("orderField") String orderField,
+            @RequestParam("order") String order
+    ) {
+        ArticleQueryFilter queryFilter = new ArticleQueryFilter(orderField, Order.getOrder(order), ArticleStatus.Editing);
 
         PageInfo<Article> articlePageInfo = articleService.getArticles(pageIndex, queryFilter);
 
@@ -75,14 +70,10 @@ public class ArticlesManagementController {
     @GetMapping(path = "/deletedArticles/p/{pageIndex}")
     public BlogJSONResult getDeletedArticlesManagementListItem(
             @PathVariable("pageIndex") Integer pageIndex,
-            @RequestParam("filter") String filter) {
-        ArticleQueryFilter queryFilter;
-        try {
-
-            queryFilter = JsonUtil.jsonToPojo(filter, ArticleQueryFilter.class);
-        } catch (NullPointerException e) {
-            queryFilter = new ArticleQueryFilter("latest_edited_time", Order.Desc, ArticleStatus.Deleted);
-        }
+            @RequestParam("orderField") String orderField,
+            @RequestParam("order") String order
+    ) {
+        ArticleQueryFilter queryFilter = new ArticleQueryFilter(orderField, Order.getOrder(order), ArticleStatus.Deleted);
 
         PageInfo<Article> articlePageInfo = articleService.getArticles(pageIndex, queryFilter);
 
@@ -102,7 +93,7 @@ public class ArticlesManagementController {
 
     @DeleteMapping(value = "/articles")
     public BlogJSONResult deleteArticlesPermanently(@RequestParam("ids") String ids) {
-        List<Integer> articleIds = JsonUtil.jsonToList(ids, Integer.class);
+        List<Integer> articleIds = transferIdParams(ids);
         System.out.println(articleIds);
         articleService.removeArticles(articleIds);
         return BlogJSONResult.ok();
@@ -110,8 +101,18 @@ public class ArticlesManagementController {
 
     @DeleteMapping(value = "/publishedArticles")
     public BlogJSONResult deletePublishedArticles(@RequestParam("ids") String ids) throws Exception {
-        List<Integer> pubIds = JsonUtil.jsonToList(ids, Integer.class);
+        List<Integer> pubIds = transferIdParams(ids);
+        System.out.println(pubIds);
         publishedArticleService.deletePublishedArticles(pubIds);
         return BlogJSONResult.ok();
+    }
+
+    private List<Integer> transferIdParams(String stringIds) {
+        String[] strings = stringIds.split(",");
+        List<Integer> ids = new ArrayList<>(strings.length);
+        for (String s: strings) {
+            ids.add(Integer.valueOf(s));
+        }
+        return ids;
     }
 }

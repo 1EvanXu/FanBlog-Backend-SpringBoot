@@ -2,6 +2,7 @@ package com.evan.blog.service.impls;
 
 import com.evan.blog.model.Article;
 import com.evan.blog.model.Category;
+import com.evan.blog.model.enums.ArticleStatus;
 import com.evan.blog.pojo.Draft;
 import com.evan.blog.repository.CategoryDao;
 import com.evan.blog.service.ArticleService;
@@ -41,14 +42,20 @@ public class EditorServiceImpl implements EditorService {
     }
 
     @Override
-    public long saveDraftInCache(Draft draft) {
+    public long saveDraftInCache(Draft draft) throws IllegalAccessException {
+        Long tempArticleId = draft.getTempArticleId();
         String key;
-        if (draft.getId() != null) {
+        String tempKey = null;
+        if(tempArticleId != null) {
+            tempKey = keyPrefix + "d:" + tempArticleId;
+        }
+        if (tempKey != null && draft.getId() != null) {
             key = keyPrefix + "a:" + draft.getId();
-        } else if(draft.getTempArticleId() != null) {
-            key = keyPrefix + "d:" + draft.getTempArticleId();
+            redisOperator.del(tempKey);
+        } else if (tempKey != null){
+            key = tempKey;
         } else {
-            throw new RuntimeException();
+            throw new IllegalAccessException("the property tempArticleId and id can't be null same time");
         }
 
         String content = JsonUtil.objectToJson(draft);
@@ -75,11 +82,13 @@ public class EditorServiceImpl implements EditorService {
             try {
                 semaphore.acquire();
                 Article article = articleService.queryArticleById(articleId);
-//                if (article.getStatus() != ArticleStatus.Editing) {
-//                    throw new IllegalAccessException("");
-//                }
+                if (article.getStatus() != ArticleStatus.Editing) {
+                    throw new IllegalAccessException("Can edit only when the status of article is Editing");
+                }
                 draft = new Draft(article);
             } catch (InterruptedException e) {
+                throw new RuntimeException(e.getMessage());
+            } catch (IllegalAccessException e) {
                 throw new RuntimeException(e.getMessage());
             } finally {
                 semaphore.release();
@@ -91,7 +100,9 @@ public class EditorServiceImpl implements EditorService {
     }
 
     @Override
-    public Integer saveArticle(Article article) {
+    public Integer saveArticle(Article article) throws IllegalAccessException {
+        Draft draft = new Draft(article);
+        saveDraftInCache(draft);
         if (article.getId() == null) {
             articleService.addArticle(article);
             return article.getId();

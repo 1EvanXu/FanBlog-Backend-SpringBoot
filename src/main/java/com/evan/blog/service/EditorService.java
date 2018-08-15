@@ -9,11 +9,11 @@ import java.util.List;
 public interface EditorService {
     long generateTempArticleId();
 
-    long saveDraftInCache(Draft draft);
+    long saveDraftInCache(Draft draft) throws IllegalAccessException;
 
     Draft getArticleContent(Integer articleId);
 
-    Integer saveArticle(Article article);
+    Integer saveArticle(Article article) throws IllegalAccessException;
 
     List<Category> searchCategoryByName(String keyword);
 }

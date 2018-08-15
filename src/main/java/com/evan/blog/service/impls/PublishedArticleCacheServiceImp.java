@@ -77,17 +77,15 @@ public class PublishedArticleCacheServiceImp implements PublishedArticleCacheSer
 
     @Override
     public void updateArticlesRank(Integer pubId) {
-
-        String title = publishedArticleService.getTitleByPubId(pubId);
-
-        String key = pubId.toString() + ":" + title;
+        
+        String key = pubId.toString();
 
         redisOperator.zincr(rankBoard, key, 1.0);
     }
 
     @Override
     public boolean updateLatestPublishedArticle(Integer pubId, String title) {
-        String value = pubId + ":" + title;
+        String value = pubId.toString();
         try {
             redisOperator.lpushrpop(latest, value, 8L);
         } catch (RedisSystemException e) {
@@ -98,22 +96,36 @@ public class PublishedArticleCacheServiceImp implements PublishedArticleCacheSer
 
     @Override
     public boolean removePublishedArticleFromCache(String key) {
+//        RedisCallback<List<Object>> redisCallback = new RedisCallback<List<Object>>() {
+//            @Override
+//            public List<Object> doInRedis(RedisConnection connection) throws DataAccessException {
+//                String[] strings = key.split(":");
+//                Integer pubId = Integer.parseInt(strings[0]);
+//                connection.openPipeline();
+//                connection.zRem(rankBoard.getBytes(), key.getBytes());
+//                connection.lRem(latest.getBytes(), 1L, key.getBytes());
+//                connection.del((votedPrefix+pubId.toString()).getBytes());
+//                connection.del((avrPrefix+pubId.toString()).getBytes());
+//                return connection.closePipeline();
+//            }
+//        };
         RedisCallback<List<Object>> redisCallback = new RedisCallback<List<Object>>() {
             @Override
             public List<Object> doInRedis(RedisConnection connection) throws DataAccessException {
                 String[] strings = key.split(":");
                 Integer pubId = Integer.parseInt(strings[0]);
                 connection.openPipeline();
-                connection.zRem(rankBoard.getBytes(), key.getBytes());
-                connection.lRem(latest.getBytes(), 0L, key.getBytes());
-                connection.del((votedPrefix+pubId.toString()).getBytes());
-                connection.del((avrPrefix+pubId.toString()).getBytes());
+//                connection.zScore(rankBoard.getBytes(), key.getBytes());
+//                connection.lRem(latest.getBytes(), 0L, key.getBytes());
+                connection.get((votedPrefix+pubId.toString()).getBytes());
+                connection.get((avrPrefix+pubId.toString()).getBytes());
                 return connection.closePipeline();
             }
         };
         try {
 
-            redisOperator.pipeline(redisCallback);
+            List<Object> pipeline = redisOperator.pipeline(redisCallback);
+            pipeline.forEach(i -> System.out.println("---" + i));
             return true;
         } catch (Exception e) {
             return false;

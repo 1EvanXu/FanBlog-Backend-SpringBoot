@@ -136,6 +136,7 @@ public class PublishedArticleServiceImp implements PublishedArticleService {
         article.setId(publishingArticle.getArticleId());
 
         article.setTitle(title);
+        article.setStatus(ArticleStatus.Published);
 
         articleDao.updateArticle(article);
         Category category = publishingArticle.getCategory();
@@ -162,14 +163,16 @@ public class PublishedArticleServiceImp implements PublishedArticleService {
     public void deletePublishedArticles(List<Integer> pubIds) throws Exception {
         for (Integer pubId: pubIds) {
             Article article = publishedArticleDao.selectPublishedArticleByPubId(pubId).getArticle();
-            String key = article.getId() + ":" + article.getTitle();
-            if (publishedArticleCacheService.removePublishedArticleFromCache(key)) {
-                articleDao.updateArticleStatus(ArticleStatus.Deleted, article.getId());
-                commentaryDao.deleteCommentariesByPubId(pubId);
-                publishedArticleDao.deletePublishedArticle(pubId);
-            } else {
-                throw new Exception("Delete PublishedArticles Failed");
-            }
+
+            articleDao.updateArticleStatus(ArticleStatus.Deleted, article.getId());
+            commentaryDao.deleteCommentariesByPubId(pubId);
+            publishedArticleDao.deletePublishedArticle(pubId);
+
         }
+    }
+
+    @Override
+    public List<PublishedArticle> getLatestPublishedArticles(Integer limit) {
+        return publishedArticleDao.selectLatestPublishedArticles(8);
     }
 }

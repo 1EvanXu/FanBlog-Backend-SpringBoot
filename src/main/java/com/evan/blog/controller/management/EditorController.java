@@ -35,7 +35,7 @@ public class EditorController {
     }
 
     @PutMapping(path = "/cache")
-    public BlogJSONResult saveDraftInCache(@RequestBody Draft draft) {
+    public BlogJSONResult saveDraftInCache(@RequestBody Draft draft) throws IllegalAccessException {
         long l = editorService.saveDraftInCache(draft);
         BlogJSONResult result = BlogJSONResult.ok(l);
         result.setMsg("SAVED");
@@ -43,14 +43,15 @@ public class EditorController {
     }
 
     @PostMapping(path = "/article")
-    public BlogJSONResult saveArticle(@RequestBody Article article) {
+    public BlogJSONResult saveArticle(@RequestBody Article article) throws IllegalAccessException {
         Integer articleId = editorService.saveArticle(article);
-        System.out.println(article);
+//        System.out.println(article);
         return BlogJSONResult.ok(articleId);
     }
 
     @PostMapping(path = "/publish")
     public BlogJSONResult publishArticle(@RequestBody PublishingArticle publishingArticle) {
+        System.out.println(publishingArticle.getCategory());
         publishedArticleService.addPublishedArticle(publishingArticle);
         BlogJSONResult result = BlogJSONResult.ok();
         result.setMsg("Publish succeed!");

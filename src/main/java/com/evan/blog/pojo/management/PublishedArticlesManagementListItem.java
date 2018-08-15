@@ -13,6 +13,7 @@ public class PublishedArticlesManagementListItem extends PublishedArticle {
     }
 
     public PublishedArticlesManagementListItem(PublishedArticle publishedArticle) {
+        this.setId(publishedArticle.getPubId());
         this.setPubId(publishedArticle.getPubId());
         this.setTitle(publishedArticle.getArticle().getTitle());
         this.setType(publishedArticle.getType());
