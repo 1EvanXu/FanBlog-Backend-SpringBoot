@@ -61,4 +61,17 @@ public class RedisOperatorTest {
         Long[] pipezcard = redisOperator.pipezcard(keys);
         assertEquals(keys.length, pipezcard.length);
     }
+
+    @Test
+    public void set1() {
+        String key = "test:expire";
+        redisOperator.set(key, "hello world!", 20);
+        long ttl = redisOperator.ttl(key);
+        boolean isExpired = ttl == 0 || ttl == -2;
+        System.out.println("ttl: "+ ttl + " expired:" + isExpired);
+        redisOperator.set(key, "Hello World!");
+        ttl = redisOperator.ttl(key);
+        isExpired = ttl == 0 || ttl == -2;
+        System.out.println("ttl: "+ ttl + " expired:" + isExpired);
+    }
 }

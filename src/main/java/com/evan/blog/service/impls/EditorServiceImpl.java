@@ -44,27 +44,29 @@ public class EditorServiceImpl implements EditorService {
     @Override
     public long saveDraftInCache(Draft draft) throws IllegalAccessException {
         Long tempArticleId = draft.getTempArticleId();
-        String key;
-        String tempKey = null;
-        if(tempArticleId != null) {
-            tempKey = keyPrefix + "d:" + tempArticleId;
-        }
-        if (tempKey != null && draft.getId() != null) {
-            key = keyPrefix + "a:" + draft.getId();
-            redisOperator.del(tempKey);
-        } else if (tempKey != null){
-            key = tempKey;
-        } else {
+        Integer articleId = draft.getId();
+
+        if (tempArticleId == null && articleId == null)
             throw new IllegalAccessException("the property tempArticleId and id can't be null same time");
+
+        String key = null;
+        String tempKey = tempArticleId != null ? keyPrefix + "d:" + tempArticleId : null;
+
+        if (tempKey == null) {
+            key =  keyPrefix + "a:" + articleId;
+        } else {
+            if (articleId == null) {
+                key = tempKey;
+            } else {
+                key =  keyPrefix + "a:" + articleId;
+                redisOperator.del(tempKey);
+            }
         }
 
         String content = JsonUtil.objectToJson(draft);
 
-        if (redisOperator.setIfAbsent(key, "")) {
-            redisOperator.set(key, content, randomExpireTime());
-        } else {
-            redisOperator.set(key, content);
-        }
+        redisOperator.set(key, content, randomExpireTime());
+
         return System.currentTimeMillis();
     }
 

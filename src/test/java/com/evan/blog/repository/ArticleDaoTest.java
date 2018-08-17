@@ -66,7 +66,7 @@ public class ArticleDaoTest {
 
     @Test
     public void updateArticle() {
-        String updatedTitle = "test updated article title 4";
+        String updatedTitle = "中文文章标题测试 4";
         Article article = new Article();
         article.setId(4);
         article.setTitle(updatedTitle);

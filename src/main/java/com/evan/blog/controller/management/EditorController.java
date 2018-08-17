@@ -37,6 +37,7 @@ public class EditorController {
     @PutMapping(path = "/cache")
     public BlogJSONResult saveDraftInCache(@RequestBody Draft draft) throws IllegalAccessException {
         long l = editorService.saveDraftInCache(draft);
+//        System.out.println(draft);
         BlogJSONResult result = BlogJSONResult.ok(l);
         result.setMsg("SAVED");
         return result;
