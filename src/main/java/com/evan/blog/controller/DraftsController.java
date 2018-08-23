@@ -27,7 +27,8 @@ public class DraftsController {
     public BlogJSONResult getDraftsManagementList(
             @PathVariable("pageIndex") Integer pageIndex,
             @RequestParam("orderField") String orderField,
-            @RequestParam("order") String order
+            @RequestParam("order") String order,
+            @RequestParam("status") String status
     ) {
         DraftQueryFilter queryFilter = new DraftQueryFilter(orderField, Order.getOrder(order), DraftStatus.Editing);
 

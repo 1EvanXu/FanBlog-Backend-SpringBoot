@@ -7,7 +7,7 @@ import com.evan.blog.pojo.ArticleDetails;
 import com.evan.blog.repository.DraftDao;
 import com.evan.blog.repository.CategoryDao;
 import com.evan.blog.repository.CommentaryDao;
-import com.evan.blog.repository.articleDao;
+import com.evan.blog.repository.ArticleDao;
 import com.evan.blog.service.ArticleCacheService;
 import com.evan.blog.service.ArticleService;
 import com.evan.blog.util.PubIdGenerator;
@@ -26,7 +26,7 @@ public class ArticleServiceImp implements ArticleService {
     private int pageSize = 6;
 
     @Autowired
-    articleDao articleDao;
+    ArticleDao ArticleDao;
     @Autowired
     DraftDao draftDao;
     @Autowired
@@ -43,7 +43,7 @@ public class ArticleServiceImp implements ArticleService {
     public PageInfo<ArticleItem> getAllArticleItems(Integer pageIndex) {
         PageHelper.startPage(pageIndex, pageSize);
 
-        List<Article> articles = articleDao.selectArticles(null);
+        List<Article> articles = ArticleDao.selectArticles(null);
         PageInfo<Article> publishedArticlePageInfo = new PageInfo<>(articles);
 
         long total = publishedArticlePageInfo.getTotal();
@@ -73,7 +73,7 @@ public class ArticleServiceImp implements ArticleService {
     @Override
     public PageInfo<ArticleItem> getArticleItemsByCategoryId(long categoryId, Integer pageIndex) {
         PageHelper.startPage(pageIndex, pageSize);
-        List<Article> articles = articleDao.selectArticlesByCategoryId(categoryId);
+        List<Article> articles = ArticleDao.selectArticlesByCategoryId(categoryId);
         PageInfo<Article> publishedArticlePageInfo = new PageInfo<>(articles);
 
         long total = publishedArticlePageInfo.getTotal();
@@ -102,7 +102,7 @@ public class ArticleServiceImp implements ArticleService {
     @Override
     public ArticleDetails getArticle(long pubId) {
 
-        Article article = articleDao.selectArticleByPubId(pubId);
+        Article article = ArticleDao.selectArticleByPubId(pubId);
 
         Long articleVisitorCount = articleCacheService.getArticleVisitorCount(pubId);
         Long voteCount = articleCacheService.getVoteCount(pubId);
@@ -117,7 +117,7 @@ public class ArticleServiceImp implements ArticleService {
 
     @Override
     public String getTitleByPubId(long pubId) {
-        return articleDao.selectArticleTitleByPubId(pubId);
+        return ArticleDao.selectArticleTitleByPubId(pubId);
     }
 
 
@@ -144,7 +144,7 @@ public class ArticleServiceImp implements ArticleService {
             tempArticle.setCategory(category);
         }
 
-        articleDao.insertTempArticle(tempArticle);
+        ArticleDao.insertTempArticle(tempArticle);
 
         articleCacheService.updateLatestPublishedArticle(pubId, title);
     }
@@ -152,7 +152,7 @@ public class ArticleServiceImp implements ArticleService {
     @Override
     public PageInfo<Article> getArticlesByFilter(Integer pageIndex, QueryFilter filter) {
         PageHelper.startPage(pageIndex, pageSize);
-        List<Article> articles = articleDao.selectArticles(filter);
+        List<Article> articles = ArticleDao.selectArticles(filter);
         return new PageInfo<>(articles);
     }
 
@@ -160,17 +160,17 @@ public class ArticleServiceImp implements ArticleService {
     @Transactional
     public void deleteArticles(List<Long> pubIds) throws Exception {
         for (Long pubId: pubIds) {
-            Draft draft = articleDao.selectArticleByPubId(pubId).getDraft();
+            Draft draft = ArticleDao.selectArticleByPubId(pubId).getDraft();
 
             draftDao.updateDraftStatus(DraftStatus.Deleted, draft.getId());
             commentaryDao.deleteCommentariesByPubId(pubId);
-            articleDao.deleteArticle(pubId);
+            ArticleDao.deleteArticle(pubId);
 
         }
     }
 
     @Override
     public List<Article> getLatestArticles(Integer limit) {
-        return articleDao.selectLatestArticles(8);
+        return ArticleDao.selectLatestArticles(8);
     }
 }

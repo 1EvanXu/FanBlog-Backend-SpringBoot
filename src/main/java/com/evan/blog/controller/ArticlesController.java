@@ -48,21 +48,19 @@ public class ArticlesController {
 
 
     @GetMapping(path = "items/p/{pageIndex}")
-    public BlogJSONResult getAllArticlesItems(@PathVariable int pageIndex) {
-        PageInfo<ArticleItem> publishedArticlePageInfo = articleService.getAllArticleItems(pageIndex);
+    public BlogJSONResult getAllArticlesItems(
+            @PathVariable int pageIndex,
+            @RequestParam(value = "categoryId", required = false) Long categoryId) {
+        PageInfo<ArticleItem> publishedArticlePageInfo = null;
+
+        if (categoryId != null) {
+            publishedArticlePageInfo = articleService.getArticleItemsByCategoryId(categoryId, pageIndex);
+        } else {
+            publishedArticlePageInfo = articleService.getAllArticleItems(pageIndex);
+        }
         List<ArticleItem> articleItems = publishedArticlePageInfo.getList();
 
         return BlogJSONResult.ok(new ItemCollection((int)publishedArticlePageInfo.getTotal(), articleItems));
-
-    }
-
-    @GetMapping(path = "items/p/{pageIndex}")
-    public BlogJSONResult getArticlesItemsByCategory(@PathVariable int pageIndex,
-                                                     @RequestParam("categoryId") long categoryId) {
-        PageInfo<ArticleItem> ArticlePageInfo = articleService.getArticleItemsByCategoryId(categoryId, pageIndex);
-        List<ArticleItem> articleItems = ArticlePageInfo.getList();
-
-        return BlogJSONResult.ok(new ItemCollection((int)ArticlePageInfo.getTotal(), articleItems));
 
     }
 

@@ -3,6 +3,7 @@ package com.evan.blog.service.impls;
 import com.evan.blog.model.Article;
 import com.evan.blog.model.Category;
 import com.evan.blog.pojo.SideInfoItem;
+import com.evan.blog.repository.ArticleDao;
 import com.evan.blog.repository.CategoryDao;
 import com.evan.blog.service.ArticleService;
 import com.evan.blog.service.SideInfoService;
@@ -26,14 +27,14 @@ public class SideInfoServiceImp implements SideInfoService {
     CategoryDao categoryDao;
 
     @Autowired
-    ArticleService articleService;
+    ArticleDao articleDao;
 
     @Override
     public List<SideInfoItem> getLatestPublishedArticle() {
 //        final String key = "latest_pub_articles:";
         List<SideInfoItem> sideInfoItems = new ArrayList<>();
 //        List<String> latestPubArticles = redisOperator.lrange(key, 0, 9);
-        List<Article> latestArticles = articleService.getLatestArticles(8);
+        List<Article> latestArticles = articleDao.selectLatestArticles(8);
         latestArticles.forEach((a) -> {
             sideInfoItems.add(new SideInfoItem(a.getPubId(), a.getDraft().getTitle(), null));
         });
@@ -55,7 +56,7 @@ public class SideInfoServiceImp implements SideInfoService {
             if (stringTypedTuple.getScore() > 0) {
                 String info[] = stringTypedTuple.getValue().split(":");
                 Long id = Long.parseLong(info[0]);
-                String name = articleService.getTitleByPubId(id);
+                String name = articleDao.selectArticleTitleByPubId(id);
                 Integer score = stringTypedTuple.getScore().intValue();
                 sideInfoItems.add(new SideInfoItem(id, name, score));
 

@@ -15,6 +15,7 @@ import java.util.List;
 public class CommentaryServiceImpl implements CommentaryService {
 
     private int pageSize = 6;
+
     @Autowired
     CommentaryDao commentaryDao;
 

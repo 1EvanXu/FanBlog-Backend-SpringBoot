@@ -8,7 +8,7 @@
         <result column="category_name" property="name"/>
         <result column="created_time" property="createdTime"/>
         <association column="id" property="numberOfIncludedPubArticles"
-                     select="com.evan.blog.repository.articleDao.selectCountOfArticlesByCategory"/>
+                     select="com.evan.blog.repository.ArticleDao.selectCountOfArticlesByCategory"/>
     </resultMap>
 
     <select id="selectCategories" resultMap="categoryMap" parameterType="queryFilter">

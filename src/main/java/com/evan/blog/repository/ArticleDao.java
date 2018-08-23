@@ -6,7 +6,7 @@ import com.evan.blog.model.QueryFilter;
 
 import java.util.List;
 
-public interface articleDao {
+public interface ArticleDao {
     List<Article> selectArticles(QueryFilter filter);
     List<Article> selectArticlesByCategoryId(long categoryId);
     List<Article> selectLatestArticles(Integer limit);

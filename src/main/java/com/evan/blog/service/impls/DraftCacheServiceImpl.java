@@ -4,6 +4,8 @@ import com.evan.blog.model.Draft;
 import com.evan.blog.model.Category;
 import com.evan.blog.model.enums.DraftStatus;
 import com.evan.blog.pojo.TempDraft;
+import com.evan.blog.repository.CategoryDao;
+import com.evan.blog.repository.DraftDao;
 import com.evan.blog.service.DraftService;
 import com.evan.blog.service.CategoryService;
 import com.evan.blog.service.DraftCacheService;
@@ -29,10 +31,10 @@ public class DraftCacheServiceImpl implements DraftCacheService {
     RedisOperator redisOperator;
 
     @Autowired
-    DraftService draftService;
+    DraftDao draftDao;
 
     @Autowired
-    CategoryService categoryService;
+    CategoryDao categoryDao;
 
     @Override
     public long generateTempArticleId() {
@@ -82,7 +84,7 @@ public class DraftCacheServiceImpl implements DraftCacheService {
             // 加锁防止缓存穿透
             try {
                 semaphore.acquire();
-                Draft draft = draftService.queryDraftById(draftId);
+                Draft draft = draftDao.selectDraftById(draftId);
                 if (draft.getStatus() != DraftStatus.Editing) {
                     throw new IllegalAccessException("Can edit only when the status of draft is Editing");
                 }
@@ -103,17 +105,17 @@ public class DraftCacheServiceImpl implements DraftCacheService {
         TempDraft tempDraft = new TempDraft(draft);
         saveDraftInCache(tempDraft);
         if (draft.getId() == null) {
-            draftService.addDraft(draft);
+            draftDao.insertDraft(draft);
             return draft.getId();
         }
 
-        draftService.updateDraft(draft);
+        draftDao.updateDraft(draft);
         return draft.getId();
     }
 
     @Override
-    public List<Category> searchCategoryByName(String keyword) {
-        return categoryService.findCategoriesByName(keyword);
+    public List<Category> searchCategoryByName(String keywords) {
+        return categoryDao.selectCategoriesByName(keywords);
     }
 
     //防止缓存雪崩

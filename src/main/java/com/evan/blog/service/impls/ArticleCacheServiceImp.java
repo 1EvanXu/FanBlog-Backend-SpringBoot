@@ -24,8 +24,6 @@ public class ArticleCacheServiceImp implements ArticleCacheService {
 
     @Autowired
     RedisOperator redisOperator;
-    @Autowired
-    ArticleService articleService;
 
     @Override
     public boolean vote(Long pubId, String ip) {

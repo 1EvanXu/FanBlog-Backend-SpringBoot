@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 public class ArticleDaoTest {
 
     @Autowired
-    articleDao articleDao;
+    ArticleDao ArticleDao;
     @Autowired
     DraftDao draftDao;
     @Autowired
@@ -31,60 +31,64 @@ public class ArticleDaoTest {
     @Test
     public void selectAllArticles() {
         QueryFilter filter = new ArticleQueryFilter("pub_time", Order.Asc, ArticleType.Original);
-        List<Article> articles = articleDao.selectArticles(filter);
+        List<Article> articles = ArticleDao.selectArticles(filter);
         for (Article article : articles) {
-            System.out.println(article.toString());
+            assertEquals(ArticleType.Original, article.getType());
         }
+        Article article1 = articles.get(0);
+        Article article2 = articles.get(1);
+        int r = article1.getPubTime().compareTo(article2.getPubTime());
+        assertTrue(r < 0);
     }
 
     @Test
     public void selectArticlesByCategory() {
-        List<Article> articles = articleDao.selectArticlesByCategoryId(2);
+        List<Article> articles = ArticleDao.selectArticlesByCategoryId(2);
         for (Article article : articles) {
-            System.out.println(article.toString());
+            assertEquals(2, article.getCategory().getId().intValue());
         }
     }
 
     @Test
     public void selectArticleByPubId() {
-        Article article = articleDao.selectArticleByPubId(180711661);
+        Article article = ArticleDao.selectArticleByPubId(180711661);
         System.out.println(article);
-        assertEquals("test updated article title 4", article.getDraft().getTitle());
+        assertEquals("中文文章标题测试 4", article.getDraft().getTitle());
         assertEquals("Java", article.getCategory().getName());
     }
 
     @Test
     public void selectArticleTitleByPubId() {
-        String title = articleDao.selectArticleTitleByPubId(180721534);
+        String title = ArticleDao.selectArticleTitleByPubId(180721534);
         assertEquals("test article title 5", title);
 
     }
 
-    @Test
-    public void insertArticle() {
-        long pubId = pubIdGenerator.generatePubId();
-        Draft draft = draftDao.selectDraftById(3);
-        Category category = categoryDao.selectCategoryById(2);
-        Article article = new Article(
-                pubId,
-                ArticleType.Reproduced,
-                draft,
-                category
-        );
-        articleDao.insertArticle(article);
-    }
+//    @Test
+//    public void insertArticle() {
+//        long pubId = pubIdGenerator.generatePubId();
+//        Draft draft = draftDao.selectDraftById(3);
+//        Category category = categoryDao.selectCategoryById(2);
+//        Article article = new Article(
+//                pubId,
+//                ArticleType.Reproduced,
+//                draft,
+//                category
+//        );
+//        ArticleDao.insertArticle(article);
+//    }
 
 
-    @Test
-    public void deleteArticle() {
-        articleDao.deleteArticle(180711508);
-        Article article = articleDao.selectArticleByPubId(180711508);
-        assertNull(article);
-    }
+//    @Test
+//    public void deleteArticle() {
+//        ArticleDao.deleteArticle(180711508);
+//        Article article = ArticleDao.selectArticleByPubId(180711508);
+//        assertNull(article);
+//    }
 
     @Test
     public void selectCountOfPubArticlesByCategory() {
-        Integer count = articleDao.selectCountOfArticlesByCategory(2);
-        assertEquals(1, count.intValue());
+        Integer count = ArticleDao.selectCountOfArticlesByCategory(2);
+        assertEquals(6, count.intValue());
     }
 }
