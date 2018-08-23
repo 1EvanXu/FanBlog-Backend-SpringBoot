@@ -1,16 +1,16 @@
 package com.evan.blog.pojo.management;
 
-import com.evan.blog.model.Article;
+import com.evan.blog.model.Draft;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties({"status", "htmlContent", "markdownContent"})
-public class DraftsManagementListItem extends Article {
+public class DraftsManagementListItem extends Draft {
     public DraftsManagementListItem() { }
 
-    public DraftsManagementListItem(Article article) {
-        this.setId(article.getId());
-        this.setTitle(article.getTitle());
-        this.setCreatedTime(article.getCreatedTime());
-        this.setLatestEditedTime(article.getLatestEditedTime());
+    public DraftsManagementListItem(Draft draft) {
+        this.setId(draft.getId());
+        this.setTitle(draft.getTitle());
+        this.setCreatedTime(draft.getCreatedTime());
+        this.setLatestEditedTime(draft.getLatestEditedTime());
     }
 }

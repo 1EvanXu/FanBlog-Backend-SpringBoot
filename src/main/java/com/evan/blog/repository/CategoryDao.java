@@ -10,8 +10,8 @@ public interface CategoryDao {
     List<Category> selectCategories(QueryFilter filter);
     List<Category> selectCategoriesByName(@Param("categoryName") String categoryName);
     List<Category> selectCategoriesOrderByIncludedArticles();
-    Category selectCategoryById(Integer id);
-    String selectCategoryNameById(Integer id);
+    Category selectCategoryById(long id);
+    String selectCategoryNameById(long id);
     void insertCategory(Category category);
-    void deleteCategory(Integer id);
+    void deleteCategory(long id);
 }

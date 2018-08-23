@@ -1,7 +1,7 @@
 package com.evan.blog.service.impls;
 
-import com.evan.blog.model.Article;
-import com.evan.blog.service.ArticleService;
+import com.evan.blog.model.Draft;
+import com.evan.blog.service.DraftService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +12,14 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ArticleServiceImplTest {
+public class DraftServiceImplTest {
 
     @Autowired
-    ArticleService service;
+    DraftService service;
 
     @Test
     public void queryArticleById() {
-        Article article = service.queryArticleById(1);
-        assertEquals("test article title 1", article.getTitle());
+        Draft draft = service.queryDraftById(1);
+        assertEquals("test draft title 1", draft.getTitle());
     }
 }

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.evan.blog.repository.articleDao">
+    <resultMap id="articleMap" type="article">
+        <id property="id" column="id" />
+        <result property="pubId" column="pub_id"/>
+        <result property="pubTime" column="pub_time" />
+        <result property="type" column="type"/>
+        <association property="draft" column="draft_id"
+                     select="com.evan.blog.repository.DraftDao.selectDraftById" />
+        <association property="category" column="category_id"
+                     select="com.evan.blog.repository.CategoryDao.selectCategoryById"/>
+        <association property="commentariesCount" column="pub_id"
+                     select="com.evan.blog.repository.CommentaryDao.selectCommentariesCountByPubId"/>
+    </resultMap>
+    
+    <select id="selectArticles" resultMap="articleMap" resultType="articleQueryFilter">
+        select * from articles
+        <where>
+            <if test="type != null">type=#{type}</if>
+        </where>
+        order by pub_time
+        <choose>
+            <when test="order != null and order.name() =='Asc'">
+                ASC
+            </when>
+            <otherwise>
+                DESC
+            </otherwise>
+        </choose>
+    </select>
+    <select id="selectArticlesByCategoryId" resultMap="articleMap" parameterType="long">
+        select * from articles where category_id=#{categoryId}
+    </select>
+    <select id="selectArticleTitleByPubId" resultType="string" parameterType="long">
+        select d.title from articles as a inner join drafts as d on a.draft_id=d.id where a.pub_id=#{pubId}
+    </select>
+
+    <select id="selectArticleByPubId" parameterType="long" resultMap="articleMap">
+        select * from articles where pub_id=#{pubId};
+    </select>
+    <select id="selectCountOfArticlesByCategory" parameterType="long" resultType="int">
+        select count(*) from articles where category_id=#{categoryId};
+    </select>
+    
+    <select id="selectLatestArticles" parameterType="long" resultMap="articleMap">
+        select * from articles order by pub_time desc limit #{limit}
+    </select>
+
+    <insert id="insertArticle" parameterType="article">
+        insert into articles(pub_id, type, draft_id, category_id)
+        values (#{pubId}, #{type}, #{draft.id}, #{category.id});
+    </insert>
+
+    <insert id="insertTempArticle" parameterType="tempArticle">
+        insert into articles (pub_id, type, draft_id, category_id)
+        values (#{pubId}, #{type}, #{articleId}, #{category.id});
+    </insert>
+
+    <delete id="deleteArticle" parameterType="long">
+        delete from articles where pub_id=#{pubId};
+    </delete>
+</mapper>

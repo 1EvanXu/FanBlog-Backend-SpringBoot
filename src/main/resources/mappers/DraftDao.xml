@@ -2,22 +2,22 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.evan.blog.repository.ArticleDao">
-    <resultMap id="articleMap" type="article">
+<mapper namespace="com.evan.blog.repository.DraftDao">
+    <resultMap id="draftMap" type="draft">
         <id property="id" column="id"/>
         <result property="title" column="title"/>
         <result property="createdTime" column="created_time"/>
         <result property="latestEditedTime" column="latest_edited_time"/>
-        <result property="status" column="status" typeHandler="com.evan.blog.repository.typehandlers.ArticleStatusTypeHandler"/>
+        <result property="status" column="status" typeHandler="com.evan.blog.repository.typehandlers.DraftStatusTypeHandler"/>
         <result property="htmlContent" column="html_content"/>
         <result property="markdownContent" column="md_content"/>
     </resultMap>
 
     <sql id="articleAbstract">
-        select id, title, created_time, latest_edited_time, status from articles
+        select id, title, created_time, latest_edited_time, status from drafts
     </sql>
 
-    <select id="selectAllArticles" parameterType="articleQueryFilter" resultMap="articleMap">
+    <select id="selectAllDrafts" parameterType="articleQueryFilter" resultMap="draftMap">
         <include refid="articleAbstract"/>
         <where>
             <if test="status != null">status=#{status}</if>
@@ -38,23 +38,23 @@
 
     </select>
 
-    <select id="selectArticleById" parameterType="int" resultMap="articleMap">
-        select * from articles where id=#{id};
+    <select id="selectDraftById" parameterType="long" resultMap="draftMap">
+        select * from drafts where id=#{id};
     </select>
 
-    <select id="selectArticlesCount" resultType="int">
-        select count(*) from articles;
+    <select id="selectDraftsCount" resultType="long">
+        select count(*) from drafts;
     </select>
 
-    <insert id="insertArticle" parameterType="article" useGeneratedKeys="true" keyProperty="id">
-        insert into articles(title, status, html_content, md_content)
+    <insert id="insertDraft" parameterType="draft" useGeneratedKeys="true" keyProperty="id">
+        insert into drafts(title, status, html_content, md_content)
         values (#{title}, #{status}, #{htmlContent}, #{markdownContent});
     </insert>
-    <update id="updateArticleStatus">
-        update articles set status=#{statusCode} where id=${id};
+    <update id="updateDraftStatus">
+        update drafts set status=#{statusCode} where id=${id};
     </update>
-    <update id="updateArticle" parameterType="article">
-        update articles
+    <update id="updateDraft" parameterType="draft">
+        update drafts
         <set>
             <if test="title != null and title != ''">title=#{title},</if>
             <if test="status != null">status=#{status},</if>
@@ -63,7 +63,7 @@
         </set>
         where id=#{id};
     </update>
-    <delete id="deleteArticle" parameterType="int">
-        delete from articles where id=#{id};
+    <delete id="deleteDraft" parameterType="long">
+        delete from drafts where id=#{id};
     </delete>
 </mapper>

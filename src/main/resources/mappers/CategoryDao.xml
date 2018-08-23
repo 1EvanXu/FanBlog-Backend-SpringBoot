@@ -8,7 +8,7 @@
         <result column="category_name" property="name"/>
         <result column="created_time" property="createdTime"/>
         <association column="id" property="numberOfIncludedPubArticles"
-                     select="com.evan.blog.repository.PublishedArticleDao.selectCountOfPubArticlesByCategory"/>
+                     select="com.evan.blog.repository.articleDao.selectCountOfArticlesByCategory"/>
     </resultMap>
 
     <select id="selectCategories" resultMap="categoryMap" parameterType="queryFilter">
@@ -29,23 +29,23 @@
         order by created_time DESC;
     </select>
 
-    <select id="selectCategoryById" resultMap="categoryMap" parameterType="int">
+    <select id="selectCategoryById" resultMap="categoryMap" parameterType="long">
         select * from categories where id=#{id};
     </select>
 
-    <select id="selectCategoryNameById" resultType="string" parameterType="int">
+    <select id="selectCategoryNameById" resultType="string" parameterType="long">
         select category_name from categories where id=#{id};
     </select>
     <select id="selectCategoriesOrderByIncludedArticles" resultMap="categoryMap">
         select * from categories as c order by
-        (select count(*) from published_articles where category_id=c.id) desc
+        (select count(*) from articles where category_id=c.id) desc
     </select>
 
     <insert id="insertCategory" parameterType="category" useGeneratedKeys="true" keyProperty="id">
         insert into categories(category_name) values(#{name});
     </insert>
 
-    <delete id="deleteCategory" parameterType="int">
+    <delete id="deleteCategory" parameterType="long">
         delete from categories where id=#{id}
     </delete>
 </mapper>

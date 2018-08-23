@@ -1,12 +1,12 @@
 package com.evan.blog.pojo.management;
 
-import com.evan.blog.model.enums.ArticleStatus;
+import com.evan.blog.model.enums.DraftStatus;
 
 import java.util.List;
 
 public class ArticlesStatusUpdate {
     private List<Integer> articleIds;
-    private ArticleStatus status;
+    private DraftStatus status;
 
     public ArticlesStatusUpdate() {
     }
@@ -19,11 +19,11 @@ public class ArticlesStatusUpdate {
         this.articleIds = articleIds;
     }
 
-    public ArticleStatus getStatus() {
+    public DraftStatus getStatus() {
         return status;
     }
 
-    public void setStatus(ArticleStatus status) {
+    public void setStatus(DraftStatus status) {
         this.status = status;
     }
 

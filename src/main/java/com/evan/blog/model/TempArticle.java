@@ -1,31 +1,31 @@
 package com.evan.blog.model;
 
-import com.evan.blog.model.enums.PublishedArticleType;
+import com.evan.blog.model.enums.ArticleType;
 
-public class PublishingArticle extends BlogEntity {
-    private Integer pubId;
+public class TempArticle extends BlogEntity {
+    private Long pubId;
     private String title;
-    private PublishedArticleType type;
+    private ArticleType type;
     private Category category;
-    private Integer articleId;
+    private Long draftId;
 
 
-    public PublishingArticle() {
+    public TempArticle() {
     }
 
-    public Integer getPubId() {
+    public Long getPubId() {
         return pubId;
     }
 
-    public void setPubId(Integer pubId) {
+    public void setPubId(Long pubId) {
         this.pubId = pubId;
     }
 
-    public PublishedArticleType getType() {
+    public ArticleType getType() {
         return type;
     }
 
-    public void setType(PublishedArticleType type) {
+    public void setType(ArticleType type) {
         this.type = type;
     }
 
@@ -37,12 +37,12 @@ public class PublishingArticle extends BlogEntity {
         this.category = category;
     }
 
-    public Integer getArticleId() {
-        return articleId;
+    public Long getDraftId() {
+        return draftId;
     }
 
-    public void setArticleId(Integer articleId) {
-        this.articleId = articleId;
+    public void setDraftId(Long articleId) {
+        this.draftId = articleId;
     }
 
     public String getTitle() {
@@ -55,12 +55,12 @@ public class PublishingArticle extends BlogEntity {
 
     @Override
     public String toString() {
-        return "PublishingArticle{" +
+        return "TempArticle{" +
                 "pubId=" + pubId +
                 ", title='" + title + '\'' +
                 ", type=" + type +
                 ", category=" + category +
-                ", articleId=" + articleId +
+                ", articleId=" + draftId +
                 '}';
     }
 }

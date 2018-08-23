@@ -20,11 +20,12 @@ public class CategoryDaoTest {
     @Autowired
     private CategoryDao categoryDao;
 
-    @Test
-    public void insertCategory() {
-        Category category = new Category("TypeScript");
-        categoryDao.insertCategory(category);
-    }
+//    @Test
+//    public void insertCategory() {
+//        Category category = new Category("分布式");
+//        categoryDao.insertCategory(category);
+//        assertNotNull(category.getId());
+//    }
 
     @Test
     public void selectCategoryById() {
@@ -42,13 +43,16 @@ public class CategoryDaoTest {
     @Test
     public void selectCategoriesByName() {
         List<Category> categories = categoryDao.selectCategoriesByName("Type");
-        System.out.println(categories);
+        assertFalse(categories.isEmpty());
     }
 
     @Test
     public void selectCategories() {
         List<Category> categories = categoryDao.selectCategories(new QueryFilter("created_time", Order.Desc));
-        categories.forEach(item -> System.out.println(item));
+        Category c1 = categories.get(0);
+        Category c2 = categories.get(1);
+        int r = c1.getCreatedTime().compareTo(c2.getCreatedTime());
+        assertTrue(r > 0);
     }
 
     @Test
@@ -57,10 +61,10 @@ public class CategoryDaoTest {
         System.out.println(categories);
     }
 
-    @Test
-    public void deleteCategory() {
-        categoryDao.deleteCategory(5);
-        Category category = categoryDao.selectCategoryById(5);
-        assertNull(category);
-    }
+//    @Test
+//    public void deleteCategory() {
+//        categoryDao.deleteCategory(5);
+//        Category category = categoryDao.selectCategoryById(5);
+//        assertNull(category);
+//    }
 }

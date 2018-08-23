@@ -1,6 +1,6 @@
 package com.evan.blog.service.impls;
 
-import com.evan.blog.service.PublishedArticleCacheService;
+import com.evan.blog.service.ArticleCacheService;
 import com.evan.blog.util.IPUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,24 +12,24 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class PublishedArticleCacheServiceImpTest {
+public class ArticleCacheServiceImpTest {
 
     @Autowired
-    PublishedArticleCacheService publishedArticleCacheService;
+    ArticleCacheService articleCacheService;
     @Test
     public void vote() {
         boolean vote;
         String ip = IPUtil.getRandomIp();
-        vote = publishedArticleCacheService.vote(180711661, ip);
+        vote = articleCacheService.vote(180711661L, ip);
         assertTrue(vote);
-        vote = publishedArticleCacheService.vote(180711661, ip);
+        vote = articleCacheService.vote(180711661L, ip);
         assertFalse(vote);
 
     }
 
     @Test
     public void hasVoted() {
-        boolean hasVoted = publishedArticleCacheService.hasVoted(180721499, "192.168.1.101");
+        boolean hasVoted = articleCacheService.hasVoted(180721499L, "192.168.1.101");
         System.out.println(hasVoted);
         assertFalse(hasVoted);
     }
@@ -37,7 +37,7 @@ public class PublishedArticleCacheServiceImpTest {
     @Test
     public void getVoteCount() {
 
-        Long voteCount = publishedArticleCacheService.getVoteCount(180711661);
+        Long voteCount = articleCacheService.getVoteCount(180711661L);
         assertEquals(1L, voteCount.longValue());
     }
 

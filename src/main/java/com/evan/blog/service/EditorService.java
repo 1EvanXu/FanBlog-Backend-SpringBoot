@@ -1,19 +1,19 @@
 package com.evan.blog.service;
 
-import com.evan.blog.model.Article;
+import com.evan.blog.model.Draft;
 import com.evan.blog.model.Category;
-import com.evan.blog.pojo.Draft;
+import com.evan.blog.pojo.TempDraft;
 
 import java.util.List;
 
 public interface EditorService {
     long generateTempArticleId();
 
-    long saveDraftInCache(Draft draft) throws IllegalAccessException;
+    long saveDraftInCache(TempDraft tempDraft) throws IllegalAccessException;
 
-    Draft getArticleContent(Integer articleId);
+    TempDraft getArticleContent(Integer articleId);
 
-    Integer saveArticle(Article article) throws IllegalAccessException;
+    Long saveArticle(Draft draft) throws IllegalAccessException;
 
     List<Category> searchCategoryByName(String keyword);
 }

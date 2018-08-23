@@ -9,8 +9,8 @@
         <!--<setting name="aggressiveLazyLoading" value="false" />-->
     </settings>
     <typeHandlers>
-        <typeHandler handler="com.evan.blog.repository.typehandlers.ArticleStatusTypeHandler"
-                     javaType="com.evan.blog.model.enums.ArticleStatus"/>
+        <typeHandler handler="com.evan.blog.repository.typehandlers.DraftStatusTypeHandler"
+                     javaType="com.evan.blog.model.enums.DraftStatus"/>
     </typeHandlers>
 
 </configuration>

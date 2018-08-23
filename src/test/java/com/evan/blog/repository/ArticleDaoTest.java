@@ -1,18 +1,16 @@
 package com.evan.blog.repository;
 
-import com.evan.blog.model.Article;
-import com.evan.blog.model.ArticleQueryFilter;
-import com.evan.blog.model.QueryFilter;
-import com.evan.blog.model.enums.ArticleStatus;
+import com.evan.blog.model.*;
 import com.evan.blog.model.enums.Order;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.evan.blog.model.enums.ArticleType;
+import com.evan.blog.util.PubIdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -22,64 +20,71 @@ import static org.junit.Assert.*;
 public class ArticleDaoTest {
 
     @Autowired
-    private ArticleDao articleDao;
+    articleDao articleDao;
+    @Autowired
+    DraftDao draftDao;
+    @Autowired
+    CategoryDao categoryDao;
+    @Resource(name = "pubIdGenerator")
+    PubIdGenerator pubIdGenerator;
 
     @Test
-    public void getAllArticlesByCreatedTime() {
-        ArticleQueryFilter queryFilter = new ArticleQueryFilter("created_time", Order.Asc, ArticleStatus.Editing);
-        PageHelper.startPage(0, 4);
-        List<Article> articles = articleDao.selectAllArticles(queryFilter);
-        PageInfo<Article> pageInfo = new PageInfo<>(articles);
+    public void selectAllArticles() {
+        QueryFilter filter = new ArticleQueryFilter("pub_time", Order.Asc, ArticleType.Original);
+        List<Article> articles = articleDao.selectArticles(filter);
         for (Article article : articles) {
-            System.out.println(article);
+            System.out.println(article.toString());
         }
-        assertEquals(8, pageInfo.getTotal());
     }
 
     @Test
-    public void selectArticleById() {
-        Article article = articleDao.selectArticleById(1);
-        String expectedArticleTitle = "test article title 1";
-        assertEquals(expectedArticleTitle, article.getTitle());
+    public void selectArticlesByCategory() {
+        List<Article> articles = articleDao.selectArticlesByCategoryId(2);
+        for (Article article : articles) {
+            System.out.println(article.toString());
+        }
+    }
+
+    @Test
+    public void selectArticleByPubId() {
+        Article article = articleDao.selectArticleByPubId(180711661);
+        System.out.println(article);
+        assertEquals("test updated article title 4", article.getDraft().getTitle());
+        assertEquals("Java", article.getCategory().getName());
+    }
+
+    @Test
+    public void selectArticleTitleByPubId() {
+        String title = articleDao.selectArticleTitleByPubId(180721534);
+        assertEquals("test article title 5", title);
+
     }
 
     @Test
     public void insertArticle() {
-        int i = articleDao.selectArticlesCount();
+        long pubId = pubIdGenerator.generatePubId();
+        Draft draft = draftDao.selectDraftById(3);
+        Category category = categoryDao.selectCategoryById(2);
         Article article = new Article(
-                "test article title " + i,
-                ArticleStatus.Editing,
-                "<h1>content title " + i + "</h1>",
-                "#content title " + i
+                pubId,
+                ArticleType.Reproduced,
+                draft,
+                category
         );
         articleDao.insertArticle(article);
-        assertEquals(i + 1, article.getId().intValue());
-    }
-    
-
-    @Test
-    public void updateArticleStatus() {
-        articleDao.updateArticleStatus(ArticleStatus.Deleted, 3);
-        Article article = articleDao.selectArticleById(3);
-        assertEquals(ArticleStatus.Deleted, article.getStatus());
     }
 
-    @Test
-    public void updateArticle() {
-        String updatedTitle = "中文文章标题测试 4";
-        Article article = new Article();
-        article.setId(4);
-        article.setTitle(updatedTitle);
-        articleDao.updateArticle(article);
-        Article afterUpdatedArticle = articleDao.selectArticleById(4);
-        assertEquals(updatedTitle, afterUpdatedArticle.getTitle());
-    }
 
     @Test
     public void deleteArticle() {
-
-        articleDao.deleteArticle(6);
-        Article article = articleDao.selectArticleById(6);
+        articleDao.deleteArticle(180711508);
+        Article article = articleDao.selectArticleByPubId(180711508);
         assertNull(article);
+    }
+
+    @Test
+    public void selectCountOfPubArticlesByCategory() {
+        Integer count = articleDao.selectCountOfArticlesByCategory(2);
+        assertEquals(1, count.intValue());
     }
 }

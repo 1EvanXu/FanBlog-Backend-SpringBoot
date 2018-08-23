@@ -1,18 +1,30 @@
 package com.evan.blog.service;
 
 import com.evan.blog.model.Article;
+import com.evan.blog.model.TempArticle;
 import com.evan.blog.model.QueryFilter;
-import com.evan.blog.model.enums.ArticleStatus;
+import com.evan.blog.pojo.ArticleItem;
+import com.evan.blog.pojo.ArticleDetails;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
-
 public interface ArticleService {
-    PageInfo<Article> getArticles(Integer pageIndex, QueryFilter filter);
-    Article queryArticleById(int id);
-    void addArticle(Article article);
-    void updateArticle(Article article);
-    void updateArticleStatus(ArticleStatus status, List<Integer> ids);
-    void removeArticles(List<Integer> articleIds);
+
+    PageInfo<ArticleItem> getAllArticleItems(Integer pageIndex);
+
+    PageInfo<Article> getArticlesByFilter(Integer pageIndex, QueryFilter filter);
+
+    PageInfo<ArticleItem> getArticleItemsByCategoryId(long categoryId, Integer pageIndex);
+
+    ArticleDetails getArticle(long pubId);
+
+    List<Article> getLatestArticles(Integer limit);
+
+    String getTitleByPubId(long pubId);
+
+    void addArticle(TempArticle tempArticle);
+
+    void deleteArticles(List<Integer> pubIds) throws Exception;
+
 }

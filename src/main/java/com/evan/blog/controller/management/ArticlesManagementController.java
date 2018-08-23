@@ -1,17 +1,17 @@
 package com.evan.blog.controller.management;
 
 import com.evan.blog.model.*;
-import com.evan.blog.model.enums.ArticleStatus;
+import com.evan.blog.model.enums.DraftStatus;
 import com.evan.blog.model.enums.Order;
-import com.evan.blog.model.enums.PublishedArticleType;
+import com.evan.blog.model.enums.ArticleType;
 import com.evan.blog.pojo.BlogJSONResult;
 import com.evan.blog.pojo.ItemCollection;
+import com.evan.blog.pojo.management.ArticlesManagementListItem;
 import com.evan.blog.pojo.management.ArticlesStatusUpdate;
 import com.evan.blog.pojo.management.DeletedArticlesManagementListItem;
 import com.evan.blog.pojo.management.DraftsManagementListItem;
-import com.evan.blog.pojo.management.PublishedArticlesManagementListItem;
+import com.evan.blog.service.DraftService;
 import com.evan.blog.service.ArticleService;
-import com.evan.blog.service.PublishedArticleService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +24,10 @@ import java.util.List;
 public class ArticlesManagementController {
 
     @Autowired
-    PublishedArticleService publishedArticleService;
+    ArticleService articleService;
 
     @Autowired
-    ArticleService articleService;
+    DraftService draftService;
 
     @GetMapping(path = "/publishedArticles/p/{pageIndex}")
     public BlogJSONResult getPublishedArticlesManagementList(
@@ -36,14 +36,14 @@ public class ArticlesManagementController {
             @RequestParam("order") String order,
             @RequestParam("type") String type
     ) {
-        QueryFilter queryFilter = new PublishedArticleQueryFilter(orderField, Order.getOrder(order), PublishedArticleType.getType(type));
+        QueryFilter queryFilter = new ArticleQueryFilter(orderField, Order.getOrder(order), ArticleType.getType(type));
 
-        PageInfo<PublishedArticle> publishedArticlePageInfo = publishedArticleService.getPublishedArticlesByFilter(pageIndex, queryFilter);
+        PageInfo<Article> publishedArticlePageInfo = articleService.getArticlesByFilter(pageIndex, queryFilter);
 
-        List<PublishedArticlesManagementListItem> items = new ArrayList<>();
+        List<ArticlesManagementListItem> items = new ArrayList<>();
 
         publishedArticlePageInfo.getList().forEach(item ->
-            items.add(new PublishedArticlesManagementListItem(item))
+            items.add(new ArticlesManagementListItem(item))
         );
 
         return BlogJSONResult.ok(new ItemCollection((int)publishedArticlePageInfo.getTotal(), items));
@@ -55,9 +55,9 @@ public class ArticlesManagementController {
             @RequestParam("orderField") String orderField,
             @RequestParam("order") String order
     ) {
-        ArticleQueryFilter queryFilter = new ArticleQueryFilter(orderField, Order.getOrder(order), ArticleStatus.Editing);
+        DraftQueryFilter queryFilter = new DraftQueryFilter(orderField, Order.getOrder(order), DraftStatus.Editing);
 
-        PageInfo<Article> articlePageInfo = articleService.getArticles(pageIndex, queryFilter);
+        PageInfo<Draft> articlePageInfo = draftService.getDrafts(pageIndex, queryFilter);
 
         List<DraftsManagementListItem> items = new ArrayList<>();
 
@@ -72,9 +72,9 @@ public class ArticlesManagementController {
             @RequestParam("orderField") String orderField,
             @RequestParam("order") String order
     ) {
-        ArticleQueryFilter queryFilter = new ArticleQueryFilter(orderField, Order.getOrder(order), ArticleStatus.Deleted);
+        DraftQueryFilter queryFilter = new DraftQueryFilter(orderField, Order.getOrder(order), DraftStatus.Deleted);
 
-        PageInfo<Article> articlePageInfo = articleService.getArticles(pageIndex, queryFilter);
+        PageInfo<Draft> articlePageInfo = draftService.getDrafts(pageIndex, queryFilter);
 
         List<DeletedArticlesManagementListItem> items = new ArrayList<>();
 
@@ -86,7 +86,7 @@ public class ArticlesManagementController {
     @PutMapping(value = "/articles/status")
     public BlogJSONResult updateArticlesStatus(@RequestBody ArticlesStatusUpdate update) {
         System.out.println(update);
-        articleService.updateArticleStatus(update.getStatus(), update.getArticleIds());
+        draftService.updateDraftStatus(update.getStatus(), update.getArticleIds());
         return BlogJSONResult.ok();
     }
 
@@ -94,7 +94,7 @@ public class ArticlesManagementController {
     public BlogJSONResult deleteArticlesPermanently(@RequestParam("ids") String ids) {
         List<Integer> articleIds = transferIdParams(ids);
         System.out.println(articleIds);
-        articleService.removeArticles(articleIds);
+        draftService.removeDrafts(articleIds);
         return BlogJSONResult.ok();
     }
 
@@ -102,7 +102,7 @@ public class ArticlesManagementController {
     public BlogJSONResult deletePublishedArticles(@RequestParam("ids") String ids) throws Exception {
         List<Integer> pubIds = transferIdParams(ids);
         System.out.println(pubIds);
-        publishedArticleService.deletePublishedArticles(pubIds);
+        articleService.deleteArticles(pubIds);
         return BlogJSONResult.ok();
     }
 

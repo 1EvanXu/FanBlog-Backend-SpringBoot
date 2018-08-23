@@ -1,7 +1,7 @@
 package com.evan.blog.controller;
 
 import com.evan.blog.pojo.BlogJSONResult;
-import com.evan.blog.service.PublishedArticleService;
+import com.evan.blog.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class ArticleController {
 
     @Autowired
-    PublishedArticleService publishedArticleService;
+    ArticleService articleService;
 
     @GetMapping(path = "/{articleId}")
     private BlogJSONResult getArticle(@PathVariable Long articleId) {
-        publishedArticleService.getPublishedArticle(articleId.intValue());
+        articleService.getArticle(articleId.intValue());
         return BlogJSONResult.ok();
     }
 }

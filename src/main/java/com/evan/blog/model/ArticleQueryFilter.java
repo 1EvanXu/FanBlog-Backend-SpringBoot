@@ -1,26 +1,24 @@
 package com.evan.blog.model;
 
-import com.evan.blog.model.enums.ArticleStatus;
 import com.evan.blog.model.enums.Order;
+import com.evan.blog.model.enums.ArticleType;
 
-public class ArticleQueryFilter extends QueryFilter{
+public class ArticleQueryFilter extends QueryFilter {
+    private ArticleType type;
 
-    private ArticleStatus status;
+    public ArticleQueryFilter() {
+    }
 
-    public ArticleQueryFilter() {}
-
-    public ArticleQueryFilter(String orderField, Order order, ArticleStatus status) {
+    public ArticleQueryFilter(String orderField, Order order, ArticleType type) {
         super(orderField, order);
-        this.status = status;
+        this.type = type;
     }
 
-    public Integer getStatus() {
-        return status.getStatusCode();
+    public ArticleType getType() {
+        return type;
     }
 
-    public void setStatus(ArticleStatus status) {
-        this.status = status;
+    public void setType(ArticleType type) {
+        this.type = type;
     }
 }
-
-

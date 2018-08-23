@@ -4,7 +4,7 @@ package com.evan.blog.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class SideInfoItem {
-    private Integer id;
+    private Long id;
     private String title;
     @JsonIgnoreProperties(ignoreUnknown = true)
     private Integer number;
@@ -12,17 +12,17 @@ public class SideInfoItem {
     public SideInfoItem() {
     }
 
-    public SideInfoItem(Integer id, String title, Integer number) {
+    public SideInfoItem(Long id, String title, Integer number) {
         this.id = id;
         this.title = title;
         this.number = number;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

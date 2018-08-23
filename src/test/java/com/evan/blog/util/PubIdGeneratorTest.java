@@ -30,7 +30,7 @@ public class PubIdGeneratorTest {
     public void threadSafeGeneratePubId() {
         int initialCapacity = 1000;
         List<Thread> threads = new ArrayList<>(initialCapacity);
-        ConcurrentHashMap<Integer, String> resultMap = new ConcurrentHashMap<>();
+        ConcurrentHashMap<Long, String> resultMap = new ConcurrentHashMap<>();
         CountDownLatch countDownLatch = new CountDownLatch(initialCapacity);
         for (int i = 0; i < initialCapacity; i++) {
             threads.add(new Thread(new Runnable() {

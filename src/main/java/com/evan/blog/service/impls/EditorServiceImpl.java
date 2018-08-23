@@ -1,11 +1,10 @@
 package com.evan.blog.service.impls;
 
-import com.evan.blog.model.Article;
+import com.evan.blog.model.Draft;
 import com.evan.blog.model.Category;
-import com.evan.blog.model.enums.ArticleStatus;
-import com.evan.blog.pojo.Draft;
-import com.evan.blog.repository.CategoryDao;
-import com.evan.blog.service.ArticleService;
+import com.evan.blog.model.enums.DraftStatus;
+import com.evan.blog.pojo.TempDraft;
+import com.evan.blog.service.DraftService;
 import com.evan.blog.service.CategoryService;
 import com.evan.blog.service.EditorService;
 import com.evan.blog.util.JsonUtil;
@@ -30,7 +29,7 @@ public class EditorServiceImpl implements EditorService {
     RedisOperator redisOperator;
 
     @Autowired
-    ArticleService articleService;
+    DraftService draftService;
 
     @Autowired
     CategoryService categoryService;
@@ -42,9 +41,9 @@ public class EditorServiceImpl implements EditorService {
     }
 
     @Override
-    public long saveDraftInCache(Draft draft) throws IllegalAccessException {
-        Long tempArticleId = draft.getTempArticleId();
-        Integer articleId = draft.getId();
+    public long saveDraftInCache(TempDraft tempDraft) throws IllegalAccessException {
+        Long tempArticleId = tempDraft.getTempDraftId();
+        Long articleId = tempDraft.getId();
 
         if (tempArticleId == null && articleId == null)
             throw new IllegalAccessException("the property tempArticleId and id can't be null same time");
@@ -63,7 +62,7 @@ public class EditorServiceImpl implements EditorService {
             }
         }
 
-        String content = JsonUtil.objectToJson(draft);
+        String content = JsonUtil.objectToJson(tempDraft);
 
         redisOperator.set(key, content, randomExpireTime());
 
@@ -71,23 +70,23 @@ public class EditorServiceImpl implements EditorService {
     }
 
     @Override
-    public Draft getArticleContent(Integer articleId) {
+    public TempDraft getArticleContent(Integer articleId) {
         String key = keyPrefix + "a:"+ articleId;
         String value = redisOperator.get(key);
 
-        Draft draft = null;
+        TempDraft tempDraft = null;
 
         if (value != null && !value.equals("")) {
-            draft = JsonUtil.jsonToPojo(value, Draft.class);
+            tempDraft = JsonUtil.jsonToPojo(value, TempDraft.class);
         } else {
             // 加锁防止缓存穿透
             try {
                 semaphore.acquire();
-                Article article = articleService.queryArticleById(articleId);
-                if (article.getStatus() != ArticleStatus.Editing) {
-                    throw new IllegalAccessException("Can edit only when the status of article is Editing");
+                Draft draft = draftService.queryDraftById(articleId);
+                if (draft.getStatus() != DraftStatus.Editing) {
+                    throw new IllegalAccessException("Can edit only when the status of draft is Editing");
                 }
-                draft = new Draft(article);
+                tempDraft = new TempDraft(draft);
             } catch (InterruptedException | IllegalAccessException e) {
                 throw new RuntimeException(e.getMessage());
             } finally {
@@ -95,21 +94,21 @@ public class EditorServiceImpl implements EditorService {
             }
         }
 
-        return draft;
+        return tempDraft;
 
     }
 
     @Override
-    public Integer saveArticle(Article article) throws IllegalAccessException {
-        Draft draft = new Draft(article);
-        saveDraftInCache(draft);
-        if (article.getId() == null) {
-            articleService.addArticle(article);
-            return article.getId();
+    public Long saveArticle(Draft draft) throws IllegalAccessException {
+        TempDraft tempDraft = new TempDraft(draft);
+        saveDraftInCache(tempDraft);
+        if (draft.getId() == null) {
+            draftService.addDraft(draft);
+            return draft.getId();
         }
 
-        articleService.updateArticle(article);
-        return article.getId();
+        draftService.updateDraft(draft);
+        return draft.getId();
     }
 
     @Override

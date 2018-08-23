@@ -1,7 +1,7 @@
 package com.evan.blog.controller.site;
 
-import com.evan.blog.pojo.PublishedArticleItem;
-import com.evan.blog.service.PublishedArticleService;
+import com.evan.blog.pojo.ArticleItem;
+import com.evan.blog.service.ArticleService;
 import com.evan.blog.pojo.BlogJSONResult;
 import com.evan.blog.pojo.ItemCollection;
 import com.github.pagehelper.PageInfo;
@@ -17,7 +17,7 @@ import java.util.List;
 public class PublishedArticleItemController {
 
     @Autowired
-    PublishedArticleService publishedArticleService;
+    ArticleService articleService;
 
 
 
@@ -25,10 +25,10 @@ public class PublishedArticleItemController {
     public BlogJSONResult getAllPublishedArticleItems(
             @PathVariable int pageIndex
     ) {
-        PageInfo<PublishedArticleItem> publishedArticlePageInfo = publishedArticleService.getAllPublishedArticleItems(pageIndex);
-        List<PublishedArticleItem> publishedArticleItems = publishedArticlePageInfo.getList();
+        PageInfo<ArticleItem> publishedArticlePageInfo = articleService.getAllArticleItems(pageIndex);
+        List<ArticleItem> articleItems = publishedArticlePageInfo.getList();
 
-        return BlogJSONResult.ok(new ItemCollection((int)publishedArticlePageInfo.getTotal(), publishedArticleItems));
+        return BlogJSONResult.ok(new ItemCollection((int)publishedArticlePageInfo.getTotal(), articleItems));
 
     }
 
@@ -37,11 +37,11 @@ public class PublishedArticleItemController {
             @PathVariable("categoryId") Integer category,
             @PathVariable("pageIndex") Integer pageIndex
     ) {
-        PageInfo<PublishedArticleItem> publishedArticlePageInfo =
-                publishedArticleService.getPublishedArticleItemsByCategoryId(category, pageIndex);
-        List<PublishedArticleItem> publishedArticleItems = publishedArticlePageInfo.getList();
+        PageInfo<ArticleItem> publishedArticlePageInfo =
+                articleService.getArticleItemsByCategoryId(category, pageIndex);
+        List<ArticleItem> articleItems = publishedArticlePageInfo.getList();
 
-        return BlogJSONResult.ok(new ItemCollection((int)publishedArticlePageInfo.getTotal(), publishedArticleItems));
+        return BlogJSONResult.ok(new ItemCollection((int)publishedArticlePageInfo.getTotal(), articleItems));
     }
 
     /*

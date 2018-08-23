@@ -1,12 +1,12 @@
 package com.evan.blog.controller.management;
 
-import com.evan.blog.model.Article;
+import com.evan.blog.model.Draft;
 import com.evan.blog.model.Category;
-import com.evan.blog.model.PublishingArticle;
+import com.evan.blog.model.TempArticle;
 import com.evan.blog.pojo.BlogJSONResult;
-import com.evan.blog.pojo.Draft;
+import com.evan.blog.pojo.TempDraft;
 import com.evan.blog.service.EditorService;
-import com.evan.blog.service.PublishedArticleService;
+import com.evan.blog.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +20,7 @@ public class EditorController {
     @Autowired
     EditorService editorService;
     @Autowired
-    PublishedArticleService publishedArticleService;
+    ArticleService articleService;
 
 
     @GetMapping(path = "/article/new")
@@ -30,30 +30,30 @@ public class EditorController {
 
     @GetMapping(path = "/article/{articleId}")
     public BlogJSONResult getArticleContent(@PathVariable Integer articleId) {
-        Draft articleContent = editorService.getArticleContent(articleId);
+        TempDraft articleContent = editorService.getArticleContent(articleId);
         return BlogJSONResult.ok(articleContent);
     }
 
     @PutMapping(path = "/cache")
-    public BlogJSONResult saveDraftInCache(@RequestBody Draft draft) throws IllegalAccessException {
-        long l = editorService.saveDraftInCache(draft);
-//        System.out.println(draft);
+    public BlogJSONResult saveDraftInCache(@RequestBody TempDraft tempDraft) throws IllegalAccessException {
+        long l = editorService.saveDraftInCache(tempDraft);
+//        System.out.println(tempDraft);
         BlogJSONResult result = BlogJSONResult.ok(l);
         result.setMsg("SAVED");
         return result;
     }
 
     @PostMapping(path = "/article")
-    public BlogJSONResult saveArticle(@RequestBody Article article) throws IllegalAccessException {
-        Integer articleId = editorService.saveArticle(article);
-//        System.out.println(article);
+    public BlogJSONResult saveArticle(@RequestBody Draft draft) throws IllegalAccessException {
+        Long articleId = editorService.saveArticle(draft);
+//        System.out.println(draft);
         return BlogJSONResult.ok(articleId);
     }
 
     @PostMapping(path = "/publish")
-    public BlogJSONResult publishArticle(@RequestBody PublishingArticle publishingArticle) {
-        System.out.println(publishingArticle.getCategory());
-        publishedArticleService.addPublishedArticle(publishingArticle);
+    public BlogJSONResult publishArticle(@RequestBody TempArticle tempArticle) {
+        System.out.println(tempArticle.getCategory());
+        articleService.addArticle(tempArticle);
         BlogJSONResult result = BlogJSONResult.ok();
         result.setMsg("Publish succeed!");
         return result;

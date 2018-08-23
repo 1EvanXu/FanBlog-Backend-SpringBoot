@@ -2,11 +2,11 @@ package com.evan.blog.controller.site;
 
 import com.evan.blog.model.Comment;
 import com.evan.blog.model.Commentary;
+import com.evan.blog.pojo.ArticleDetails;
 import com.evan.blog.pojo.ItemCollection;
-import com.evan.blog.pojo.PublishedArticleDetails;
 import com.evan.blog.service.CommentaryService;
-import com.evan.blog.service.PublishedArticleCacheService;
-import com.evan.blog.service.PublishedArticleService;
+import com.evan.blog.service.ArticleCacheService;
+import com.evan.blog.service.ArticleService;
 import com.evan.blog.pojo.BlogJSONResult;
 import com.evan.blog.util.IPUtil;
 import com.github.pagehelper.PageInfo;
@@ -20,16 +20,16 @@ import javax.servlet.http.HttpServletRequest;
 public class PublishedArticleContentController {
 
     @Autowired
-    PublishedArticleService publishedArticleService;
+    ArticleService articleService;
     @Autowired
     CommentaryService commentaryService;
     @Autowired
-    PublishedArticleCacheService publishedArticleCacheService;
+    ArticleCacheService articleCacheService;
 
     @GetMapping(path = "/{pubId}")
     public BlogJSONResult getPublishedArticleContent(@PathVariable("pubId") Integer pubId) {
-        PublishedArticleDetails publishedArticleDetails = publishedArticleService.getPublishedArticle(pubId);
-        return BlogJSONResult.ok(publishedArticleDetails);
+        ArticleDetails articleDetails = articleService.getArticle(pubId);
+        return BlogJSONResult.ok(articleDetails);
     }
 
     @GetMapping(path = "/{pubId}/commentary/p/{pageIndex}")
@@ -54,10 +54,10 @@ public class PublishedArticleContentController {
     }
 
     @PutMapping(path = "/{pubId}/vote")
-    public BlogJSONResult voteForPublishedArticle (@PathVariable("pubId") Integer pubId, HttpServletRequest request) {
+    public BlogJSONResult voteForPublishedArticle (@PathVariable("pubId") Long pubId, HttpServletRequest request) {
         String ip = IPUtil.getRealIP(request);
 
-        boolean vote = publishedArticleCacheService.vote(pubId, ip);
+        boolean vote = articleCacheService.vote(pubId, ip);
         System.out.println(ip);
 
         BlogJSONResult blogJSONResult = BlogJSONResult.ok(vote);
@@ -66,10 +66,10 @@ public class PublishedArticleContentController {
     }
 
     @GetMapping(path = "/{pubId}/vote")
-    public BlogJSONResult hasVotedForPublishedArticle(@PathVariable("pubId") Integer pubId, HttpServletRequest request) {
+    public BlogJSONResult hasVotedForPublishedArticle(@PathVariable("pubId") Long pubId, HttpServletRequest request) {
         String ip = request.getRemoteAddr();
         System.out.println(ip);
-        boolean hasVoted = publishedArticleCacheService.hasVoted(pubId, ip);
+        boolean hasVoted = articleCacheService.hasVoted(pubId, ip);
         BlogJSONResult blogJSONResult = BlogJSONResult.ok(hasVoted);
         blogJSONResult.setMsg("Has voted for this article");
         return blogJSONResult;

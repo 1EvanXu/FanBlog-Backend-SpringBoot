@@ -1,44 +1,44 @@
 package com.evan.blog.pojo;
 
 
-import com.evan.blog.model.PublishedArticle;
-import com.evan.blog.model.enums.PublishedArticleType;
+import com.evan.blog.model.Article;
+import com.evan.blog.model.enums.ArticleType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.sql.Timestamp;
 
 @JsonIgnoreProperties({"commentaryCount"})
-public class PublishedArticleDetails {
+public class ArticleDetails {
 
-    Integer pubId;
+    Long pubId;
     String title;
     @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
     Timestamp pubTime;
-    PublishedArticleType type;
+    ArticleType type;
     String category;
     String content;
     Integer visitorCount = 0;
     Integer voteCount = 0;
     Integer commentaryCount = 0;
 
-    public PublishedArticleDetails () { }
+    public ArticleDetails() { }
 
-    public PublishedArticleDetails (PublishedArticle publishedArticle) {
-        this.pubId = publishedArticle.getPubId();
-        this.title = publishedArticle.getArticle().getTitle();
-        this.content = publishedArticle.getArticle().getHtmlContent();
-        this.pubTime = publishedArticle.getPubTime();
-        this.type = publishedArticle.getType();
-        this.category = publishedArticle.getCategory().getName();
-        this.commentaryCount = publishedArticle.getCommentariesCount();
+    public ArticleDetails(Article article) {
+        this.pubId = article.getPubId();
+        this.title = article.getDraft().getTitle();
+        this.content = article.getDraft().getHtmlContent();
+        this.pubTime = article.getPubTime();
+        this.type = article.getType();
+        this.category = article.getCategory().getName();
+        this.commentaryCount = article.getCommentariesCount();
     }
 
-    public Integer getPubId() {
+    public Long getPubId() {
         return pubId;
     }
 
-    public void setPubId(Integer pubId) {
+    public void setPubId(Long pubId) {
         this.pubId = pubId;
     }
 
@@ -58,11 +58,11 @@ public class PublishedArticleDetails {
         this.pubTime = pubTime;
     }
 
-    public PublishedArticleType getType() {
+    public ArticleType getType() {
         return type;
     }
 
-    public void setType(PublishedArticleType type) {
+    public void setType(ArticleType type) {
         this.type = type;
     }
 
@@ -108,7 +108,7 @@ public class PublishedArticleDetails {
 
     @Override
     public String toString() {
-        return "PublishedArticleDetails{" +
+        return "ArticleDetails{" +
                 "pubId=" + pubId +
                 ", title='" + title + '\'' +
                 ", pubTime=" + pubTime +

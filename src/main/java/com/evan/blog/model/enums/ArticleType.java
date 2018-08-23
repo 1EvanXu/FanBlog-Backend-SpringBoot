@@ -1,13 +1,13 @@
 package com.evan.blog.model.enums;
 
-public enum PublishedArticleType {
+public enum ArticleType {
     Original("Original"), Reproduced("Reproduced"), Translation("Translation");
     String name;
 
-    PublishedArticleType() {
+    ArticleType() {
     }
 
-    PublishedArticleType(String name) {
+    ArticleType(String name) {
         this.name = name;
     }
 
@@ -19,7 +19,7 @@ public enum PublishedArticleType {
         this.name = name;
     }
 
-    public static PublishedArticleType getType(String s) {
+    public static ArticleType getType(String s) {
         switch (s) {
             case "Original"   : return Original;
             case "Reproduced" : return Reproduced;

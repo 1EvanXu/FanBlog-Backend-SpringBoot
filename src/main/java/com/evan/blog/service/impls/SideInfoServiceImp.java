@@ -1,12 +1,11 @@
 package com.evan.blog.service.impls;
 
+import com.evan.blog.model.Article;
 import com.evan.blog.model.Category;
-import com.evan.blog.model.PublishedArticle;
 import com.evan.blog.pojo.SideInfoItem;
 import com.evan.blog.repository.CategoryDao;
-import com.evan.blog.service.PublishedArticleService;
+import com.evan.blog.service.ArticleService;
 import com.evan.blog.service.SideInfoService;
-import com.evan.blog.util.JsonUtil;
 import com.evan.blog.util.RedisOperator;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +26,16 @@ public class SideInfoServiceImp implements SideInfoService {
     CategoryDao categoryDao;
 
     @Autowired
-    PublishedArticleService publishedArticleService;
+    ArticleService articleService;
 
     @Override
     public List<SideInfoItem> getLatestPublishedArticle() {
 //        final String key = "latest_pub_articles:";
         List<SideInfoItem> sideInfoItems = new ArrayList<>();
 //        List<String> latestPubArticles = redisOperator.lrange(key, 0, 9);
-        List<PublishedArticle> latestPublishedArticles = publishedArticleService.getLatestPublishedArticles(8);
-        latestPublishedArticles.forEach((a) -> {
-            sideInfoItems.add(new SideInfoItem(a.getPubId(), a.getArticle().getTitle(), null));
+        List<Article> latestArticles = articleService.getLatestArticles(8);
+        latestArticles.forEach((a) -> {
+            sideInfoItems.add(new SideInfoItem(a.getPubId(), a.getDraft().getTitle(), null));
         });
 //        latestPubArticles.forEach((s) -> {
 //            String[] strings = s.split(":");
@@ -55,8 +54,8 @@ public class SideInfoServiceImp implements SideInfoService {
         tuples.forEach(stringTypedTuple -> {
             if (stringTypedTuple.getScore() > 0) {
                 String info[] = stringTypedTuple.getValue().split(":");
-                Integer id = Integer.parseInt(info[0]);
-                String name = publishedArticleService.getTitleByPubId(id);
+                Long id = Long.parseLong(info[0]);
+                String name = articleService.getTitleByPubId(id);
                 Integer score = stringTypedTuple.getScore().intValue();
                 sideInfoItems.add(new SideInfoItem(id, name, score));
 

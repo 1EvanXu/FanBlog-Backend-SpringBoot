@@ -1,17 +1,17 @@
 package com.evan.blog.pojo;
 
-import com.evan.blog.model.PublishedArticle;
+import com.evan.blog.model.Article;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties({"content"})
-public class PublishedArticleItem extends PublishedArticleDetails{
+public class ArticleItem extends ArticleDetails {
 
     private String articleAbstract;
 
-    public PublishedArticleItem() {}
+    public ArticleItem() {}
 
-    public PublishedArticleItem(PublishedArticle publishedArticle) {
-        super(publishedArticle);
+    public ArticleItem(Article article) {
+        super(article);
         this.articleAbstract = content.length() <= 100 ? content : content.substring(0, 100);
     }
 
@@ -25,7 +25,7 @@ public class PublishedArticleItem extends PublishedArticleDetails{
 
     @Override
     public String toString() {
-        return "PublishedArticleItem{" +
+        return "ArticleItem{" +
                 "articleAbstract='" + articleAbstract + '\'' +
                 ", pubId=" + pubId +
                 ", title='" + title + '\'' +

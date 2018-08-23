@@ -3,20 +3,20 @@ package com.evan.blog.model;
 import java.io.Serializable;
 
 public abstract class BlogEntity implements Serializable {
-    protected Integer id;
+    protected Long id;
 
     BlogEntity() {
     }
 
-    protected BlogEntity(Integer id) {
+    protected BlogEntity(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

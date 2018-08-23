@@ -22,7 +22,7 @@ public class PubIdGenerator {
 
     private final String key = "pub_number:";
 
-    public int generatePubId() {
+    public long generatePubId() {
         int pubIdPrefix = Integer.parseInt(LocalDateTime.now().format(DATE_TIME_FORMATTER));
         int pubId = pubIdPrefix * MAX_NUMBER_OF_PUB_EACH_DAY;
 
@@ -31,7 +31,7 @@ public class PubIdGenerator {
             oldPubIdPrefix = pubIdPrefix;
             redisOperator.set(key, "0");
         }
-        pubId += (int) redisOperator.incr(key, 1L);
+        pubId += redisOperator.incr(key, 1L);
         return pubId;
     }
 }

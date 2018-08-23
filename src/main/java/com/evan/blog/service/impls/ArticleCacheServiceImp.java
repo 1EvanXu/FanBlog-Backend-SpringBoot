@@ -1,6 +1,6 @@
 package com.evan.blog.service.impls;
-import com.evan.blog.service.PublishedArticleCacheService;
-import com.evan.blog.service.PublishedArticleService;
+import com.evan.blog.service.ArticleCacheService;
+import com.evan.blog.service.ArticleService;
 import com.evan.blog.util.RedisOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service(value = "publishedArticleCacheService")
-public class PublishedArticleCacheServiceImp implements PublishedArticleCacheService {
+@Service(value = "articleCacheService")
+public class ArticleCacheServiceImp implements ArticleCacheService {
 
     private final String votedPrefix = "voted:";
 
@@ -25,23 +25,23 @@ public class PublishedArticleCacheServiceImp implements PublishedArticleCacheSer
     @Autowired
     RedisOperator redisOperator;
     @Autowired
-    PublishedArticleService publishedArticleService;
+    ArticleService articleService;
 
     @Override
-    public boolean vote(Integer pubId, String ip) {
+    public boolean vote(Long pubId, String ip) {
         String key = votedPrefix + pubId;
         updateArticlesRank(pubId);
         return redisOperator.zadd(key, ip, (double)System.currentTimeMillis());
     }
 
     @Override
-    public boolean hasVoted(Integer pubId, String ip) {
+    public boolean hasVoted(Long pubId, String ip) {
         String key = votedPrefix + pubId;
         return null != redisOperator.zrank(key, ip);
     }
 
     @Override
-    public Long getVoteCount(Integer pubId) {
+    public Long getVoteCount(Long pubId) {
         String key = votedPrefix + pubId;
         Long voteCount = 0L;
         try {
@@ -54,7 +54,7 @@ public class PublishedArticleCacheServiceImp implements PublishedArticleCacheSer
     }
 
     @Override
-    public Long[] bulkGetVoteCount(Integer[] pubIds) {
+    public Long[] bulkGetVoteCount(Long[] pubIds) {
         String[] keys = new String[pubIds.length];
         for (int i = 0; i < keys.length; i++) {
             keys[i] = votedPrefix + pubIds[i];
@@ -63,7 +63,7 @@ public class PublishedArticleCacheServiceImp implements PublishedArticleCacheSer
     }
 
     @Override
-    public Long getArticleVisitorCount(Integer pubId) {
+    public Long getArticleVisitorCount(Long pubId) {
         String key = avrPrefix + pubId;
         Long articleVisitorCount = 0L;
         try {
@@ -76,7 +76,7 @@ public class PublishedArticleCacheServiceImp implements PublishedArticleCacheSer
     }
 
     @Override
-    public void updateArticlesRank(Integer pubId) {
+    public void updateArticlesRank(Long pubId) {
         
         String key = pubId.toString();
 
@@ -84,7 +84,7 @@ public class PublishedArticleCacheServiceImp implements PublishedArticleCacheSer
     }
 
     @Override
-    public boolean updateLatestPublishedArticle(Integer pubId, String title) {
+    public boolean updateLatestPublishedArticle(Long pubId, String title) {
         String value = pubId.toString();
         try {
             redisOperator.lpushrpop(latest, value, 8L);
@@ -100,7 +100,7 @@ public class PublishedArticleCacheServiceImp implements PublishedArticleCacheSer
 //            @Override
 //            public List<Object> doInRedis(RedisConnection connection) throws DataAccessException {
 //                String[] strings = key.split(":");
-//                Integer pubId = Integer.parseInt(strings[0]);
+//                Long pubId = Long.parseInt(strings[0]);
 //                connection.openPipeline();
 //                connection.zRem(rankBoard.getBytes(), key.getBytes());
 //                connection.lRem(latest.getBytes(), 1L, key.getBytes());
@@ -113,7 +113,7 @@ public class PublishedArticleCacheServiceImp implements PublishedArticleCacheSer
             @Override
             public List<Object> doInRedis(RedisConnection connection) throws DataAccessException {
                 String[] strings = key.split(":");
-                Integer pubId = Integer.parseInt(strings[0]);
+                Long pubId = Long.parseLong(strings[0]);
                 connection.openPipeline();
 //                connection.zScore(rankBoard.getBytes(), key.getBytes());
 //                connection.lRem(latest.getBytes(), 0L, key.getBytes());

@@ -1,92 +1,86 @@
 package com.evan.blog.model;
 
-import com.evan.blog.model.enums.ArticleStatus;
+import com.evan.blog.model.enums.ArticleType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.sql.Timestamp;
 
-public class Article extends BlogEntity{
+public class Article extends BlogEntity {
 
-    private String title;
+    private Long pubId;
     @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
-    private Timestamp createdTime;
-    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
-    private Timestamp latestEditedTime;
-    private ArticleStatus status = ArticleStatus.Editing;
-    private String htmlContent;
-    private String markdownContent;
+    private Timestamp pubTime;
+    private ArticleType type;
+    private Draft draft;
+    private Category category;
+    private Integer commentariesCount = 0;
 
     public Article() {}
 
-    public Article(
-            String title,
-            ArticleStatus status,
-            String htmlContent,
-            String markdownContent) {
-        this.title = title;
-        this.status = status;
-        this.htmlContent = htmlContent;
-        this.markdownContent = markdownContent;
+    public Article(Long pubId, ArticleType type, Draft draft, Category category) {
+        this.pubId = pubId;
+        this.type = type;
+        this.draft = draft;
+        this.category = category;
     }
 
-    public String getTitle() {
-        return title;
+    public Long getPubId() {
+        return pubId;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setPubId(Long pubId) {
+        this.pubId = pubId;
     }
 
-    public Timestamp getCreatedTime() {
-        return createdTime;
+    public Timestamp getPubTime() {
+        return pubTime;
     }
 
-    public void setCreatedTime(Timestamp createdTime) {
-        this.createdTime = createdTime;
+    public void setPubTime(Timestamp pubTime) {
+        this.pubTime = pubTime;
     }
 
-    public Timestamp getLatestEditedTime() {
-        return latestEditedTime;
+    public ArticleType getType() {
+        return type;
     }
 
-    public void setLatestEditedTime(Timestamp latestEditedTime) {
-        this.latestEditedTime = latestEditedTime;
+    public void setType(ArticleType type) {
+        this.type = type;
     }
 
-    public ArticleStatus getStatus() {
-        return status;
+    public Draft getDraft() {
+        return draft;
     }
 
-    public void setStatus(ArticleStatus status) {
-        this.status = status;
+    public void setDraft(Draft draft) {
+        this.draft = draft;
     }
 
-    public String getHtmlContent() {
-        return htmlContent;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setHtmlContent(String htmlContent) {
-        this.htmlContent = htmlContent;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public String getMarkdownContent() {
-        return markdownContent;
+    public Integer getCommentariesCount() {
+        return commentariesCount;
     }
 
-    public void setMarkdownContent(String markdownContent) {
-        this.markdownContent = markdownContent;
+    public void setCommentariesCount(Integer commentariesCount) {
+        this.commentariesCount = commentariesCount;
     }
 
     @Override
     public String toString() {
         return "Article{" +
                 "id=" + id +
-                ", title='" + title + '\'' +
-                ", createdTime=" + createdTime +
-                ", latestEditedTime=" + latestEditedTime +
-                ", status=" + status +
-                ", htmlContent='" + htmlContent + '\'' +
-                ", markdownContent='" + markdownContent + '\'' +
+                ", pubId=" + pubId +
+                ", pubTime=" + pubTime +
+                ", type=" + type +
+                ", draft=" + draft +
+                ", category=" + category +
                 '}';
     }
 }

@@ -40,21 +40,21 @@
         )
     </insert>
 
-    <select id="selectCommentaryById" resultMap="commentaryMap" parameterType="int">
+    <select id="selectCommentaryById" resultMap="commentaryMap" parameterType="long">
         select * from commentaries where id=#{id}
     </select>
     
-    <select id="selectCommentariesByPubId" resultMap="commentaryMap" parameterType="int">
+    <select id="selectCommentariesByPubId" resultMap="commentaryMap" parameterType="long">
         select * from commentaries where belonged_pub_article=#{pubId} and parent=0 order by comment_time desc
     </select>
-    <select id="selectCommentariesCountByPubId" resultType="int" parameterType="int">
+    <select id="selectCommentariesCountByPubId" resultType="int" parameterType="long">
         select count(*) from commentaries where belonged_pub_article=#{pubId}
     </select>
-    <select id="selectCommentariesByParentId" resultMap="childCommentaryMap" parameterType="int">
+    <select id="selectCommentariesByParentId" resultMap="childCommentaryMap" parameterType="long">
         select * from commentaries where parent=#{parentId}
     </select>
     
-    <delete id="deleteCommentariesByPubId" parameterType="int">
+    <delete id="deleteCommentariesByPubId" parameterType="long">
         delete from commentaries where belonged_pub_article=#{pubId}
     </delete>
 
