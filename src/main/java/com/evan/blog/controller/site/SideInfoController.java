@@ -1,6 +1,6 @@
 package com.evan.blog.controller.site;
 
-import com.evan.blog.pojo.ItemListData;
+import com.evan.blog.pojo.ItemCollection;
 import com.evan.blog.pojo.SideInfoItem;
 import com.evan.blog.service.SideInfoService;
 import com.evan.blog.pojo.BlogJSONResult;
@@ -23,21 +23,21 @@ public class SideInfoController {
     @GetMapping(path = "/latest-articles")
     public BlogJSONResult getLatestArticles() {
         List<SideInfoItem> latestPublishedArticles = sideInfoService.getLatestPublishedArticle();
-        ItemListData data = new ItemListData(latestPublishedArticles.size(), latestPublishedArticles);
+        ItemCollection data = new ItemCollection(latestPublishedArticles.size(), latestPublishedArticles);
         return BlogJSONResult.ok(data);
     }
 
     @GetMapping(path = "/popular-articles")
     public BlogJSONResult getPopularArticles() {
         List<SideInfoItem> popularPublishedArticles = sideInfoService.getPopularPublishedArticle();
-        ItemListData data = new ItemListData(popularPublishedArticles.size(), popularPublishedArticles);
+        ItemCollection data = new ItemCollection(popularPublishedArticles.size(), popularPublishedArticles);
         return BlogJSONResult.ok(data);
     }
 
     @GetMapping(path = "/categories")
     public BlogJSONResult getCategories() {
         List<SideInfoItem> categoriesInfo = sideInfoService.getCategoriesInfo();
-        ItemListData data = new ItemListData(categoriesInfo.size(), categoriesInfo);
+        ItemCollection data = new ItemCollection(categoriesInfo.size(), categoriesInfo);
         return BlogJSONResult.ok(data);
     }
 

@@ -209,7 +209,7 @@ public class RedisOperator {
      * @return 列表key的尾元素。
      */
     public String rpop(String key) {
-        return (String)redisTemplate.opsForList().rightPop(key);
+        return redisTemplate.opsForList().rightPop(key);
     }
 
     /**

@@ -7,10 +7,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.atomic.AtomicInteger;
-/*
-    还需要改进的地方：服务器停机重启之后，numberOfPub的值会丢失，等redis搭建好了之后可以将numberOfPub放入redis
-    改为一个Component
- */
+
 @Component(value = "pubIdGenerator")
 public class PubIdGenerator {
 
@@ -22,8 +19,6 @@ public class PubIdGenerator {
     private static final int MAX_NUMBER_OF_PUB_EACH_DAY = 1000;
 
     private static volatile int oldPubIdPrefix;
-
-//    private static AtomicInteger numberOfPub = new AtomicInteger(0);
 
     private final String key = "pub_number:";
 

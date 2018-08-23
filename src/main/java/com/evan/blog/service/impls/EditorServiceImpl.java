@@ -88,9 +88,7 @@ public class EditorServiceImpl implements EditorService {
                     throw new IllegalAccessException("Can edit only when the status of article is Editing");
                 }
                 draft = new Draft(article);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e.getMessage());
-            } catch (IllegalAccessException e) {
+            } catch (InterruptedException | IllegalAccessException e) {
                 throw new RuntimeException(e.getMessage());
             } finally {
                 semaphore.release();

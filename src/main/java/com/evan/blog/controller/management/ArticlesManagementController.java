@@ -5,14 +5,13 @@ import com.evan.blog.model.enums.ArticleStatus;
 import com.evan.blog.model.enums.Order;
 import com.evan.blog.model.enums.PublishedArticleType;
 import com.evan.blog.pojo.BlogJSONResult;
-import com.evan.blog.pojo.ItemListData;
+import com.evan.blog.pojo.ItemCollection;
 import com.evan.blog.pojo.management.ArticlesStatusUpdate;
 import com.evan.blog.pojo.management.DeletedArticlesManagementListItem;
 import com.evan.blog.pojo.management.DraftsManagementListItem;
 import com.evan.blog.pojo.management.PublishedArticlesManagementListItem;
 import com.evan.blog.service.ArticleService;
 import com.evan.blog.service.PublishedArticleService;
-import com.evan.blog.util.JsonUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +46,7 @@ public class ArticlesManagementController {
             items.add(new PublishedArticlesManagementListItem(item))
         );
 
-        return BlogJSONResult.ok(new ItemListData((int)publishedArticlePageInfo.getTotal(), items));
+        return BlogJSONResult.ok(new ItemCollection((int)publishedArticlePageInfo.getTotal(), items));
     }
 
     @GetMapping(path = "/drafts/p/{pageIndex}")
@@ -64,7 +63,7 @@ public class ArticlesManagementController {
 
         articlePageInfo.getList().forEach(item -> items.add(new DraftsManagementListItem(item)));
 
-        return BlogJSONResult.ok(new ItemListData((int) articlePageInfo.getTotal(), items));
+        return BlogJSONResult.ok(new ItemCollection((int) articlePageInfo.getTotal(), items));
     }
 
     @GetMapping(path = "/deletedArticles/p/{pageIndex}")
@@ -81,7 +80,7 @@ public class ArticlesManagementController {
 
         articlePageInfo.getList().forEach(item -> items.add(new DeletedArticlesManagementListItem(item)));
 
-        return BlogJSONResult.ok(new ItemListData((int) articlePageInfo.getTotal(), items));
+        return BlogJSONResult.ok(new ItemCollection((int) articlePageInfo.getTotal(), items));
     }
 
     @PutMapping(value = "/articles/status")

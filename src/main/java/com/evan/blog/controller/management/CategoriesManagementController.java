@@ -4,10 +4,9 @@ import com.evan.blog.model.Category;
 import com.evan.blog.model.QueryFilter;
 import com.evan.blog.model.enums.Order;
 import com.evan.blog.pojo.BlogJSONResult;
-import com.evan.blog.pojo.ItemListData;
+import com.evan.blog.pojo.ItemCollection;
 import com.evan.blog.pojo.management.CategoriesManagementListItem;
 import com.evan.blog.service.CategoryService;
-import com.evan.blog.util.JsonUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +31,6 @@ public class CategoriesManagementController {
 
         categoryPageInfo.getList().forEach(item -> items.add(new CategoriesManagementListItem(item)));
 
-        return BlogJSONResult.ok(new ItemListData((int) categoryPageInfo.getTotal(), items));
+        return BlogJSONResult.ok(new ItemCollection((int) categoryPageInfo.getTotal(), items));
     }
 }

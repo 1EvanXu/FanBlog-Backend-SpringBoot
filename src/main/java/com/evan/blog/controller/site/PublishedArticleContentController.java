@@ -2,8 +2,7 @@ package com.evan.blog.controller.site;
 
 import com.evan.blog.model.Comment;
 import com.evan.blog.model.Commentary;
-import com.evan.blog.model.PublishedArticle;
-import com.evan.blog.pojo.ItemListData;
+import com.evan.blog.pojo.ItemCollection;
 import com.evan.blog.pojo.PublishedArticleDetails;
 import com.evan.blog.service.CommentaryService;
 import com.evan.blog.service.PublishedArticleCacheService;
@@ -11,13 +10,10 @@ import com.evan.blog.service.PublishedArticleService;
 import com.evan.blog.pojo.BlogJSONResult;
 import com.evan.blog.util.IPUtil;
 import com.github.pagehelper.PageInfo;
-import jdk.nashorn.internal.objects.annotations.Function;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping(path = "/article")
@@ -42,7 +38,7 @@ public class PublishedArticleContentController {
             @PathVariable("pageIndex") Integer pageIndex) {
         PageInfo<Commentary> commentaryPageInfo = commentaryService.getCommentaryByPubId(pubId, pageIndex);
 
-        return BlogJSONResult.ok(new ItemListData((int)commentaryPageInfo.getTotal(),
+        return BlogJSONResult.ok(new ItemCollection((int)commentaryPageInfo.getTotal(),
                 commentaryPageInfo.getList()));
     }
 
@@ -78,4 +74,12 @@ public class PublishedArticleContentController {
         blogJSONResult.setMsg("Has voted for this article");
         return blogJSONResult;
     }
+
+    /*
+    /article/{pubid}/ GET/PUT/POST/DELETE
+    /vote?articleId={id} GET
+    /vote/ POST
+    /commentaries/p/1?articleId={id} GET
+    /commentary POST
+     */
 }
