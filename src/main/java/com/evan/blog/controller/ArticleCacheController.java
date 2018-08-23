@@ -30,8 +30,6 @@ public class ArticleCacheController {
     public BlogJSONResult hasVotedForPublishedArticle(@PathVariable("pubId") Long pubId, HttpServletRequest request) {
         String ip = request.getRemoteAddr();
         boolean hasVoted = articleCacheService.hasVoted(pubId, ip);
-        BlogJSONResult blogJSONResult = BlogJSONResult.ok(hasVoted);
-        blogJSONResult.setMsg("Has voted for this article");
-        return blogJSONResult;
+        return BlogJSONResult.ok(hasVoted);
     }
 }

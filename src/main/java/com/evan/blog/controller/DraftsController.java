@@ -30,7 +30,9 @@ public class DraftsController {
             @RequestParam("order") String order,
             @RequestParam("status") String status
     ) {
-        DraftQueryFilter queryFilter = new DraftQueryFilter(orderField, Order.getOrder(order), DraftStatus.Editing);
+
+        DraftStatus draftStatus = DraftStatus.getArticleStatus(status);
+        DraftQueryFilter queryFilter = new DraftQueryFilter(orderField, Order.getOrder(order), draftStatus);
 
         List<DraftsManagementListItem> items = new ArrayList<>();
 
