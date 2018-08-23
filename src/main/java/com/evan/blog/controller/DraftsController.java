@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "apis/drafts")
+@RequestMapping(path = "/drafts")
 public class DraftsController {
 
     @Autowired

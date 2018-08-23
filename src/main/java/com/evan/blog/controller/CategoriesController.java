@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/apis/categories")
+@RequestMapping(value = "/categories")
 public class CategoriesController {
     @Autowired
     CategoryService categoryService;

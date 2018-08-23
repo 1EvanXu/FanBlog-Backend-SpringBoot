@@ -12,19 +12,17 @@ import com.evan.blog.pojo.BlogJSONResult;
 import com.evan.blog.pojo.ItemCollection;
 import com.evan.blog.pojo.management.ArticlesManagementListItem;
 import com.evan.blog.service.ArticleService;
-import com.evan.blog.util.IPUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
 
 @RestController
-@RequestMapping(path = "apis/articles")
+@RequestMapping(path = "/articles")
 public class ArticlesController {
 
     @Autowired
