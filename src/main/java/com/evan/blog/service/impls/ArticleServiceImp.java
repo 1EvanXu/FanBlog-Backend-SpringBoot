@@ -158,8 +158,8 @@ public class ArticleServiceImp implements ArticleService {
 
     @Override
     @Transactional
-    public void deleteArticles(List<Integer> pubIds) throws Exception {
-        for (Integer pubId: pubIds) {
+    public void deleteArticles(List<Long> pubIds) throws Exception {
+        for (Long pubId: pubIds) {
             Draft draft = articleDao.selectArticleByPubId(pubId).getDraft();
 
             draftDao.updateDraftStatus(DraftStatus.Deleted, draft.getId());

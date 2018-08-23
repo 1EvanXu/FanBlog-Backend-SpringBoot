@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(path = "/article")
-public class PublishedArticleContentController {
+public class ArticleContentController {
 
     @Autowired
     ArticleService articleService;

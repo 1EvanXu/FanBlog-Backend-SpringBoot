@@ -25,6 +25,6 @@ public interface ArticleService {
 
     void addArticle(TempArticle tempArticle);
 
-    void deleteArticles(List<Integer> pubIds) throws Exception;
+    void deleteArticles(List<Long> pubIds) throws Exception;
 
 }

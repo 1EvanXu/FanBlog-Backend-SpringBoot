@@ -6,14 +6,14 @@ import com.evan.blog.pojo.TempDraft;
 
 import java.util.List;
 
-public interface EditorService {
+public interface DraftCacheService {
     long generateTempArticleId();
 
     long saveDraftInCache(TempDraft tempDraft) throws IllegalAccessException;
 
-    TempDraft getArticleContent(Integer articleId);
+    TempDraft getDraftContent(Long draftId);
 
-    Long saveArticle(Draft draft) throws IllegalAccessException;
+    Long saveDraft(Draft draft) throws IllegalAccessException;
 
     List<Category> searchCategoryByName(String keyword);
 }

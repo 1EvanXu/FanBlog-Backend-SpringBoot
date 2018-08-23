@@ -4,18 +4,18 @@ import com.evan.blog.model.enums.DraftStatus;
 
 import java.util.List;
 
-public class ArticlesStatusUpdate {
-    private List<Integer> articleIds;
+public class DraftStatusUpdate {
+    private List<Long> articleIds;
     private DraftStatus status;
 
-    public ArticlesStatusUpdate() {
+    public DraftStatusUpdate() {
     }
 
-    public List<Integer> getArticleIds() {
+    public List<Long> getArticleIds() {
         return articleIds;
     }
 
-    public void setArticleIds(List<Integer> articleIds) {
+    public void setArticleIds(List<Long> articleIds) {
         this.articleIds = articleIds;
     }
 
@@ -29,7 +29,7 @@ public class ArticlesStatusUpdate {
 
     @Override
     public String toString() {
-        return "ArticlesStatusUpdate{" +
+        return "DraftStatusUpdate{" +
                 "articleIds=" + articleIds +
                 ", status=" + status +
                 '}';

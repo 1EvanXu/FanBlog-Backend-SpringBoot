@@ -7,7 +7,7 @@ import com.evan.blog.model.enums.ArticleType;
 import com.evan.blog.pojo.BlogJSONResult;
 import com.evan.blog.pojo.ItemCollection;
 import com.evan.blog.pojo.management.ArticlesManagementListItem;
-import com.evan.blog.pojo.management.ArticlesStatusUpdate;
+import com.evan.blog.pojo.management.DraftStatusUpdate;
 import com.evan.blog.pojo.management.DeletedArticlesManagementListItem;
 import com.evan.blog.pojo.management.DraftsManagementListItem;
 import com.evan.blog.service.DraftService;
@@ -84,7 +84,7 @@ public class ArticlesManagementController {
     }
 
     @PutMapping(value = "/articles/status")
-    public BlogJSONResult updateArticlesStatus(@RequestBody ArticlesStatusUpdate update) {
+    public BlogJSONResult updateArticlesStatus(@RequestBody DraftStatusUpdate update) {
         System.out.println(update);
         draftService.updateDraftStatus(update.getStatus(), update.getArticleIds());
         return BlogJSONResult.ok();
@@ -92,7 +92,7 @@ public class ArticlesManagementController {
 
     @DeleteMapping(value = "/articles")
     public BlogJSONResult deleteArticlesPermanently(@RequestParam("ids") String ids) {
-        List<Integer> articleIds = transferIdParams(ids);
+        List<Long> articleIds = transferIdParams(ids);
         System.out.println(articleIds);
         draftService.removeDrafts(articleIds);
         return BlogJSONResult.ok();
@@ -100,17 +100,17 @@ public class ArticlesManagementController {
 
     @DeleteMapping(value = "/publishedArticles")
     public BlogJSONResult deletePublishedArticles(@RequestParam("ids") String ids) throws Exception {
-        List<Integer> pubIds = transferIdParams(ids);
+        List<Long> pubIds = transferIdParams(ids);
         System.out.println(pubIds);
         articleService.deleteArticles(pubIds);
         return BlogJSONResult.ok();
     }
 
-    private List<Integer> transferIdParams(String stringIds) {
+    private List<Long> transferIdParams(String stringIds) {
         String[] strings = stringIds.split(",");
-        List<Integer> ids = new ArrayList<>(strings.length);
+        List<Long> ids = new ArrayList<>(strings.length);
         for (String s: strings) {
-            ids.add(Integer.valueOf(s));
+            ids.add(Long.valueOf(s));
         }
         return ids;
     }

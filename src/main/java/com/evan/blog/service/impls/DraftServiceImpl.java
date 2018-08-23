@@ -29,7 +29,7 @@ public class DraftServiceImpl implements DraftService {
     }
 
     @Override
-    public Draft queryDraftById(int id) {
+    public Draft queryDraftById(long id) {
         return draftDao.selectDraftById(id);
     }
 
@@ -45,8 +45,8 @@ public class DraftServiceImpl implements DraftService {
 
     @Override
     @Transactional
-    public void updateDraftStatus(DraftStatus status, List<Integer> ids) {
-        for (Integer id: ids) {
+    public void updateDraftStatus(DraftStatus status, List<Long> ids) {
+        for (Long id: ids) {
             draftDao.updateDraftStatus(status, id);
         }
 
@@ -54,8 +54,8 @@ public class DraftServiceImpl implements DraftService {
 
     @Override
     @Transactional
-    public void removeDrafts(List<Integer> articleIds) {
-        for (Integer id: articleIds) {
+    public void removeDrafts(List<Long> articleIds) {
+        for (Long id: articleIds) {
             draftDao.deleteDraft(id);
         }
     }

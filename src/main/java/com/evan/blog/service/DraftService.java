@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface DraftService {
     PageInfo<Draft> getDrafts(Integer pageIndex, QueryFilter filter);
-    Draft queryDraftById(int id);
+    Draft queryDraftById(long id);
     void addDraft(Draft draft);
     void updateDraft(Draft draft);
-    void updateDraftStatus(DraftStatus status, List<Integer> ids);
-    void removeDrafts(List<Integer> articleIds);
+    void updateDraftStatus(DraftStatus status, List<Long> ids);
+    void removeDrafts(List<Long> articleIds);
 }

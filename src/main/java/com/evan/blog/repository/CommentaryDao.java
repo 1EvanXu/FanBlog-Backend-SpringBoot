@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface CommentaryDao {
     void insertCommentary(Comment comment);
-    List<Commentary> selectCommentariesByPubId(Integer pubId);
-    Integer selectCommentariesCountByPubId(Integer pubId);
-    List<Commentary> selectCommentariesByParentId(Integer parentId);
-    Commentary selectCommentaryById(Integer id);
-    void deleteCommentariesByPubId(Integer pubId);
+    List<Commentary> selectCommentariesByPubId(long pubId);
+    int selectCommentariesCountByPubId(long pubId);
+    List<Commentary> selectCommentariesByParentId(long parentId);
+    Commentary selectCommentaryById(long id);
+    void deleteCommentariesByPubId(long pubId);
 }

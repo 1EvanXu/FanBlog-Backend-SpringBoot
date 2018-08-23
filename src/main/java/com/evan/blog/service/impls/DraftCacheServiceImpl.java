@@ -6,7 +6,7 @@ import com.evan.blog.model.enums.DraftStatus;
 import com.evan.blog.pojo.TempDraft;
 import com.evan.blog.service.DraftService;
 import com.evan.blog.service.CategoryService;
-import com.evan.blog.service.EditorService;
+import com.evan.blog.service.DraftCacheService;
 import com.evan.blog.util.JsonUtil;
 import com.evan.blog.util.RedisOperator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
-@Service(value = "editorService")
-public class EditorServiceImpl implements EditorService {
+@Service(value = "draftCacheService")
+public class DraftCacheServiceImpl implements DraftCacheService {
 
     private static final long DURATION = 7200L;  //7200 seconds, 2 hours.
 
@@ -70,8 +70,8 @@ public class EditorServiceImpl implements EditorService {
     }
 
     @Override
-    public TempDraft getArticleContent(Integer articleId) {
-        String key = keyPrefix + "a:"+ articleId;
+    public TempDraft getDraftContent(Long draftId) {
+        String key = keyPrefix + "a:"+ draftId;
         String value = redisOperator.get(key);
 
         TempDraft tempDraft = null;
@@ -82,7 +82,7 @@ public class EditorServiceImpl implements EditorService {
             // 加锁防止缓存穿透
             try {
                 semaphore.acquire();
-                Draft draft = draftService.queryDraftById(articleId);
+                Draft draft = draftService.queryDraftById(draftId);
                 if (draft.getStatus() != DraftStatus.Editing) {
                     throw new IllegalAccessException("Can edit only when the status of draft is Editing");
                 }
@@ -99,7 +99,7 @@ public class EditorServiceImpl implements EditorService {
     }
 
     @Override
-    public Long saveArticle(Draft draft) throws IllegalAccessException {
+    public Long saveDraft(Draft draft) throws IllegalAccessException {
         TempDraft tempDraft = new TempDraft(draft);
         saveDraftInCache(tempDraft);
         if (draft.getId() == null) {

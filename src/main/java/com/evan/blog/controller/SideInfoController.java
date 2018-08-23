@@ -1,4 +1,4 @@
-package com.evan.blog.controller.site;
+package com.evan.blog.controller;
 
 import com.evan.blog.pojo.ItemCollection;
 import com.evan.blog.pojo.SideInfoItem;
