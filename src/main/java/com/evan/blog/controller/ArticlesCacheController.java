@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping(path = "/cache/article")
-public class ArticleCacheController {
+@RequestMapping(path = "/cache/articles")
+public class ArticlesCacheController {
 
     @Autowired
     ArticleCacheService articleCacheService;

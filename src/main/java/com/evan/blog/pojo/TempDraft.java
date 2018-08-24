@@ -3,7 +3,7 @@ package com.evan.blog.pojo;
 import com.evan.blog.model.Draft;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties({"htmlContent", "createdTime", "latestEditedTime", "status"})
+@JsonIgnoreProperties({"createdTime", "latestEditedTime", "status"})
 public class TempDraft extends Draft {
     private Long tempDraftId;
 

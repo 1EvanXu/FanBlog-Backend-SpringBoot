@@ -11,6 +11,7 @@ import com.evan.blog.service.CategoryService;
 import com.evan.blog.service.DraftCacheService;
 import com.evan.blog.util.JsonUtil;
 import com.evan.blog.util.RedisOperator;
+import com.fasterxml.jackson.core.JsonParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,22 +45,22 @@ public class DraftCacheServiceImpl implements DraftCacheService {
 
     @Override
     public long saveDraftInCache(TempDraft tempDraft) throws IllegalAccessException {
-        Long tempArticleId = tempDraft.getTempDraftId();
-        Long articleId = tempDraft.getId();
+        Long tempDraftId = tempDraft.getTempDraftId();
+        Long draftId = tempDraft.getId();
 
-        if (tempArticleId == null && articleId == null)
-            throw new IllegalAccessException("the property tempArticleId and id can't be null same time");
+        if (tempDraftId == null && draftId == null)
+            throw new IllegalAccessException("the property tempDraftId and id can't be null same time");
 
         String key = null;
-        String tempKey = tempArticleId != null ? keyPrefix + "d:" + tempArticleId : null;
+        String tempKey = tempDraftId != null ? keyPrefix + "d:" + tempDraftId : null;
 
         if (tempKey == null) {
-            key =  keyPrefix + "a:" + articleId;
+            key =  keyPrefix + "a:" + draftId;
         } else {
-            if (articleId == null) {
+            if (draftId == null) {
                 key = tempKey;
             } else {
-                key =  keyPrefix + "a:" + articleId;
+                key =  keyPrefix + "a:" + draftId;
                 redisOperator.del(tempKey);
             }
         }
@@ -89,6 +90,9 @@ public class DraftCacheServiceImpl implements DraftCacheService {
                     throw new IllegalAccessException("Can edit only when the status of draft is Editing");
                 }
                 tempDraft = new TempDraft(draft);
+
+                redisOperator.set(key, JsonUtil.objectToJson(tempDraft), randomExpireTime());
+
             } catch (InterruptedException | IllegalAccessException e) {
                 throw new RuntimeException(e.getMessage());
             } finally {
@@ -101,16 +105,29 @@ public class DraftCacheServiceImpl implements DraftCacheService {
     }
 
     @Override
-    public Long saveDraft(Draft draft) throws IllegalAccessException {
-        TempDraft tempDraft = new TempDraft(draft);
-        saveDraftInCache(tempDraft);
-        if (draft.getId() == null) {
-            draftDao.insertDraft(draft);
-            return draft.getId();
-        }
+    public Long saveDraft(TempDraft tempDraft) throws NullPointerException {
+        Long draftId = tempDraft.getId();
+        String key, value;
+        Draft draft;
+        if (draftId != null) {
+            key = keyPrefix + "a:"+ draftId;
+            value = redisOperator.get(key);
 
-        draftDao.updateDraft(draft);
-        return draft.getId();
+            draft = JsonUtil.jsonToPojo(value, TempDraft.class);
+            draft.setHtmlContent(tempDraft.getHtmlContent());
+            draftDao.updateDraft(draft);
+            return draftId;
+        }
+        Long tempDraftId = tempDraft.getTempDraftId();
+        if (tempDraftId != null) {
+            key = keyPrefix + "d:" + tempDraftId;
+            value = redisOperator.get(key);
+            draft = JsonUtil.jsonToPojo(value, TempDraft.class);
+            draft.setHtmlContent(tempDraft.getHtmlContent());
+            draftDao.insertDraft(draft);
+            return draft == null ? null : draft.getId();
+        }
+        throw new IllegalArgumentException("the property tempDraftId and id can't be null same time");
     }
 
     @Override

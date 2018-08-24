@@ -13,7 +13,7 @@ public interface DraftCacheService {
 
     TempDraft getDraftContent(Long draftId);
 
-    Long saveDraft(Draft draft) throws IllegalAccessException;
+    Long saveDraft(TempDraft tempDraft);
 
     List<Category> searchCategoryByName(String keyword);
 }

@@ -45,7 +45,7 @@
         select count(*) from articles where category_id=#{categoryId};
     </select>
     
-    <select id="selectLatestArticles" parameterType="long" resultMap="articleMap">
+    <select id="selectLatestArticles" parameterType="int" resultMap="articleMap">
         select * from articles order by pub_time desc limit #{limit}
     </select>
 
@@ -56,7 +56,7 @@
 
     <insert id="insertTempArticle" parameterType="tempArticle">
         insert into articles (pub_id, type, draft_id, category_id)
-        values (#{pubId}, #{type}, #{articleId}, #{category.id});
+        values (#{pubId}, #{type}, #{draftId}, #{category.id});
     </insert>
 
     <delete id="deleteArticle" parameterType="long">
