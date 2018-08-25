@@ -53,6 +53,6 @@ public class VisitorRecordCacheServiceImpl implements VisitorRecordCacheService 
 
     @Override
     public Long getVisitorsCount(Integer pubId) {
-        return redisOperator.zcard(avr);
+        return redisOperator.zcard(avr + pubId);
     }
 }

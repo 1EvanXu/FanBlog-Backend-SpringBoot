@@ -31,17 +31,12 @@ public class SideInfoServiceImp implements SideInfoService {
 
     @Override
     public List<SideInfoItem> getLatestPublishedArticle() {
-//        final String key = "latest_pub_articles:";
         List<SideInfoItem> sideInfoItems = new ArrayList<>();
-//        List<String> latestPubArticles = redisOperator.lrange(key, 0, 9);
         List<Article> latestArticles = articleDao.selectLatestArticles(8);
         latestArticles.forEach((a) -> {
             sideInfoItems.add(new SideInfoItem(a.getPubId(), a.getDraft().getTitle(), null));
         });
-//        latestPubArticles.forEach((s) -> {
-//            String[] strings = s.split(":");
-//            sideInfoItems.add(new SideInfoItem(Integer.parseInt(strings[0]), strings[1], null));
-//        });
+
         return sideInfoItems;
     }
 
@@ -57,7 +52,7 @@ public class SideInfoServiceImp implements SideInfoService {
                 String info[] = stringTypedTuple.getValue().split(":");
                 Long id = Long.parseLong(info[0]);
                 String name = articleDao.selectArticleTitleByPubId(id);
-                Integer score = stringTypedTuple.getScore().intValue();
+                Double score = stringTypedTuple.getScore();
                 sideInfoItems.add(new SideInfoItem(id, name, score));
 
             }
@@ -79,7 +74,7 @@ public class SideInfoServiceImp implements SideInfoService {
                             new SideInfoItem(
                                     category.getId(),
                                     category.getName(),
-                                    category.getNumberOfIncludedPubArticles()
+                                    (double) category.getNumberOfIncludedPubArticles()
                             ));
                 }
             }

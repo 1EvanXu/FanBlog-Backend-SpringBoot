@@ -7,12 +7,12 @@ public class SideInfoItem {
     private Long id;
     private String title;
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private Integer number;
+    private Double number;
 
     public SideInfoItem() {
     }
 
-    public SideInfoItem(Long id, String title, Integer number) {
+    public SideInfoItem(Long id, String title, Double number) {
         this.id = id;
         this.title = title;
         this.number = number;
@@ -34,11 +34,11 @@ public class SideInfoItem {
         this.title = title;
     }
 
-    public Integer getNumber() {
+    public Double getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(Double number) {
         this.number = number;
     }
 

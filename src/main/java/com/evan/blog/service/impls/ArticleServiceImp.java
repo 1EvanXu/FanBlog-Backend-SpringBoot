@@ -57,9 +57,11 @@ public class ArticleServiceImp implements ArticleService {
 
         ArticleItem articleItem;
         Long[] voteCounts = articleCacheService.bulkGetVoteCount(pubIds);
+        Long[] visitorCounts = articleCacheService.bulkGetArticleVisitorCount(pubIds);
         for (int j = 0; j < articles.size(); j++) {
             articleItem = new ArticleItem(articles.get(j));
             articleItem.setVoteCount(voteCounts[j].intValue());
+            articleItem.setVisitorCount(visitorCounts[j].intValue());
             articleItems.add(articleItem);
         }
 
@@ -86,8 +88,10 @@ public class ArticleServiceImp implements ArticleService {
 
         ArticleItem articleItem;
         Long[] voteCounts = articleCacheService.bulkGetVoteCount(pubIds);
+        Long[] visitorCounts = articleCacheService.bulkGetArticleVisitorCount(pubIds);
         for (int j = 0; j < articles.size(); j++) {
             articleItem = new ArticleItem(articles.get(j));
+            articleItem.setVisitorCount(visitorCounts[j].intValue());
             articleItem.setVoteCount(voteCounts[j].intValue());
             articleItems.add(articleItem);
         }

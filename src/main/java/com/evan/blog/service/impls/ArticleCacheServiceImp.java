@@ -74,6 +74,15 @@ public class ArticleCacheServiceImp implements ArticleCacheService {
     }
 
     @Override
+    public Long[] bulkGetArticleVisitorCount(Long[] pubIds) {
+        String[] keys = new String[pubIds.length];
+        for (int i = 0; i < keys.length; i++) {
+            keys[i] = avrPrefix + pubIds[i];
+        }
+        return redisOperator.pipezcard(keys);
+    }
+
+    @Override
     public void updateArticlesRank(Long pubId) {
         
         String key = pubId.toString();

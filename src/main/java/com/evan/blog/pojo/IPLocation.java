@@ -18,7 +18,7 @@ public class IPLocation {
         return country != null && !country.equals("") ? country : "其他";
     }
 
-    public void getCountry(String country) {
+    public void setCountry(String country) {
         this.country = country;
     }
 
