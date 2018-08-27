@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Component(value = "pubIdGenerator")
 public class PubIdGenerator {
@@ -18,7 +20,9 @@ public class PubIdGenerator {
 
     private static final int MAX_NUMBER_OF_PUB_EACH_DAY = 1000;
 
-    private static volatile int oldPubIdPrefix;
+    private static int oldPubIdPrefix;
+
+    private final static Lock lock = new ReentrantLock();
 
     private final String key = "pub_number:";
 
@@ -26,13 +30,19 @@ public class PubIdGenerator {
         int pubIdPrefix = Integer.parseInt(LocalDateTime.now().format(DATE_TIME_FORMATTER));
         int pubId = pubIdPrefix * MAX_NUMBER_OF_PUB_EACH_DAY;
 
+        lock.lock();
+        try {
+            if (pubIdPrefix != oldPubIdPrefix) {
+                oldPubIdPrefix = pubIdPrefix;
+                redisOperator.set(key, "0");
+            }
+            pubId += redisOperator.incr(key, 1L);
 
-        if (pubIdPrefix != oldPubIdPrefix) {
-            oldPubIdPrefix = pubIdPrefix;
-            redisOperator.set(key, "0");
+        } finally {
+            lock.unlock();
         }
-        pubId += redisOperator.incr(key, 1L);
         return pubId;
+
     }
 }
 
