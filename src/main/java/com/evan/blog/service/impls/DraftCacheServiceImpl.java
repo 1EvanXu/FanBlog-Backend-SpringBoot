@@ -122,6 +122,12 @@ public class DraftCacheServiceImpl implements DraftCacheService {
             key = keyPrefix + "d:" + tempDraftId;
             value = redisOperator.get(key);
             draft = JsonUtil.jsonToPojo(value, TempDraft.class);
+
+            // set default title if title is empty
+            if (draft.getTitle() == null || draft.getTitle().equals("")) {
+                draft.setTitle(tempDraftId.toString());
+            }
+
             draft.setHtmlContent(tempDraft.getHtmlContent());
             draftDao.insertDraft(draft);
             return draft == null ? null : draft.getId();

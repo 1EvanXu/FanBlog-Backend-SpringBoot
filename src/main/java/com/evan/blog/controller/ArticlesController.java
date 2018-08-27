@@ -11,6 +11,7 @@ import com.evan.blog.pojo.ArticleItem;
 import com.evan.blog.pojo.BlogJSONResult;
 import com.evan.blog.pojo.ItemCollection;
 import com.evan.blog.pojo.management.ArticlesManagementListItem;
+import com.evan.blog.service.ArticleCacheService;
 import com.evan.blog.service.ArticleService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,10 @@ public class ArticlesController {
     @Autowired
     @Qualifier(value = "articleService")
     ArticleService articleService;
+
+    @Autowired
+    @Qualifier(value = "articleCacheService")
+    ArticleCacheService articleCacheService;
 
     @GetMapping(path = "/{pubId}")
     public BlogJSONResult getArticleDetails(@PathVariable Long pubId) {
@@ -85,8 +90,12 @@ public class ArticlesController {
     @DeleteMapping(path = "/")
     public BlogJSONResult deleteArticles(@RequestParam("ids") String ids) throws Exception {
         List<Long> pubIds = transferIdParams(ids);
-//        System.out.println(pubIds);
+        // remove related info from DB.
         articleService.deleteArticles(pubIds);
+        // the remove related info from Redis.
+        pubIds.forEach(pubId -> {
+            articleCacheService.removePublishedArticleFromCache(pubId.toString());
+        });
         return BlogJSONResult.ok();
     }
 

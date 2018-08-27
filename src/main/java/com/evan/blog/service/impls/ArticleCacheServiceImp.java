@@ -101,40 +101,30 @@ public class ArticleCacheServiceImp implements ArticleCacheService {
         return true;
     }
 
+    /** Remve all info about a published article that is being revoking.
+     * @param key the key must be a string of Long Class.
+     * @return The opetaion result in redis.
+     */
     @Override
     public boolean removePublishedArticleFromCache(String key) {
-//        RedisCallback<List<Object>> redisCallback = new RedisCallback<List<Object>>() {
-//            @Override
-//            public List<Object> doInRedis(RedisConnection connection) throws DataAccessException {
-//                String[] strings = key.split(":");
-//                Long pubId = Long.parseInt(strings[0]);
-//                connection.openPipeline();
-//                connection.zRem(rankBoard.getBytes(), key.getBytes());
-//                connection.lRem(latest.getBytes(), 1L, key.getBytes());
-//                connection.del((votedPrefix+pubId.toString()).getBytes());
-//                connection.del((avrPrefix+pubId.toString()).getBytes());
-//                return connection.closePipeline();
-//            }
-//        };
+        String avr = avrPrefix + key;
+        String voted = votedPrefix + key;
+
         RedisCallback<List<Object>> redisCallback = new RedisCallback<List<Object>>() {
             @Override
             public List<Object> doInRedis(RedisConnection connection) throws DataAccessException {
-                String[] strings = key.split(":");
-                Long pubId = Long.parseLong(strings[0]);
                 connection.openPipeline();
-//                connection.zScore(rankBoard.getBytes(), key.getBytes());
-//                connection.lRem(latest.getBytes(), 0L, key.getBytes());
-                connection.get((votedPrefix+pubId.toString()).getBytes());
-                connection.get((avrPrefix+pubId.toString()).getBytes());
+                // remove related info
+                connection.zRem(rankBoard.getBytes(), key.getBytes());
+                connection.del(voted.getBytes());
+                connection.del(avr.getBytes());
                 return connection.closePipeline();
             }
         };
         try {
-
-            List<Object> pipeline = redisOperator.pipeline(redisCallback);
-            pipeline.forEach(i -> System.out.println("---" + i));
+            redisOperator.pipeline(redisCallback);
             return true;
-        } catch (Exception e) {
+        } catch (RedisSystemException e) {
             return false;
         }
     }
