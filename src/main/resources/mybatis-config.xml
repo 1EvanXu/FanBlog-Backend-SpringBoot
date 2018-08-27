@@ -11,6 +11,8 @@
     <typeHandlers>
         <typeHandler handler="com.evan.blog.repository.typehandlers.DraftStatusTypeHandler"
                      javaType="com.evan.blog.model.enums.DraftStatus"/>
+        <typeHandler handler="com.evan.blog.repository.typehandlers.UserLevelTypeHandler"
+                     javaType="com.evan.blog.model.enums.UserLevel"/>
     </typeHandlers>
 
 </configuration>

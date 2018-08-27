@@ -1,6 +1,6 @@
 package com.evan.blog.repository;
 
-import com.evan.blog.model.User;
+import com.evan.blog.model.GithubUser;
 import com.evan.blog.model.enums.UserLevel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,41 +17,27 @@ public class UserDaoTest {
     @Autowired
     UserDao userDao;
 
-    @Test
-    public void selectUserByEmail() {
-        User user = userDao.selectUserByEmail("yifan_xu6@163.com");
-        System.out.println(user);
-        assertNotNull(user);
-    }
-
-    @Test
-    public void insertUser() {
-        User user = new User();
-        user.setName("eleven");
-        user.setAvatarImagePath("/blog/image/avatar/3.png");
-        user.setEmail("evan.xu1@foxmail.com");
-        user.setPassword("xuyifan1993fan0601.");
-        user.setLevel(UserLevel.VIP);
-        userDao.insertUser(user);
-    }
-
-    @Test
-    public void updateUser() {
-        User user = userDao.selectUserByEmail("yifan_xu6@163.com");
-        user.setAvatarImagePath("/blog/image/avatar/yifanxu.png");
-        userDao.updateUser(user);
-    }
 
     @Test
     public void selectUserById() {
-        User user = userDao.selectUserById(1);
-        System.out.println(user);
-        assertNotNull(user);
+        GithubUser user = (GithubUser) userDao.selectUserById(8);
+        assertEquals("yifanxu", user.getName());
     }
 
     @Test
-    public void selectUserPassword() {
-        String userPassword = userDao.selectUserPassword("yifan_xu6@163.com");
-        assertEquals("xuyifan1993fan0601.", userPassword);
+    public void selectUserByGithubId() {
+        GithubUser user = (GithubUser) userDao.selectUserByGithubId(231412);
+        assertEquals("yifanxu", user.getName());
+    }
+
+//    @Test
+//    public void insertUser() {
+//        GithubUser githubUser = new GithubUser(231412L, "yifanxu", "url", "url", "yifanxu@fanblog.com");
+//        userDao.insertUser(githubUser);
+//    }
+
+    @Test
+    public void updateUserLevel() {
+        userDao.updateUserLevel(8, UserLevel.Admin);
     }
 }

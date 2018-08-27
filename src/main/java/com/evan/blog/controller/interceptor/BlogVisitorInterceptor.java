@@ -1,14 +1,20 @@
 package com.evan.blog.controller.interceptor;
 
+import com.evan.blog.model.GithubUser;
 import com.evan.blog.pojo.IPLocation;
 import com.evan.blog.pojo.VisitorRecord;
 import com.evan.blog.service.IPQueryService;
 import com.evan.blog.service.SiteInfoCacheService;
 import com.evan.blog.service.VisitorRecordCacheService;
 import com.evan.blog.util.IPUtil;
+import com.evan.blog.util.JsonUtil;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.sun.jndi.toolkit.url.UrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.servlet.HandlerInterceptor;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
@@ -33,10 +39,17 @@ public class BlogVisitorInterceptor implements HandlerInterceptor {
 
         String ip = IPUtil.getRealIP(request);
 
-        String username;
+        String username = null;
         try {
-
-            username = request.getSession().getAttribute("username").toString();
+            Cookie[] cookies = request.getCookies();
+            for (Cookie c: cookies) {
+                if (c.getName().equals("user")) {
+                    String s = UrlUtil.decode(c.getValue());
+                    GithubUser user = JsonUtil.jsonToPojo(s, GithubUser.class);
+                    assert user != null;
+                    username = user.getName();
+                }
+            }
         } catch (NullPointerException e) {
             username = null;
         }

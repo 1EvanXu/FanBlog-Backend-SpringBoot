@@ -2,50 +2,18 @@ package com.evan.blog.model;
 
 
 import com.evan.blog.model.enums.UserLevel;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.sql.Timestamp;
 
 public class User extends BlogEntity {
 
-    private String name;
-    private String avatarImagePath;
-    @JsonIgnore
-    private String password;
-    private String email;
     private UserLevel level = UserLevel.Common;
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+    private Timestamp registTime;
 
     public User() { }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAvatarImagePath() {
-        return avatarImagePath;
-    }
-
-    public void setAvatarImagePath(String avatarImagePath) {
-        this.avatarImagePath = avatarImagePath;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public User(UserLevel userLevel) { this.level = userLevel; }
 
     public UserLevel getLevel() {
         return level;
@@ -55,14 +23,18 @@ public class User extends BlogEntity {
         this.level = level;
     }
 
+    public Timestamp getRegistTime() {
+        return registTime;
+    }
+
+    public void setRegistTime(Timestamp registTime) {
+        this.registTime = registTime;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", avatarImagePath='" + avatarImagePath + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
                 ", level=" + level +
                 '}';
     }

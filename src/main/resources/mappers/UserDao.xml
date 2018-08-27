@@ -3,39 +3,33 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.evan.blog.repository.UserDao">
-    <resultMap id="userMap" type="user">
+    <resultMap id="githubUserMap" type="githubUser">
         <id column="id" property="id"/>
+        <result column="github_id" property="githubId" />
         <result column="user_name" property="name" />
-        <result column="avatar_image_path" property="avatarImagePath" />
-        <result column="password" property="password" />
+        <result column="avatar_url" property="avatarUrl" />
+        <result column="home_page" property="githubHomePage"/>
         <result column="email" property="email" />
-        <result column="user_level" property="level" />
+        <result column="regist_time" property="registTime" />
+        <result column="user_level" property="level" typeHandler="com.evan.blog.repository.typehandlers.UserLevelTypeHandler"/>
     </resultMap>
 
-    <select id="selectUserById" resultMap="userMap" parameterType="int">
-        select id, user_name, avatar_image_path, email, user_level from users where id=#{id};
+    <select id="selectUserById" resultMap="githubUserMap" parameterType="long">
+        select * from users where id=#{id};
     </select>
 
-    <select id="selectUserByEmail" resultMap="userMap" parameterType="string">
-        select id, user_name, avatar_image_path, email, user_level from users where email=#{email};
+    <select id="selectUserByGithubId" resultMap="githubUserMap" parameterType="long">
+        select * from users where github_id=#{githubId};
     </select>
 
-    <select id="selectUserPassword" resultType="string" parameterType="string">
-        select password from users where email=#{email}
-    </select>
-
-    <insert id="insertUser" parameterType="user">
-        insert into users(user_name, avatar_image_path, password, email, user_level)
-        values (#{name}, #{avatarImagePath}, #{password}, #{email}, #{level});
+    <insert id="insertUser" parameterType="user" useGeneratedKeys="true" keyProperty="id">
+        insert into users(github_id, user_name, avatar_url, home_page, email, user_level)
+        values (#{githubId}, #{name}, #{avatarUrl}, #{githubHomePage}, #{email}, #{level});
     </insert>
 
-    <update id="updateUser" parameterType="User">
+    <update id="updateUserLevel">
         update users
         <set>
-            <if test="name != null and name != ''">user_name=#{name},</if>
-            <if test="avatarImagePath != null and avatarImagePath != ''">avatar_image_path=#{avatarImagePath},</if>
-            <if test="password != null and password != ''">password=#{password},</if>
-            <if test="email != null and email != ''">email=#{email},</if>
             <if test="level">user_level=#{level}</if>
         </set>
         where id=#{id};

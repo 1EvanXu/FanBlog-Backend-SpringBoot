@@ -6,12 +6,9 @@ import com.evan.blog.model.enums.DraftStatus;
 import com.evan.blog.pojo.TempDraft;
 import com.evan.blog.repository.CategoryDao;
 import com.evan.blog.repository.DraftDao;
-import com.evan.blog.service.DraftService;
-import com.evan.blog.service.CategoryService;
 import com.evan.blog.service.DraftCacheService;
 import com.evan.blog.util.JsonUtil;
 import com.evan.blog.util.RedisOperator;
-import com.fasterxml.jackson.core.JsonParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -86,7 +83,9 @@ public class DraftCacheServiceImpl implements DraftCacheService {
             try {
                 semaphore.acquire();
                 Draft draft = draftDao.selectDraftById(draftId);
-                if (draft.getStatus() != DraftStatus.Editing) {
+                if (draft == null) {
+                    throw new IllegalAccessException("The draft not exist!");
+                } else if (draft.getStatus() != DraftStatus.Editing) {
                     throw new IllegalAccessException("Can edit only when the status of draft is Editing");
                 }
                 tempDraft = new TempDraft(draft);
