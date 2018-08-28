@@ -4,11 +4,9 @@ import com.evan.blog.model.GithubUser;
 import com.evan.blog.pojo.IPLocation;
 import com.evan.blog.pojo.VisitorRecord;
 import com.evan.blog.service.IPQueryService;
-import com.evan.blog.service.SiteInfoCacheService;
 import com.evan.blog.service.VisitorRecordCacheService;
 import com.evan.blog.util.IPUtil;
 import com.evan.blog.util.JsonUtil;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.sun.jndi.toolkit.url.UrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,9 +27,6 @@ public class BlogVisitorInterceptor implements HandlerInterceptor {
 
     @Autowired
     VisitorRecordCacheService visitorRecordService;
-
-    @Autowired
-    SiteInfoCacheService siteInfoCacheService;
 
 
     @Override
@@ -69,16 +64,22 @@ public class BlogVisitorInterceptor implements HandlerInterceptor {
         record.setVisitTime(new Date().getTime());
         // Catch spec Exception
         visitorRecordService.recordVisitor(record);
-        siteInfoCacheService.updateRegionDistribution(record);
+        visitorRecordService.updateRegionDistributions(record.getIpLocation().getCity());
 
         String url = request.getRequestURL().toString();
 
         //if visiting an article, record this visitor
 
-        Matcher matcher = Pattern.compile(".*apis/blog/articles/(\\d{9})/?$").matcher(url);
-        if (matcher.find()) {
-            int pubId = Integer.parseInt(matcher.group(1));
+        Matcher matcher1 = Pattern.compile(".*/blog/articles/(\\d{9})/?$").matcher(url);
+        if (matcher1.find()) {
+            int pubId = Integer.parseInt(matcher1.group(1));
             visitorRecordService.addVisitorsRecord(pubId, record);
+        }
+
+        // record the pv info
+        Matcher matcher2 = Pattern.compile(".*/blog/articles/items/p/\\d+/?$").matcher(url);
+        if (matcher2.find()) {
+            visitorRecordService.pageViewCount();
         }
 
         return true;

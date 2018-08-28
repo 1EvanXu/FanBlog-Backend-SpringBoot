@@ -2,6 +2,7 @@ package com.evan.blog.util;
 
 import org.junit.Test;
 
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,7 +12,8 @@ public class IPUtilTest {
     @Test
     public void IPv4ToLong() {
         long iPv4ToLong = IPUtil.IPv4ToLong(IPUtil.getRandomIp());
-        System.out.println(iPv4ToLong + "\u5c71\u897f");
+        long l = System.currentTimeMillis();
+        System.out.println((l / 300000) * 300000);
     }
 
     @Test()

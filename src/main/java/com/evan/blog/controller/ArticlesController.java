@@ -87,7 +87,7 @@ public class ArticlesController {
         return BlogJSONResult.ok(new ItemCollection((int)ArticlePageInfo.getTotal(), items));
     }
 
-    @DeleteMapping(path = "/")
+    @DeleteMapping(path = "")
     public BlogJSONResult deleteArticles(@RequestParam("ids") String ids) throws Exception {
         List<Long> pubIds = transferIdParams(ids);
         // remove related info from DB.

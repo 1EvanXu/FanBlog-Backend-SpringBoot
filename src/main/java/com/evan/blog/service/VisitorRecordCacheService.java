@@ -13,4 +13,6 @@ public interface VisitorRecordCacheService {
     Set<ZSetOperations.TypedTuple<String>> getRegionDistributions();
     void addVisitorsRecord(Integer pubId, VisitorRecord record);
     Long getVisitorsCount(Integer pubId);
+    void pageViewCount();
+    Map<Object, Object> getPageViewCount(long precision);
 }
