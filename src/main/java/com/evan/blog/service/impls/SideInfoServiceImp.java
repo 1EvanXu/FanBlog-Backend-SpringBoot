@@ -49,8 +49,9 @@ public class SideInfoServiceImp implements SideInfoService {
 
         tuples.forEach(stringTypedTuple -> {
             if (stringTypedTuple.getScore() > 0) {
-                String info[] = stringTypedTuple.getValue().split(":");
-                Long id = Long.parseLong(info[0]);
+                // get the id of article, the query article title from DB.
+                // then create a SideinfoItem from these info.
+                Long id = Long.parseLong(stringTypedTuple.getValue());
                 String name = articleDao.selectArticleTitleByPubId(id);
                 Double score = stringTypedTuple.getScore();
                 sideInfoItems.add(new SideInfoItem(id, name, score));
@@ -61,6 +62,8 @@ public class SideInfoServiceImp implements SideInfoService {
     }
 
     /**
+     * @Description Get Category from DB by the order of NumberOfIncluded Articles
+     *              and package the to SideInfoItem Object
      * @return List<SideInfoItem>
      */
     @Override

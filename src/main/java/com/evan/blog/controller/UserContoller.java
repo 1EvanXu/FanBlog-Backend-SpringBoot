@@ -51,7 +51,7 @@ public class UserContoller {
 
                 HttpSession session = request.getSession();
 
-                session.setAttribute("user:" + user.getId(), user);
+                session.setAttribute("user", user);
 
                 session.setMaxInactiveInterval(SessionDurationTime);
                 param = ";userId=" + user.getId();

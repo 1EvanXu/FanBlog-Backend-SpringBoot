@@ -3,6 +3,7 @@ package com.evan.blog.controller.interceptor;
 import com.evan.blog.model.GithubUser;
 import com.evan.blog.pojo.IPLocation;
 import com.evan.blog.pojo.VisitorRecord;
+import com.evan.blog.service.ArticleService;
 import com.evan.blog.service.IPQueryService;
 import com.evan.blog.service.VisitorRecordCacheService;
 import com.evan.blog.util.IPUtil;
@@ -19,7 +20,7 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class BlogVisitorInterceptor implements HandlerInterceptor {
+public class VisitorInterceptor implements HandlerInterceptor {
 
     @Autowired
     @Qualifier("IPQueryService")
@@ -28,9 +29,22 @@ public class BlogVisitorInterceptor implements HandlerInterceptor {
     @Autowired
     VisitorRecordCacheService visitorRecordService;
 
+    @Autowired
+    ArticleService articleService;
+
+    private Pattern pattern1 = Pattern.compile(".*/blog/articles/(\\d{9})/?$");
+    private Pattern pattern2 = Pattern.compile(".*/blog/articles/items/p/\\d+/?$");
+
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String url = request.getRequestURL().toString();
+
+        Matcher matcher1 = pattern1.matcher(url);
+        Matcher matcher2 = pattern2.matcher(url);
+        if (!matcher1.matches() && !matcher2.matches()) {
+            return true;
+        }
 
         String ip = IPUtil.getRealIP(request);
 
@@ -66,18 +80,15 @@ public class BlogVisitorInterceptor implements HandlerInterceptor {
         visitorRecordService.recordVisitor(record);
         visitorRecordService.updateRegionDistributions(record.getIpLocation().getCity());
 
-        String url = request.getRequestURL().toString();
-
         //if visiting an article, record this visitor
-
-        Matcher matcher1 = Pattern.compile(".*/blog/articles/(\\d{9})/?$").matcher(url);
         if (matcher1.find()) {
-            int pubId = Integer.parseInt(matcher1.group(1));
-            visitorRecordService.addVisitorsRecord(pubId, record);
+            long pubId = Long.parseLong(matcher1.group(1));
+            if (articleService.getTitleByPubId(pubId) != null) {
+                visitorRecordService.addVisitorsRecord((int)pubId, record);
+            }
         }
 
         // record the pv info
-        Matcher matcher2 = Pattern.compile(".*/blog/articles/items/p/\\d+/?$").matcher(url);
         if (matcher2.find()) {
             visitorRecordService.pageViewCount();
         }

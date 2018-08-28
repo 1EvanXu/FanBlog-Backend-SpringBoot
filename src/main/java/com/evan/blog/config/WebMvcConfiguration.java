@@ -3,18 +3,16 @@ package com.evan.blog.config;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import com.evan.blog.controller.interceptor.BlogVisitorInterceptor;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.evan.blog.controller.interceptor.AuthorityInterceptor;
+import com.evan.blog.controller.interceptor.VisitorInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +21,13 @@ import java.util.List;
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
     @Bean
-    public BlogVisitorInterceptor blogVisitorInterceptor() {
-        return new BlogVisitorInterceptor();
+    public VisitorInterceptor blogVisitorInterceptor() {
+        return new VisitorInterceptor();
     }
+
+    @Bean
+    public AuthorityInterceptor authorityInterceptor() { return new AuthorityInterceptor(); }
+
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -38,10 +40,10 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        /**
-         * 拦截器按照顺序执行
-         */
+
         registry.addInterceptor(blogVisitorInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(authorityInterceptor()).addPathPatterns("/**");
+
     }
 
     @Override

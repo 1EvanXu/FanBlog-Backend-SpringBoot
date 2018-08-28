@@ -7,6 +7,7 @@ import com.evan.blog.service.CommentaryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.List;
 @Service(value = "commentaryService")
 public class CommentaryServiceImpl implements CommentaryService {
 
-    private int pageSize = 6;
+    @Value("${blog.data.page.size}")
+    private int pageSize;
 
     @Autowired
     CommentaryDao commentaryDao;

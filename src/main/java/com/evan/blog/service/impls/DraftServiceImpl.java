@@ -8,6 +8,7 @@ import com.evan.blog.service.DraftService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +20,8 @@ public class DraftServiceImpl implements DraftService {
     @Autowired
     private DraftDao draftDao;
 
-    private int pageSize = 6;
+    @Value("${blog.data.page.size}")
+    private int pageSize;
 
     @Override
     public PageInfo<Draft> getDrafts(Integer pageIndex, QueryFilter filter) {

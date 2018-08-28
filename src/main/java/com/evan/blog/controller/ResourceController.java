@@ -1,5 +1,6 @@
 package com.evan.blog.controller;
 
+import com.evan.blog.exception.ResourceUploadException;
 import com.evan.blog.util.FileUtil;
 import com.evan.blog.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,13 +37,18 @@ public class ResourceController {
         try {
             storeResult = FileUtil.storeFile(file.getBytes(), tempResourcePath, fileName);
         } catch (IOException e) {
-            // TODO: handle exception
+            throw new ResourceUploadException("Failed to save the resource in server.", e);
         }
 
         if (storeResult) {
             String srcImagePath = tempResourcePath + "/" + fileName;
             String destImagePath = imagesPath + "/" + fileName;
-            ImageUtil.processBlogImage(srcImagePath, destImagePath, maxImageWidth, 0, fileFormat);
+            try {
+
+                ImageUtil.processBlogImage(srcImagePath, destImagePath, maxImageWidth, 0, fileFormat);
+            } catch (Exception e) {
+                throw new ResourceUploadException("Failed to process image.", e);
+            }
         }
 
         return ImageUploadResult.success(fileName);

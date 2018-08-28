@@ -14,6 +14,7 @@ import com.evan.blog.util.PubIdGenerator;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +24,8 @@ import java.util.List;
 @Service(value = "articleService")
 public class ArticleServiceImp implements ArticleService {
 
-    private int pageSize = 6;
+    @Value(value = "${blog.data.page.size}")
+    private int pageSize;
 
     @Autowired
     ArticleDao ArticleDao;
@@ -65,7 +67,7 @@ public class ArticleServiceImp implements ArticleService {
             articleItems.add(articleItem);
         }
 
-        //dumpy code
+        // TODO: remove dumpy code upon in the future
 
         PageInfo<ArticleItem> publishedArticleItemPageInfo = new PageInfo<>(articleItems);
         publishedArticleItemPageInfo.setTotal(total);
@@ -96,7 +98,7 @@ public class ArticleServiceImp implements ArticleService {
             articleItems.add(articleItem);
         }
 
-        //dumpy code
+        // TODO: remove dumpy code upon in the future
 
         PageInfo<ArticleItem> publishedArticleItemPageInfo = new PageInfo<>(articleItems);
         publishedArticleItemPageInfo.setTotal(total);
@@ -107,6 +109,9 @@ public class ArticleServiceImp implements ArticleService {
     public ArticleDetails getArticle(long pubId) {
 
         Article article = ArticleDao.selectArticleByPubId(pubId);
+        if (article == null) {
+            throw new NullPointerException("The pubId of " + pubId +" of article not exisit.");
+        }
 
         Long articleVisitorCount = articleCacheService.getArticleVisitorCount(pubId);
         Long voteCount = articleCacheService.getVoteCount(pubId);
@@ -162,7 +167,7 @@ public class ArticleServiceImp implements ArticleService {
 
     @Override
     @Transactional
-    public void deleteArticles(List<Long> pubIds) throws Exception {
+    public void deleteArticles(List<Long> pubIds) {
         for (Long pubId: pubIds) {
             Draft draft = ArticleDao.selectArticleByPubId(pubId).getDraft();
 

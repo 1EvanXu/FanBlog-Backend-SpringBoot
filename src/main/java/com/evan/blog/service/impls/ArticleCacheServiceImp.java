@@ -1,4 +1,5 @@
 package com.evan.blog.service.impls;
+import com.evan.blog.exception.BlogException;
 import com.evan.blog.service.ArticleCacheService;
 import com.evan.blog.service.ArticleService;
 import com.evan.blog.util.RedisOperator;
@@ -42,13 +43,8 @@ public class ArticleCacheServiceImp implements ArticleCacheService {
     public Long getVoteCount(Long pubId) {
         String key = votedPrefix + pubId;
         Long voteCount = 0L;
-        try {
-            voteCount = redisOperator.zcard(key);
-        } catch (RedisSystemException e) {
-            throw e;
-        } finally {
-            return voteCount;
-        }
+        voteCount = redisOperator.zcard(key);
+        return voteCount;
     }
 
     @Override
@@ -63,14 +59,8 @@ public class ArticleCacheServiceImp implements ArticleCacheService {
     @Override
     public Long getArticleVisitorCount(Long pubId) {
         String key = avrPrefix + pubId;
-        Long articleVisitorCount = 0L;
-        try {
-            articleVisitorCount = redisOperator.zcard(key);
-        } catch (RedisSystemException e) {
-            throw e;
-        } finally {
-            return articleVisitorCount;
-        }
+
+        return redisOperator.zcard(key);
     }
 
     @Override
@@ -91,14 +81,9 @@ public class ArticleCacheServiceImp implements ArticleCacheService {
     }
 
     @Override
-    public boolean updateLatestPublishedArticle(Long pubId, String title) {
+    public void updateLatestPublishedArticle(Long pubId, String title) {
         String value = pubId.toString();
-        try {
-            redisOperator.lpushrpop(latest, value, 8L);
-        } catch (RedisSystemException e) {
-            return false;
-        }
-        return true;
+        redisOperator.lpushrpop(latest, value, 8L);
     }
 
     /** Remve all info about a published article that is being revoking.
@@ -106,7 +91,7 @@ public class ArticleCacheServiceImp implements ArticleCacheService {
      * @return The opetaion result in redis.
      */
     @Override
-    public boolean removePublishedArticleFromCache(String key) {
+    public void removePublishedArticleFromCache(String key) {
         String avr = avrPrefix + key;
         String voted = votedPrefix + key;
 
@@ -121,11 +106,8 @@ public class ArticleCacheServiceImp implements ArticleCacheService {
                 return connection.closePipeline();
             }
         };
-        try {
-            redisOperator.pipeline(redisCallback);
-            return true;
-        } catch (RedisSystemException e) {
-            return false;
-        }
+
+        redisOperator.pipeline(redisCallback);
+
     }
 }

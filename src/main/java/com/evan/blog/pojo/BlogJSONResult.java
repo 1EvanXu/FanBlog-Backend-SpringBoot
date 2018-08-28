@@ -7,9 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * 
- * @Title: LeeJSONResult.java
- * @Package com.lee.utils
+ *
  * @Description: 自定义响应数据结构
  * 				这个类是提供给门户，ios，安卓，微信商城用的
  * 				门户接受此类数据后需要使用本类的方法转换成对于的数据类型格式（类，或者list）
@@ -19,12 +17,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * 				501：bean验证错误，不管多少个错误都以map形式返回
  * 				502：拦截器拦截到用户token出错
  * 				555：异常抛出信息
- * Copyright: Copyright (c) 2016
- * Company:Nathan.Lee.Salvatore
- * 
- * @author leechenxiang
- * @date 2016年4月22日 下午8:33:36
- * @version V1.0
  */
 public class BlogJSONResult {
 

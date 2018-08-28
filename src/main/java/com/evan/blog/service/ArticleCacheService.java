@@ -9,6 +9,6 @@ public interface ArticleCacheService {
     Long getArticleVisitorCount(Long pubId);
     Long[] bulkGetArticleVisitorCount(Long[] pubIds);
     void updateArticlesRank(Long pubId);
-    boolean updateLatestPublishedArticle(Long pubId, String title);
-    boolean removePublishedArticleFromCache(String key);
+    void updateLatestPublishedArticle(Long pubId, String title);
+    void removePublishedArticleFromCache(String key);
 }
