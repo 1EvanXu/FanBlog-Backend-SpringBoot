@@ -12,18 +12,26 @@ public class AuthorityInterceptor implements HandlerInterceptor {
 
     private Pattern pattern1 = Pattern.compile(".*/blog/cache/drafts$");
     private Pattern pattern2 = Pattern.compile(".*/blog/drafts/status$");
-    private Pattern pattern3 = Pattern.compile(".*/blog/drafts\\?ids=.*");
-    private Pattern pattern4 = Pattern.compile(".*/blog/articles\\?ids=.*");
+    private Pattern pattern3 = Pattern.compile(".*/blog/drafts");
+    private Pattern pattern4 = Pattern.compile(".*/blog/articles");
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String url = request.getRequestURL().toString();
-        if (pattern1.matcher(url).matches() && pattern2.matcher(url).matches()
-                && pattern3.matcher(url).matches() && pattern4.matcher(url).matches()) {
+
+        if (!pattern1.matcher(url).matches() && !pattern2.matcher(url).matches()
+                && !pattern3.matcher(url).matches() && !pattern4.matcher(url).matches()) {
             return true;
         }
         HttpSession session = request.getSession();
         User user = (User)session.getAttribute("user");
+        System.out.println(pattern4.matcher(url).matches());
+        if (pattern3.matcher(url).matches() || pattern4.matcher(url).matches()) {
+
+            if (request.getMethod().equals("DELETE")) {
+                return user != null && user.getLevel().getLevelcode() == 3;
+            }
+        }
 
         return user != null && user.getLevel().getLevelcode() > 0;
     }

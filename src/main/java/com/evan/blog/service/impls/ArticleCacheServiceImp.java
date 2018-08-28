@@ -1,11 +1,8 @@
 package com.evan.blog.service.impls;
-import com.evan.blog.exception.BlogException;
 import com.evan.blog.service.ArticleCacheService;
-import com.evan.blog.service.ArticleService;
 import com.evan.blog.util.RedisOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.RedisSystemException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.stereotype.Service;

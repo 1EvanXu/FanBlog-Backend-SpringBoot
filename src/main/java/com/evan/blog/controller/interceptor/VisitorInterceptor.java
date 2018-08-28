@@ -39,10 +39,11 @@ public class VisitorInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String url = request.getRequestURL().toString();
-
         Matcher matcher1 = pattern1.matcher(url);
         Matcher matcher2 = pattern2.matcher(url);
-        if (!matcher1.matches() && !matcher2.matches()) {
+
+        if (matcher1.matches() && matcher2.matches()) {
+            System.out.println("miss visitor");
             return true;
         }
 
@@ -81,15 +82,17 @@ public class VisitorInterceptor implements HandlerInterceptor {
         visitorRecordService.updateRegionDistributions(record.getIpLocation().getCity());
 
         //if visiting an article, record this visitor
-        if (matcher1.find()) {
+        if (Pattern.compile(".*/blog/articles/(\\d{9})/?$").matcher(url).find()) {
+
             long pubId = Long.parseLong(matcher1.group(1));
             if (articleService.getTitleByPubId(pubId) != null) {
                 visitorRecordService.addVisitorsRecord((int)pubId, record);
+
             }
         }
 
         // record the pv info
-        if (matcher2.find()) {
+        if (matcher2.matches() || matcher1.matches()) {
             visitorRecordService.pageViewCount();
         }
 

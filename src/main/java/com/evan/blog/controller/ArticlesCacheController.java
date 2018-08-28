@@ -6,13 +6,14 @@ import com.evan.blog.util.IPUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(path = "/cache/articles")
 public class ArticlesCacheController {
 
-    @Autowired
+    @Resource(name = "articleCacheService", type = ArticleCacheService.class)
     ArticleCacheService articleCacheService;
 
     @PostMapping(path = "/{pubId}/vote")
