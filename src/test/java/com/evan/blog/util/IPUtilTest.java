@@ -16,14 +16,10 @@ import java.util.regex.Pattern;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class IPUtilTest {
-    @Autowired
-    StringRedisTemplate redisTemplate;
 
     @Test
     public void IPv4ToLong() {
-        long iPv4ToLong = IPUtil.IPv4ToLong(IPUtil.getRandomIp());
-        long l = System.currentTimeMillis();
-        System.out.println((l / 300000) * 300000);
+        IPUtil.IPv4ToLong(IPUtil.getRandomIp());
     }
 
     @Test()
@@ -43,12 +39,6 @@ public class IPUtilTest {
         }
         AtomicLong atomicLong = new AtomicLong(0);
         System.out.println(atomicLong.getAndSet(1));
-    }
-
-    @Test
-    public void redisTemplateTest() {
-        JedisConnectionFactory connectionFactory = (JedisConnectionFactory) redisTemplate.getConnectionFactory();
-        connectionFactory.setDatabase(1);
     }
 
     @Test

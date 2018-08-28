@@ -93,8 +93,7 @@ public class DraftDaoTest {
     public void deleteDraft() {
 
         draftDao.deleteDraft(id);
-        Draft d = draftDao.selectDraftById(id);
-        assertNull(d);
+        draftDao.selectDraftById(id);
         draft = null;
         id = null;
     }
