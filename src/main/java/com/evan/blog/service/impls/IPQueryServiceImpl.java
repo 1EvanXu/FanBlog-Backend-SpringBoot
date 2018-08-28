@@ -36,6 +36,8 @@ public class IPQueryServiceImpl implements IPQueryService {
 
         if (cityId != null) {
             cityId = cityId.split("_")[0];
+        } else {
+            return new IPLocation("unkown", "unkown", "unkown");
         }
         // location is a json string
         String location = redisOperator.hget("cityid2city:", cityId);

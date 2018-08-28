@@ -19,18 +19,6 @@ public class RedisOperatorTest {
     RedisOperator redisOperator;
 
     @Test
-    public void set() {
-        redisOperator.set("hello", "world");
-    }
-    @Test
-    public void get() {
-        assertEquals("world", redisOperator.get("hello"));
-    }
-    @Test
-    public void del() {
-        redisOperator.del("hello");
-    }
-    @Test
     public void zrevrangebyscore() {
         Set<ZSetOperations.TypedTuple<String>> set =
                 redisOperator.zrevrangebyscore("ip2cityid:", 0, 1779350079, 0, 1);
@@ -62,16 +50,4 @@ public class RedisOperatorTest {
         assertEquals(keys.length, pipezcard.length);
     }
 
-    @Test
-    public void set1() {
-        String key = "test:expire";
-        redisOperator.set(key, "hello world!", 20);
-        long ttl = redisOperator.ttl(key);
-        boolean isExpired = ttl == 0 || ttl == -2;
-        System.out.println("ttl: "+ ttl + " expired:" + isExpired);
-        redisOperator.set(key, "Hello World!");
-        ttl = redisOperator.ttl(key);
-        isExpired = ttl == 0 || ttl == -2;
-        System.out.println("ttl: "+ ttl + " expired:" + isExpired);
-    }
 }

@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class IPQueryServiceImplTest {
@@ -22,10 +20,6 @@ public class IPQueryServiceImplTest {
 
     @Test
     public void query() {
-        String randomIp = IPUtil.getRandomIp();
-        System.out.println("\n-------\n" + randomIp);
-        IPLocation location = ipQueryService.query(randomIp);
-        assertNotNull(location);
-        System.out.println(location.toString());
+
     }
 }

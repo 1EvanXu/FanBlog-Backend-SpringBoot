@@ -1,13 +1,23 @@
 package com.evan.blog.util;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class IPUtilTest {
+    @Autowired
+    StringRedisTemplate redisTemplate;
 
     @Test
     public void IPv4ToLong() {
@@ -33,6 +43,12 @@ public class IPUtilTest {
         }
         AtomicLong atomicLong = new AtomicLong(0);
         System.out.println(atomicLong.getAndSet(1));
+    }
+
+    @Test
+    public void redisTemplateTest() {
+        JedisConnectionFactory connectionFactory = (JedisConnectionFactory) redisTemplate.getConnectionFactory();
+        connectionFactory.setDatabase(1);
     }
 
     @Test

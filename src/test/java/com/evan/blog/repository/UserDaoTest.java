@@ -20,24 +20,18 @@ public class UserDaoTest {
 
     @Test
     public void selectUserById() {
-        GithubUser user = (GithubUser) userDao.selectUserById(8);
-        assertEquals("yifanxu", user.getName());
+        GithubUser user = (GithubUser) userDao.selectUserById(9);
+        assertEquals("1EvanXu", user.getName());
     }
 
     @Test
     public void selectUserByGithubId() {
-        GithubUser user = (GithubUser) userDao.selectUserByGithubId(231412);
-        assertEquals("yifanxu", user.getName());
+        GithubUser user = (GithubUser) userDao.selectUserByGithubId(26501223);
+        assertEquals("1EvanXu", user.getName());
     }
-
-//    @Test
-//    public void insertUser() {
-//        GithubUser githubUser = new GithubUser(231412L, "yifanxu", "url", "url", "yifanxu@fanblog.com");
-//        userDao.insertUser(githubUser);
-//    }
 
     @Test
     public void updateUserLevel() {
-        userDao.updateUserLevel(8, UserLevel.Admin);
+        userDao.updateUserLevel(9, UserLevel.Admin);
     }
 }

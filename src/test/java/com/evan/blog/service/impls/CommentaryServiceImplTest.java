@@ -21,10 +21,8 @@ public class CommentaryServiceImplTest {
 
     @Test
     public void getCommentaryByPubId() {
-        PageInfo<Commentary> commentaryPageInfo =
-                commentaryService.getCommentaryByPubId(180711661, 1);
-        for (Commentary c: commentaryPageInfo.getList()) {
-            System.out.println(c);
-        }
+
+          commentaryService.getCommentaryByPubId(180711661, 1);
+
     }
 }

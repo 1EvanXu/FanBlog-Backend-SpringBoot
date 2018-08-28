@@ -22,10 +22,8 @@ public class ArticleServiceImpTest {
 
     @Test
     public void getAllPublishedArticles() {
-        PageInfo<ArticleItem> allPublishedArticles = articleService.getAllArticleItems(1);
-        for (ArticleItem p: allPublishedArticles.getList()) {
-            System.out.println(p);
-        }
+        articleService.getAllArticleItems(1);
+
     }
     @Test
     public void getPublishedArticleByPubId() {
@@ -36,9 +34,8 @@ public class ArticleServiceImpTest {
     public void getPublishedArticlesByFilter() {
         ArticleQueryFilter filter1 = new ArticleQueryFilter("pub_time", Order.Desc, ArticleType.Original);
         ArticleQueryFilter filter2 = new ArticleQueryFilter("pub_time", Order.Asc, null);
-        PageInfo<Article> articles1 = articleService.getArticlesByFilter(1, filter1);
-        PageInfo<Article> articles2 = articleService.getArticlesByFilter(1, filter2);
-        articles1.getList().forEach(System.out::println);
-        articles2.getList().forEach(System.out::println);
+        articleService.getArticlesByFilter(1, filter1);
+        articleService.getArticlesByFilter(1, filter2);
+
     }
 }

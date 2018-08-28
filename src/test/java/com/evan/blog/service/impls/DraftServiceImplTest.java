@@ -20,6 +20,6 @@ public class DraftServiceImplTest {
     @Test
     public void queryArticleById() {
         Draft draft = service.queryDraftById(1);
-        assertEquals("test draft title 1", draft.getTitle());
+        assertEquals("IO操作的角度", draft.getTitle());
     }
 }
