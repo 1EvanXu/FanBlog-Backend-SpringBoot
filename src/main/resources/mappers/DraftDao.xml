@@ -13,6 +13,8 @@
         <result property="markdownContent" column="md_content"/>
     </resultMap>
 
+    <cache type="com.evan.blog.repository.RedisCache"/>
+
     <sql id="articleAbstract">
         select id, title, created_time, latest_edited_time, status from drafts
     </sql>

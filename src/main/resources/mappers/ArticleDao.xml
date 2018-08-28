@@ -15,7 +15,9 @@
         <association property="commentariesCount" column="pub_id"
                      select="com.evan.blog.repository.CommentaryDao.selectCommentariesCountByPubId"/>
     </resultMap>
-    
+
+    <cache type="com.evan.blog.repository.RedisCache"/>
+
     <select id="selectArticles" resultMap="articleMap" resultType="articleQueryFilter">
         select * from articles
         <where>
@@ -59,7 +61,7 @@
         values (#{pubId}, #{type}, #{draftId}, #{category.id});
     </insert>
 
-    <delete id="deleteArticle" parameterType="long">
+    <delete id="deleteArticle" parameterType="long" >
         delete from articles where pub_id=#{pubId};
     </delete>
 </mapper>

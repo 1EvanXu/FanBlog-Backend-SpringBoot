@@ -11,6 +11,8 @@
                      select="com.evan.blog.repository.ArticleDao.selectCountOfArticlesByCategory"/>
     </resultMap>
 
+    <cache type="com.evan.blog.repository.RedisCache"/>
+
     <select id="selectCategories" resultMap="categoryMap" parameterType="queryFilter">
         select * from categories
         <if test="orderField != null and orderField != ''">order by created_time
