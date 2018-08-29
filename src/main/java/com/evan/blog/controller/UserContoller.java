@@ -64,7 +64,7 @@ public class UserContoller {
         } else {
             param = ";error=Bad access token";
         }
-        String redirectUrl = response.encodeRedirectURL(domain + param);
+        String redirectUrl = response.encodeRedirectURL(domain + "/blog/login" + param);
         response.sendRedirect(redirectUrl);
     }
 
