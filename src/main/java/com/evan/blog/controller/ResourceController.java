@@ -22,6 +22,9 @@ public class ResourceController {
     @Value("${blog.resource.image-dir}")
     private String imagesPath;
 
+    @Value("${blog.domain}")
+    String domain;
+
     private final static int maxImageWidth = 500;
 
     @PostMapping("/images")
@@ -50,8 +53,8 @@ public class ResourceController {
                 throw new ResourceUploadException("Failed to process image.", e);
             }
         }
-
-        return ImageUploadResult.success(fileName);
+        String imageUrl = domain + "/images/" + fileName;
+        return ImageUploadResult.success(imageUrl);
     }
 
     static class ImageUploadResult {
