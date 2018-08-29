@@ -32,8 +32,8 @@ public class VisitorInterceptor implements HandlerInterceptor {
     @Autowired
     ArticleService articleService;
 
-    private Pattern pattern1 = Pattern.compile(".*/blog/articles/(\\d{9})/?$");
-    private Pattern pattern2 = Pattern.compile(".*/blog/articles/items/p/\\d+/?$");
+    private Pattern pattern1 = Pattern.compile(".*/blog-api/articles/(\\d{9})/?$");
+    private Pattern pattern2 = Pattern.compile(".*/blog-api/articles/items/p/\\d+/?$");
 
 
     @Override
@@ -82,7 +82,7 @@ public class VisitorInterceptor implements HandlerInterceptor {
         visitorRecordService.updateRegionDistributions(record.getIpLocation().getCity());
 
         //if visiting an article, record this visitor
-        if (Pattern.compile(".*/blog/articles/(\\d{9})/?$").matcher(url).find()) {
+        if (Pattern.compile(".*/blog-api/articles/(\\d{9})/?$").matcher(url).find()) {
 
             long pubId = Long.parseLong(matcher1.group(1));
             if (articleService.getTitleByPubId(pubId) != null) {

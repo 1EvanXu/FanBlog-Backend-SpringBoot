@@ -76,20 +76,23 @@ public class UserContoller {
         }
         HttpSession session = request.getSession();
 
-        GithubUser user = (GithubUser) session.getAttribute("user:" + userId);
+        GithubUser user = (GithubUser) session.getAttribute("user");
+        if (user == null) {
+            return new BlogJSONResult(404, "user" + userId +"+not exist in SESSION:" + session.getId(), null);
+        }
         return BlogJSONResult.ok(user);
     }
 
     @GetMapping(path = "/{userId}/state")
     @ResponseBody
     public BlogJSONResult getUserLogState(@PathVariable("userId") Long userId, HttpServletRequest request) {
-        String attributeName = "user:" + userId.toString();
+        String attributeName = "user";
         HttpSession session = request.getSession();
 
         BlogJSONResult jsonResult = new BlogJSONResult(200, attributeName + " logged in.", 1);
         if (session.getAttribute(attributeName) == null) {
-            jsonResult.setMsg(attributeName + " not logged in.");
-            jsonResult.setData(10);
+            jsonResult.setMsg(attributeName + userId + " not logged in SESSION:" + session.getId());
+            jsonResult.setData(0);
         }
         return jsonResult;
     }
@@ -97,10 +100,10 @@ public class UserContoller {
     @PutMapping(path = "/{userId}/state")
     @ResponseBody
     public BlogJSONResult logout(@PathVariable("userId") Long userId, HttpServletRequest request) {
-        String attributeName = "user:" + userId.toString();
+        String attributeName = "user";
         HttpSession session = request.getSession();
         session.removeAttribute(attributeName);
-        return new BlogJSONResult(200, "Log out suceed", 0);
+        return new BlogJSONResult(200, "user " + userId + " Log out suceed!", 0);
     }
 
 }

@@ -10,10 +10,10 @@ import java.util.regex.Pattern;
 
 public class AuthorityInterceptor implements HandlerInterceptor {
 
-    private Pattern pattern1 = Pattern.compile(".*/blog/cache/drafts$");
-    private Pattern pattern2 = Pattern.compile(".*/blog/drafts/status$");
-    private Pattern pattern3 = Pattern.compile(".*/blog/drafts");
-    private Pattern pattern4 = Pattern.compile(".*/blog/articles");
+    private Pattern pattern1 = Pattern.compile(".*/blog-api/cache/drafts$");
+    private Pattern pattern2 = Pattern.compile(".*/blog-api/drafts/status$");
+    private Pattern pattern3 = Pattern.compile(".*/blog-api/drafts");
+    private Pattern pattern4 = Pattern.compile(".*/blog-api/articles");
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
