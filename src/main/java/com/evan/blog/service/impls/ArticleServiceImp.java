@@ -1,5 +1,6 @@
 package com.evan.blog.service.impls;
 
+import com.evan.blog.exception.ResourceNotExistException;
 import com.evan.blog.model.*;
 import com.evan.blog.model.enums.DraftStatus;
 import com.evan.blog.pojo.ArticleItem;
@@ -110,7 +111,7 @@ public class ArticleServiceImp implements ArticleService {
 
         Article article = ArticleDao.selectArticleByPubId(pubId);
         if (article == null) {
-            throw new NullPointerException("The pubId of " + pubId +" of article not exisit.");
+            throw new ResourceNotExistException("The pubId of " + pubId +" of article not exist.");
         }
 
         Long articleVisitorCount = articleCacheService.getArticleVisitorCount(pubId);
