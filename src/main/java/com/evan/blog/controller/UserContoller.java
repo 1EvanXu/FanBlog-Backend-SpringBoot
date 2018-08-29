@@ -31,6 +31,9 @@ public class UserContoller {
     @Autowired
     UserService userService;
 
+    @Value("${blog.domain}")
+    String domain;
+
     private final static int SessionDurationTime = 86400 * 2; // two day
 
     @GetMapping(path = "/authorization")
@@ -61,7 +64,7 @@ public class UserContoller {
         } else {
             param = ";error=Bad access token";
         }
-        String redirectUrl = response.encodeRedirectURL("http://localhost:4200/blog/login" + param);
+        String redirectUrl = response.encodeRedirectURL(domain + param);
         response.sendRedirect(redirectUrl);
     }
 
