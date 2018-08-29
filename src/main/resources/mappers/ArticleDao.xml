@@ -51,17 +51,17 @@
         select * from articles order by pub_time desc limit #{limit}
     </select>
 
-    <insert id="insertArticle" parameterType="article">
+    <insert id="insertArticle" parameterType="article" flushCache="true">
         insert into articles(pub_id, type, draft_id, category_id)
         values (#{pubId}, #{type}, #{draft.id}, #{category.id});
     </insert>
 
-    <insert id="insertTempArticle" parameterType="tempArticle">
+    <insert id="insertTempArticle" parameterType="tempArticle" flushCache="true">
         insert into articles (pub_id, type, draft_id, category_id)
         values (#{pubId}, #{type}, #{draftId}, #{category.id});
     </insert>
 
-    <delete id="deleteArticle" parameterType="long" >
+    <delete id="deleteArticle" parameterType="long" flushCache="true">
         delete from articles where pub_id=#{pubId};
     </delete>
 </mapper>

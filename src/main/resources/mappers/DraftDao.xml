@@ -52,10 +52,10 @@
         insert into drafts(title, status, html_content, md_content)
         values (#{title}, #{status}, #{htmlContent}, #{markdownContent});
     </insert>
-    <update id="updateDraftStatus">
+    <update id="updateDraftStatus" flushCache="true" >
         update drafts set status=#{statusCode} where id=${id};
     </update>
-    <update id="updateDraft" parameterType="draft">
+    <update id="updateDraft" parameterType="draft" flushCache="true">
         update drafts
         <set>
             <if test="title != null and title != ''">title=#{title},</if>
@@ -65,7 +65,7 @@
         </set>
         where id=#{id};
     </update>
-    <delete id="deleteDraft" parameterType="long">
+    <delete id="deleteDraft" parameterType="long" flushCache="true">
         delete from drafts where id=#{id};
     </delete>
 </mapper>

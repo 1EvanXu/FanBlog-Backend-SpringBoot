@@ -1,4 +1,4 @@
-package com.evan.blog.controller.interceptor;
+package com.evan.blog.interceptor;
 
 import com.evan.blog.model.GithubUser;
 import com.evan.blog.pojo.IPLocation;

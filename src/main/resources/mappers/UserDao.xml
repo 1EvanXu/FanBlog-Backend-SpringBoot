@@ -24,12 +24,12 @@
         select * from users where github_id=#{githubId};
     </select>
 
-    <insert id="insertUser" parameterType="user" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertUser" parameterType="user" useGeneratedKeys="true" keyProperty="id" flushCache="true">
         insert into users(github_id, user_name, avatar_url, home_page, email, user_level)
         values (#{githubId}, #{name}, #{avatarUrl}, #{githubHomePage}, #{email}, #{level});
     </insert>
 
-    <update id="updateUserLevel">
+    <update id="updateUserLevel" flushCache="true">
         update users
         <set>
             <if test="level">user_level=#{level}</if>

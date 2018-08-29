@@ -3,8 +3,9 @@ package com.evan.blog.config;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import com.evan.blog.controller.interceptor.AuthorityInterceptor;
-import com.evan.blog.controller.interceptor.VisitorInterceptor;
+import com.evan.blog.interceptor.AuthorityInterceptor;
+import com.evan.blog.interceptor.VisitorInterceptor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -28,21 +29,15 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Bean
     public AuthorityInterceptor authorityInterceptor() { return new AuthorityInterceptor(); }
 
-
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowCredentials(true)
-                .allowedMethods("GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE")
-                .maxAge(3600);
+        registry.addMapping("/**");
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(blogVisitorInterceptor()).addPathPatterns("/**");
-        registry.addInterceptor(authorityInterceptor()).addPathPatterns("/**");
 
     }
 

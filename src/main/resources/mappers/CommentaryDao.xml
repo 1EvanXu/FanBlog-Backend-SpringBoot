@@ -25,7 +25,6 @@
                     select="selectCommentariesByParentId" fetchType="eager"/>
     </resultMap>
 
-    <cache type="com.evan.blog.repository.RedisCache"/>
 
     <insert id="insertCommentary" parameterType="comment">
         insert into commentaries (commentator, content, parent, reply_to, belonged_pub_article)
