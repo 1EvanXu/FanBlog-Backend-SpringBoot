@@ -29,7 +29,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
 
         UserLevel[] values = accessLevel.value();
         UserLevel[] roles = accessLevel.roles();
-        if (values.length == 0 && values.length == 0) {
+        if (values.length == 0 && roles.length == 0) {
             return false;
         }
 
