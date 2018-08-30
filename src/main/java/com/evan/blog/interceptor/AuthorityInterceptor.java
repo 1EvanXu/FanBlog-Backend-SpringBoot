@@ -12,12 +12,15 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 public class AuthorityInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+        if (!(handler instanceof HandlerMethod)) {
+            return true;
+        }
 
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
@@ -38,7 +41,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         Collections.addAll(authorities, roles);
 
         HttpSession session = request.getSession();
-        User user = (User)session.getAttribute("user");
+        User user = (User) session.getAttribute("user");
 
         return user != null && authorities.contains(user.getLevel());
     }
