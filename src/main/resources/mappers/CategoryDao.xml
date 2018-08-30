@@ -43,11 +43,11 @@
         (select count(*) from articles where category_id=c.id) desc
     </select>
 
-    <insert id="insertCategory" parameterType="category" useGeneratedKeys="true" keyProperty="id" flushCache="true">
+    <insert id="insertCategory" parameterType="category" useGeneratedKeys="true" keyProperty="id">
         insert into categories(category_name) values(#{name});
     </insert>
 
-    <delete id="deleteCategory" parameterType="long" flushCache="true">
+    <delete id="deleteCategory" parameterType="long">
         delete from categories where id=#{id}
     </delete>
 </mapper>

@@ -14,8 +14,6 @@
         <result column="user_level" property="level" typeHandler="com.evan.blog.repository.typehandlers.UserLevelTypeHandler"/>
     </resultMap>
 
-    <cache type="com.evan.blog.repository.RedisCache"/>
-
     <select id="selectUserById" resultMap="githubUserMap" parameterType="long">
         select * from users where id=#{id};
     </select>
@@ -24,12 +22,12 @@
         select * from users where github_id=#{githubId};
     </select>
 
-    <insert id="insertUser" parameterType="user" useGeneratedKeys="true" keyProperty="id" flushCache="true">
+    <insert id="insertUser" parameterType="user" useGeneratedKeys="true" keyProperty="id">
         insert into users(github_id, user_name, avatar_url, home_page, email, user_level)
         values (#{githubId}, #{name}, #{avatarUrl}, #{githubHomePage}, #{email}, #{level});
     </insert>
 
-    <update id="updateUserLevel" flushCache="true">
+    <update id="updateUserLevel">
         update users
         <set>
             <if test="level">user_level=#{level}</if>

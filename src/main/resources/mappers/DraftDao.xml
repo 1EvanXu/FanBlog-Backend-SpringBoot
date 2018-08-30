@@ -13,8 +13,6 @@
         <result property="markdownContent" column="md_content"/>
     </resultMap>
 
-    <cache type="com.evan.blog.repository.RedisCache"/>
-
     <sql id="articleAbstract">
         select id, title, created_time, latest_edited_time, status from drafts
     </sql>
@@ -48,14 +46,14 @@
         select count(*) from drafts;
     </select>
 
-    <insert id="insertDraft" parameterType="draft" useGeneratedKeys="true" keyProperty="id" flushCache="true">
+    <insert id="insertDraft" parameterType="draft" useGeneratedKeys="true" keyProperty="id">
         insert into drafts(title, status, html_content, md_content)
         values (#{title}, #{status}, #{htmlContent}, #{markdownContent});
     </insert>
-    <update id="updateDraftStatus" flushCache="true" >
+    <update id="updateDraftStatus">
         update drafts set status=#{statusCode} where id=${id};
     </update>
-    <update id="updateDraft" parameterType="draft" flushCache="true">
+    <update id="updateDraft" parameterType="draft">
         update drafts
         <set>
             <if test="title != null and title != ''">title=#{title},</if>
@@ -65,7 +63,7 @@
         </set>
         where id=#{id};
     </update>
-    <delete id="deleteDraft" parameterType="long" flushCache="true">
+    <delete id="deleteDraft" parameterType="long">
         delete from drafts where id=#{id};
     </delete>
 </mapper>
