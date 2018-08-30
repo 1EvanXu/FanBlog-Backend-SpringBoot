@@ -1,11 +1,13 @@
 package com.evan.blog.controller;
 
+import com.evan.blog.interceptor.AccessLevel;
 import com.evan.blog.model.Article;
 import com.evan.blog.model.ArticleQueryFilter;
 import com.evan.blog.model.QueryFilter;
 import com.evan.blog.model.TempArticle;
 import com.evan.blog.model.enums.ArticleType;
 import com.evan.blog.model.enums.Order;
+import com.evan.blog.model.enums.UserLevel;
 import com.evan.blog.pojo.ArticleDetails;
 import com.evan.blog.pojo.ArticleItem;
 import com.evan.blog.pojo.BlogJSONResult;
@@ -41,6 +43,7 @@ public class ArticlesController {
     }
 
     @PostMapping(path = "/")
+    @AccessLevel(roles = {UserLevel.Admin, UserLevel.VIP})
     public BlogJSONResult postArticle(@RequestBody TempArticle tempArticle) {
         articleService.addArticle(tempArticle);
 //        System.out.println(tempArticle.getCategory());
@@ -88,6 +91,7 @@ public class ArticlesController {
     }
 
     @DeleteMapping(path = "")
+    @AccessLevel(roles = {UserLevel.Admin})
     public BlogJSONResult deleteArticles(@RequestParam("ids") String ids) throws Exception {
         List<Long> pubIds = transferIdParams(ids);
         // remove related info from DB.

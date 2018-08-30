@@ -1,9 +1,11 @@
 package com.evan.blog.controller;
 
+import com.evan.blog.interceptor.AccessLevel;
 import com.evan.blog.model.Draft;
 import com.evan.blog.model.DraftQueryFilter;
 import com.evan.blog.model.enums.DraftStatus;
 import com.evan.blog.model.enums.Order;
+import com.evan.blog.model.enums.UserLevel;
 import com.evan.blog.pojo.BlogJSONResult;
 import com.evan.blog.pojo.ItemCollection;
 import com.evan.blog.pojo.management.DraftStatusUpdate;
@@ -44,6 +46,7 @@ public class DraftsController {
     }
 
     @PutMapping(path = "/status")
+    @AccessLevel(roles = {UserLevel.Admin, UserLevel.VIP})
     public BlogJSONResult updateDraftStatus(@RequestBody DraftStatusUpdate update) {
         System.out.println(update);
         draftService.updateDraftStatus(update.getStatus(), update.getArticleIds());
@@ -51,6 +54,7 @@ public class DraftsController {
     }
 
     @DeleteMapping(value = "")
+    @AccessLevel(roles = {UserLevel.Admin})
     public BlogJSONResult deleteDrafts(@RequestParam("ids") String ids) {
         List<Long> articleIds = transferIdParams(ids);
         System.out.println(articleIds);

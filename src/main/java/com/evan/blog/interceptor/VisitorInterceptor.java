@@ -43,7 +43,6 @@ public class VisitorInterceptor implements HandlerInterceptor {
         Matcher matcher2 = pattern2.matcher(url);
 
         if (matcher1.matches() && matcher2.matches()) {
-            System.out.println("miss visitor");
             return true;
         }
 

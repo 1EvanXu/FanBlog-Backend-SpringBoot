@@ -12,12 +12,13 @@ import org.springframework.context.annotation.ComponentScan;
 @MapperScan(basePackages = "com.evan.blog.repository")
 @ComponentScan(basePackages = {"com.evan.blog.*"})
 @ServletComponentScan
-public class BlogApplication extends SpringBootServletInitializer {
-
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(BlogApplication.class);
-    }
+public class BlogApplication {
+//        extends SpringBootServletInitializer {
+//
+//    @Override
+//    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+//        return builder.sources(BlogApplication.class);
+//    }
 
     public static void main(String[] args) {
         SpringApplication.run(BlogApplication.class, args);

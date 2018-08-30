@@ -48,7 +48,7 @@
         select count(*) from drafts;
     </select>
 
-    <insert id="insertDraft" parameterType="draft" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertDraft" parameterType="draft" useGeneratedKeys="true" keyProperty="id" flushCache="true">
         insert into drafts(title, status, html_content, md_content)
         values (#{title}, #{status}, #{htmlContent}, #{markdownContent});
     </insert>
