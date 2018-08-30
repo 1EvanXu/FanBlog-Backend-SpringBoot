@@ -1,5 +1,7 @@
 package com.evan.blog.util;
 
+import com.evan.blog.exception.ResourceUploadException;
+
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
@@ -20,6 +22,8 @@ import java.io.IOException;
 
 
 import javax.imageio.ImageIO;
+
+import static java.lang.Runtime.getRuntime;
 
 
 public class ImageUtil {
@@ -92,8 +96,24 @@ public class ImageUtil {
             g.drawImage(image, 0, 0, null); // 绘制缩小后的图
             g.dispose();
             ImageIO.write(tag, formatName, new File(destImagePath));// 输出到文件流
+            chmodOfImage(destImagePath);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void chmodOfImage(String filePath) {
+        Runtime runtime = getRuntime();
+        String command = "chmod 644 " + filePath;
+        try {
+            Process process = runtime.exec(command);
+            process.waitFor();
+            int existValue = process.exitValue();
+            if(existValue != 0){
+                throw new ResourceUploadException();
+            }
+        } catch (InterruptedException | IOException e) {
+            throw new ResourceUploadException();
         }
     }
 

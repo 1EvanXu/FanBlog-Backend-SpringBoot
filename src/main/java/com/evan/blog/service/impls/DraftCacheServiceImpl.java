@@ -125,7 +125,7 @@ public class DraftCacheServiceImpl implements DraftCacheService {
 
             // set default title if title is empty
             if (draft.getTitle() == null || draft.getTitle().equals("")) {
-                draft.setTitle(tempDraftId.toString());
+                draft.setTitle("Temp article title:"+tempDraftId.toString());
             }
 
             draft.setHtmlContent(tempDraft.getHtmlContent());

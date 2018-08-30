@@ -25,7 +25,7 @@ public class ResourceController {
     @Value("${blog.domain}")
     String domain;
 
-    private final static int maxImageWidth = 500;
+    private final static int maxImageWidth = 750;
 
     @PostMapping("/images")
     public ImageUploadResult uploadBlogArticleImage(MultipartFile file) {
